@@ -3,10 +3,6 @@
   <div class="nav-inner">
     <a routerLink="/" class="logo">
       <img src="/images/logo-x10ecom.jpeg" alt="X10ECOM" class="logo-img" />
-      <div class="logo-text">
-        <span class="logo-primary">X10</span>
-        <span class="logo-secondary">ECOM</span>
-      </div>
     </a>
     <ul class="nav-links">
       <li><a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">{{ 'HOME.NAV.HOME' | translate }}</a></li>
@@ -303,7 +299,6 @@
       <div class="footer-col">
         <h4>{{ 'HOME.FOOTER.ZONES_TITLE' | translate }}</h4>
         <ul>
-          <li><a (click)="scrollTo('countries')">{{ 'HOME.FOOTER.Z1' | translate }}</a></li>
           <li><a (click)="scrollTo('countries')">{{ 'HOME.FOOTER.Z2' | translate }}</a></li>
           <li><a (click)="scrollTo('countries')">{{ 'HOME.FOOTER.Z3' | translate }}</a></li>
           <li><a (click)="scrollTo('countries')">{{ 'HOME.FOOTER.Z4' | translate }}</a></li>
@@ -311,7 +306,7 @@
       </div>
       <div class="footer-col">
         <h4>{{ 'HOME.FOOTER.CONTACT_TITLE' | translate }}</h4>
-        <div class="footer-contact-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg><span>Maroc, UAE, KSA</span></div>
+        <div class="footer-contact-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg><span>UAE</span></div>
         <div class="footer-contact-item"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z"/></svg><span>contact&#64;x10ecom.com</span></div>
       </div>
     </div>

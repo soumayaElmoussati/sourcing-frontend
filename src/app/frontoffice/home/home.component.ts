@@ -122,7 +122,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   ];
 
   stats = [
-    { value: 500, suffix: '+', labelKey: 'HOME.STATS.S1' },
     { value: 6,   suffix: '',  labelKey: 'HOME.STATS.S2' },
     { value: 98,  suffix: '%', labelKey: 'HOME.STATS.S3' },
     { value: 24,  suffix: 'h', labelKey: 'HOME.STATS.S4' },

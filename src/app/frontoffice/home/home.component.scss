@@ -430,10 +430,23 @@ a { text-decoration: none; color: inherit; cursor: pointer; }
   svg { width: 26px; height: 26px; }
 }
 .svc-img-wrap {
-  width: 100%; height: 160px; overflow: hidden;
-  img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    padding: 0.5rem;
+    transition: transform .5s ease;
+  }
 }
-.svc-card:hover .svc-img-wrap img { transform: scale(1.06); }
+.svc-card:hover .svc-img-wrap img { transform: scale(1.04); }
 .svc-card h3 { font-family: $font-h; font-size: .97rem; font-weight: 700; color: $dark; margin: 1rem 1.5rem .4rem; }
 .svc-card p  { font-size: .83rem; color: $muted; line-height: 1.65; margin: 0 1.5rem 1rem; }
 .svc-arrow { display: flex; justify-content: flex-end; padding: 0 1.25rem 1.25rem; svg { width: 20px; height: 20px; transition: transform .2s; } }
