@@ -157,6 +157,83 @@
       "TERMS": "Conditions d'utilisation",
       "COOKIES": "Cookies"
     },
-    "WHATSAPP": "Contactez-nous sur WhatsApp"
+    "WHATSAPP": "Contactez-nous sur WhatsApp",
+    "STATS": {
+      "S1": "Vendeurs actifs",
+      "S2": "Pays GCC couverts",
+      "S3": "Satisfaction client",
+      "S4": "Délai de réponse"
+    }
+  },
+  "ABOUT": {
+    "EYEBROW": "QUI SOMMES-NOUS",
+    "HERO_TITLE": "Votre partenaire e-commerce pour le marché GCC",
+    "HERO_SUB": "De la source au client final, nous gérons chaque étape de votre chaîne logistique dans la région GCC & MENA.",
+    "MISSION": {
+      "EYEBROW": "NOTRE MISSION",
+      "TITLE": "Simplifier l'e-commerce dans le GCC",
+      "DESC": "X10ECOM est une plateforme spécialisée dans les solutions e-commerce pour les marchés GCC & MENA. Du sourcing jusqu'à la livraison avec paiement à la réception (COD), nous accompagnons chaque étape de votre développement commercial dans la région."
+    },
+    "VALUES": {
+      "EYEBROW": "NOS VALEURS",
+      "TITLE": "Ce qui nous guide",
+      "V1_T": "Excellence",
+      "V1_D": "Nous visons la perfection à chaque étape du processus logistique.",
+      "V2_T": "Confiance",
+      "V2_D": "Des partenariats solides basés sur la transparence et l'intégrité.",
+      "V3_T": "Innovation",
+      "V3_D": "Des solutions technologiques avancées pour votre croissance.",
+      "V4_T": "Portée",
+      "V4_D": "Un réseau couvrant l'ensemble de la région GCC & MENA."
+    },
+    "SOLUTIONS": {
+      "EYEBROW": "NOS SOLUTIONS",
+      "TITLE": "Une plateforme, tous les marchés GCC",
+      "S1_T": "Gestion des Commandes",
+      "S1_D": "Confirmation, traitement et suivi des commandes en temps réel.",
+      "S2_T": "Fulfillment",
+      "S2_D": "Stockage, préparation et expédition depuis nos hubs stratégiques.",
+      "S3_T": "Sourcing & Fabrication",
+      "S3_D": "Accès à un réseau de fournisseurs et usines fiables dans la région.",
+      "S4_T": "Livraison Last-Mile",
+      "S4_D": "Réseau de partenaires logistiques pour une livraison optimale."
+    },
+    "FULFILL": {
+      "EYEBROW": "MODÈLES LOGISTIQUES",
+      "TITLE": "Fulfillment Central GCC ou Local par Pays",
+      "DESC": "Choisissez le modèle adapté à votre stratégie : un seul entrepôt aux Émirats pour couvrir tout le GCC, ou des entrepôts locaux dans chaque pays pour une livraison encore plus rapide."
+    },
+    "MAP": {
+      "EYEBROW": "COUVERTURE RÉGIONALE",
+      "TITLE": "Réseau GCC interconnecté",
+      "DESC": "Notre réseau d'entrepôts et de bureaux couvre l'ensemble des 6 pays du GCC, vous permettant de livrer vos clients partout dans la région avec rapidité et fiabilité.",
+      "S1": "Pays GCC",
+      "S2": "Entrepôts",
+      "S3": "Support"
+    },
+    "CTA": {
+      "TITLE": "Prêt à conquérir le marché GCC ?",
+      "SUB": "Rejoignez des centaines de vendeurs qui font confiance à X10ECOM pour leur expansion."
+    },
+    "SOL": {
+      "S1_T": "Gestion des Commandes",
+      "S1_D": "Confirmation, traitement et suivi des commandes en temps réel.",
+      "S2_T": "Fulfillment",
+      "S2_D": "Stockage, préparation et expédition depuis nos hubs stratégiques.",
+      "S3_T": "Sourcing & Fabrication",
+      "S3_D": "Accès à un réseau de fournisseurs et usines fiables dans la région.",
+      "S4_T": "Livraison Last-Mile",
+      "S4_D": "Réseau de partenaires logistiques pour une livraison optimale."
+    },
+    "VAL": {
+      "V1_T": "Excellence",
+      "V1_D": "Nous visons la perfection à chaque étape du processus logistique.",
+      "V2_T": "Confiance",
+      "V2_D": "Des partenariats solides basés sur la transparence et l'intégrité.",
+      "V3_T": "Innovation",
+      "V3_D": "Des solutions technologiques avancées pour votre croissance.",
+      "V4_T": "Portée",
+      "V4_D": "Un réseau couvrant l'ensemble de la région GCC & MENA."
+    }
   }
 }
