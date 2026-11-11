@@ -1,0 +1,759 @@
+/* ══════════════════════════════════════════════════════
+   FEES PAGE — Admin Premium UI
+══════════════════════════════════════════════════════ */
+
+$primary:   #10b981;
+$primary-dk:#059669;
+$blue:      #3b82f6;
+$orange:    #f97316;
+$purple:    #8b5cf6;
+$danger:    #ef4444;
+$warning:   #f59e0b;
+$bg:        #f8fafc;
+$surface:   #ffffff;
+$border:    #e2e8f0;
+$text:      #0f172a;
+$muted:     #64748b;
+$radius-lg: 20px;
+$radius-md: 14px;
+$radius-sm: 10px;
+$shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+$shadow-md: 0 4px 16px rgba(0,0,0,.08);
+$shadow-lg: 0 20px 48px rgba(0,0,0,.16);
+
+/* ── Page ── */
+.fees-page {
+  padding: 2rem 2.25rem;
+  background: $bg;
+  min-height: 100vh;
+  font-family: 'Inter', system-ui, sans-serif;
+
+  @media (max-width: 768px) { padding: 1rem; }
+}
+
+/* ══ HEADER ══ */
+.fees-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  &-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &-icon {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba($primary,.15), rgba($primary,.05));
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid rgba($primary,.15);
+    i { font-size: 1.35rem; color: $primary; }
+  }
+}
+
+.fees-title {
+  margin: 0;
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: $text;
+}
+
+.fees-subtitle {
+  margin: .25rem 0 0;
+  font-size: .875rem;
+  color: $muted;
+  max-width: 480px;
+  line-height: 1.5;
+}
+
+/* Bouton ajouter */
+.btn-add {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .7rem 1.35rem;
+  background: $primary;
+  color: #fff;
+  border: none;
+  border-radius: $radius-sm;
+  font-size: .88rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba($primary,.32);
+  transition: all .2s;
+
+  i { font-size: .85rem; }
+
+  &:hover:not(:disabled) {
+    background: $primary-dk;
+    box-shadow: 0 6px 18px rgba($primary,.4);
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+/* ══ GRILLE CARDS ══ */
+.fees-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+
+  @media (max-width: 1100px) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 640px)  { grid-template-columns: 1fr; }
+}
+
+/* ── Skeleton ── */
+.fee-skeleton {
+  height: 260px;
+  border-radius: $radius-lg;
+  background: linear-gradient(90deg, #f1f5f9 25%, #e8eef4 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0 }
+  100% { background-position: -200% 0 }
+}
+
+/* ══ FEE CARD ══ */
+.fee-card {
+  position: relative;
+  background: $surface;
+  border: 1.5px solid $border;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow-sm;
+  transition: box-shadow .25s, border-color .25s, transform .2s;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    box-shadow: $shadow-md;
+    transform: translateY(-2px);
+  }
+
+  &-active {
+    border-color: rgba($primary,.25);
+    &:hover { border-color: rgba($primary,.4); }
+  }
+
+  &-empty {
+    border-color: rgba($warning,.2);
+    &:hover { border-color: rgba($warning,.4); }
+  }
+}
+
+/* Barre accent top */
+.fee-card-accent {
+  height: 4px;
+  width: 100%;
+  flex-shrink: 0;
+
+  .fee-card-active & {
+    background: linear-gradient(90deg, $primary, rgba($primary,.4));
+  }
+
+  .fee-card-empty & {
+    background: linear-gradient(90deg, $warning, rgba($warning,.3));
+  }
+}
+
+/* Card head */
+.fee-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.4rem .75rem;
+}
+
+/* Icône card */
+.fee-card-icon {
+  width: 46px; height: 46px;
+  border-radius: 13px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+
+  &.fci-lead     { background: rgba($blue,.1);   color: $blue;   }
+  &.fci-delivered{ background: rgba($primary,.1); color: $primary;}
+  &.fci-returned { background: rgba($orange,.1);  color: $orange; }
+}
+
+/* Status pill */
+.fee-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .28rem .7rem;
+  border-radius: 999px;
+  font-size: .7rem;
+  font-weight: 700;
+
+  i { font-size: .62rem; }
+
+  &.fee-status-active {
+    background: rgba($primary,.1);
+    color: $primary-dk;
+    border: 1px solid rgba($primary,.2);
+  }
+
+  &.fee-status-pending {
+    background: rgba($warning,.1);
+    color: darken($warning, 15%);
+    border: 1px solid rgba($warning,.2);
+  }
+}
+
+/* Card body */
+.fee-card-body {
+  flex: 1;
+  padding: 0 1.4rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.fee-card-title {
+  margin: 0 0 .4rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -.01em;
+  color: $text;
+}
+
+.fee-card-desc {
+  margin: 0 0 1.1rem;
+  font-size: .82rem;
+  color: $muted;
+  line-height: 1.5;
+  flex: 1;
+}
+
+/* Montant actif */
+.fee-amount-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.1rem;
+  background: rgba($primary,.05);
+  border: 1px solid rgba($primary,.12);
+  border-radius: $radius-sm;
+  margin-bottom: 1rem;
+}
+
+.fee-amount-inner {
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+}
+
+.fee-amount-label {
+  font-size: .72rem;
+  font-weight: 600;
+  color: $muted;
+  letter-spacing: .06em;
+}
+
+.fee-amount-value {
+  display: flex;
+  align-items: baseline;
+  gap: .25rem;
+}
+
+.fee-currency {
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgba($primary,.7);
+}
+
+.fee-number {
+  font-size: 1.7rem;
+  font-weight: 900;
+  letter-spacing: -.03em;
+  color: $text;
+  line-height: 1;
+}
+
+/* Indicateur pulsant */
+.fee-amount-graph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fee-pulse {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: rgba($primary,.15);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: $primary;
+    transform: scale(.45);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px solid rgba($primary,.3);
+    animation: pulse-ring 2s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(.45); opacity: 1; }
+  50%       { transform: scale(.55); opacity: .8; }
+}
+
+@keyframes pulse-ring {
+  0%        { transform: scale(1); opacity: .6; }
+  50%       { transform: scale(1.2); opacity: .2; }
+  100%      { transform: scale(1); opacity: .6; }
+}
+
+/* Actions carte */
+.fee-card-actions {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+
+.btn-edit {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  padding: .6rem 1rem;
+  border-radius: $radius-sm;
+  border: 1.5px solid $border;
+  background: $surface;
+  color: $text;
+  font-size: .83rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+
+  i { font-size: .8rem; }
+
+  &:hover {
+    border-color: $blue;
+    background: rgba($blue,.05);
+    color: $blue;
+  }
+}
+
+.btn-delete {
+  width: 38px; height: 38px;
+  border-radius: $radius-sm;
+  border: 1.5px solid $border;
+  background: $surface;
+  color: $muted;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all .2s;
+  flex-shrink: 0;
+  font-size: .88rem;
+
+  &:hover {
+    border-color: rgba($danger,.4);
+    background: rgba($danger,.06);
+    color: $danger;
+  }
+}
+
+/* Empty state card */
+.fee-empty-block {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .9rem 1rem;
+  background: rgba($warning,.06);
+  border: 1px solid rgba($warning,.2);
+  border-radius: $radius-sm;
+  margin-bottom: 1rem;
+}
+
+.fee-empty-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: rgba($warning,.12);
+  color: $warning;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .9rem;
+  flex-shrink: 0;
+}
+
+.fee-empty-text {
+  margin: 0;
+  font-size: .81rem;
+  color: darken($warning, 20%);
+  line-height: 1.45;
+}
+
+.btn-configure {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .62rem 1rem;
+  border-radius: $radius-sm;
+  border: 1.5px dashed rgba($primary,.4);
+  background: rgba($primary,.04);
+  color: $primary;
+  font-size: .83rem;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  justify-content: center;
+  transition: all .2s;
+
+  i { font-size: .8rem; }
+
+  &:hover {
+    background: $primary;
+    color: #fff;
+    border-style: solid;
+    border-color: $primary;
+  }
+}
+
+/* ══ MODALES ══ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15,23,42,.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1.5rem;
+  animation: fadein .2s ease;
+}
+
+@keyframes fadein  { from { opacity: 0 } to { opacity: 1 } }
+@keyframes slideup {
+  from { opacity: 0; transform: translateY(18px) scale(.97) }
+  to   { opacity: 1; transform: none }
+}
+
+.modal-box {
+  background: $surface;
+  border-radius: $radius-lg;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  box-shadow: $shadow-lg;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideup .25s cubic-bezier(.16,1,.3,1);
+
+  &.modal-box-sm { max-width: 420px; }
+}
+
+/* Modal header */
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.3rem 1.5rem;
+  border-bottom: 1px solid $border;
+  flex-shrink: 0;
+
+  &-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+
+    &.mhi-add    { background: rgba($primary,.12); color: $primary; }
+    &.mhi-edit   { background: rgba($blue,.12);    color: $blue;    }
+    &.mhi-danger { background: rgba($danger,.12);  color: $danger;  }
+  }
+
+  &-text {
+    flex: 1;
+    h3 { margin: 0; font-size: 1.05rem; font-weight: 800; color: $text; }
+    p  { margin: .2rem 0 0; font-size: .78rem; color: $muted; }
+  }
+}
+
+.modal-close {
+  width: 32px; height: 32px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  color: $muted;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .85rem;
+  transition: all .15s;
+
+  &:hover { background: rgba($danger,.08); color: $danger; }
+}
+
+/* Modal body */
+.modal-body {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+/* Champs */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+
+.form-label {
+  font-size: .82rem;
+  font-weight: 700;
+  color: $text;
+  letter-spacing: .01em;
+}
+
+/* Select custom */
+.form-select-wrap {
+  position: relative;
+
+  .form-select-arrow {
+    position: absolute;
+    right: .9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: .7rem;
+    color: $muted;
+    pointer-events: none;
+  }
+}
+
+.form-select {
+  width: 100%;
+  appearance: none;
+  padding: .75rem 2.5rem .75rem 1rem;
+  border: 1.5px solid $border;
+  border-radius: $radius-sm;
+  background: $surface;
+  font-size: .9rem;
+  color: $text;
+  cursor: pointer;
+  transition: border-color .2s, box-shadow .2s;
+
+  &:focus {
+    outline: none;
+    border-color: $primary;
+    box-shadow: 0 0 0 3px rgba($primary,.1);
+  }
+}
+
+/* Input montant */
+.form-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form-input-prefix {
+  position: absolute;
+  left: .9rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: $muted;
+  pointer-events: none;
+}
+
+.form-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: .75rem 1rem .75rem 2.1rem;
+  border: 1.5px solid $border;
+  border-radius: $radius-sm;
+  font-size: .95rem;
+  color: $text;
+  background: $surface;
+  transition: border-color .2s, box-shadow .2s;
+
+  &:focus {
+    outline: none;
+    border-color: $primary;
+    box-shadow: 0 0 0 3px rgba($primary,.1);
+  }
+
+  &::placeholder { color: rgba($muted,.5); }
+}
+
+.form-hint {
+  font-size: .74rem;
+  color: $muted;
+}
+
+/* Readonly */
+.form-readonly {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  padding: .75rem 1rem;
+  border-radius: $radius-sm;
+  background: rgba($bg, .8);
+  border: 1.5px solid $border;
+  font-size: .9rem;
+  color: $muted;
+
+  .form-readonly-icon { font-size: .85rem; color: rgba($muted,.6); }
+}
+
+/* Preview */
+.form-preview {
+  display: flex;
+  align-items: flex-start;
+  gap: .6rem;
+  padding: .8rem 1rem;
+  background: rgba($primary,.06);
+  border: 1px solid rgba($primary,.15);
+  border-radius: $radius-sm;
+  font-size: .83rem;
+  color: darken($primary, 10%);
+
+  .form-preview-icon { font-size: .82rem; flex-shrink: 0; margin-top: .05rem; }
+  strong { font-weight: 800; color: $text; }
+}
+
+/* Delete warning */
+.delete-warning {
+  display: flex;
+  flex-direction: column;
+  gap: .85rem;
+}
+
+.delete-msg {
+  margin: 0;
+  font-size: .92rem;
+  color: $text;
+  line-height: 1.5;
+
+  strong { font-weight: 800; }
+}
+
+.delete-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: .6rem;
+  padding: .85rem 1rem;
+  background: rgba($danger,.06);
+  border: 1px solid rgba($danger,.18);
+  border-radius: $radius-sm;
+  font-size: .82rem;
+  color: darken($danger, 10%);
+
+  i { font-size: .9rem; flex-shrink: 0; margin-top: .05rem; }
+}
+
+/* Modal footer */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: .75rem;
+  padding: 1.1rem 1.5rem;
+  border-top: 1px solid $border;
+  background: rgba($bg,.5);
+  flex-shrink: 0;
+}
+
+/* Boutons footer */
+.btn-cancel {
+  padding: .65rem 1.2rem;
+  border-radius: $radius-sm;
+  border: 1.5px solid $border;
+  background: $surface;
+  color: $muted;
+  font-size: .86rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+
+  &:hover:not(:disabled) { background: rgba($muted,.08); }
+  &:disabled { opacity: .5; cursor: not-allowed; }
+}
+
+.btn-confirm {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .65rem 1.25rem;
+  border-radius: $radius-sm;
+  border: none;
+  background: $primary;
+  color: #fff;
+  font-size: .86rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba($primary,.3);
+  transition: all .2s;
+
+  i { font-size: .82rem; }
+
+  &:hover:not(:disabled) {
+    background: $primary-dk;
+    box-shadow: 0 4px 14px rgba($primary,.4);
+  }
+
+  &:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; }
+}
+
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .65rem 1.25rem;
+  border-radius: $radius-sm;
+  border: none;
+  background: $danger;
+  color: #fff;
+  font-size: .86rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba($danger,.25);
+  transition: all .2s;
+
+  i { font-size: .82rem; }
+
+  &:hover:not(:disabled) {
+    background: darken($danger, 8%);
+    box-shadow: 0 4px 14px rgba($danger,.35);
+  }
+
+  &:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .modal-footer { flex-direction: column-reverse; button { width: 100%; justify-content: center; } }
+  .fees-header  { flex-direction: column; align-items: flex-start; }
+  .btn-add      { width: 100%; justify-content: center; }
+}

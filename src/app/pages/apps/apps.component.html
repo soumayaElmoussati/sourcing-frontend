@@ -1,0 +1,214 @@
+<div class="apps-container">
+  <p-toast position="top-right"></p-toast>
+
+  <div class="page-header">
+    <h1>Apps</h1>
+    <p>Connectez vos outils et plateformes favoris pour synchroniser automatiquement vos commandes.</p>
+  </div>
+
+  <div class="apps-grid">
+    <div class="app-card" *ngFor="let app of catalog">
+      <div class="card-top">
+        <div class="app-icon" [style.background]="app.color + '1a'" [style.color]="app.color">
+          <i class="pi" [ngClass]="app.icon"></i>
+        </div>
+        <button class="app-action-btn" [ngClass]="getButtonClass(app)" (click)="openModal(app)">
+          <i class="pi pi-check-circle" *ngIf="isActive(app.type)"></i>
+          <i class="pi pi-clock"        *ngIf="isPending(app.type)"></i>
+          <i class="pi pi-link"         *ngIf="isDisconnected(app.type) && isOAuthApp(app)"></i>
+          <i class="pi pi-cog"          *ngIf="isDisconnected(app.type) && !isOAuthApp(app)"></i>
+          {{ getButtonLabel(app) }}
+        </button>
+      </div>
+      <h3>{{ app.name }}</h3>
+      <p class="app-description">{{ app.description }}</p>
+      <div class="app-tags">
+        <span class="tag" *ngFor="let tag of app.tags">{{ tag }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <div class="app-icon"
+             [style.background]="selectedApp!.color + '1a'"
+             [style.color]="selectedApp!.color">
+          <i class="pi" [ngClass]="selectedApp!.icon"></i>
+        </div>
+        <h3>{{ selectedApp?.name }}</h3>
+        <button class="close-btn" (click)="closeModal()">
+          <i class="pi pi-times"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- ══ CAS OAUTH (Lightfunnels, YouCan, Shopify) ══ -->
+        <ng-container *ngIf="selectedApp && isOAuthApp(selectedApp)">
+
+          <!-- ACTIVE -->
+          <div class="status-banner banner-active" *ngIf="selectedConn?.status === 'ACTIVE'">
+            <i class="pi pi-check-circle"></i>
+            <div>
+              <strong>Boutique connectée</strong>
+              <p>
+                Boutique : <strong>{{ selectedConn?.externalAccountLabel }}</strong><br>
+                {{ selectedConn?.webhooksReceived ?? 0 }} commande(s) synchronisée(s).
+                <span *ngIf="selectedConn?.lastSyncedAt">
+                  Dernière sync : {{ selectedConn?.lastSyncedAt | date:'dd/MM/yyyy HH:mm' }}
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <!-- DISCONNECTED -->
+          <div class="status-banner banner-not_configured"
+               *ngIf="!selectedConn || selectedConn.status === 'DISCONNECTED'">
+            <i class="pi pi-info-circle"></i>
+            <div>
+              <strong>Non connecté</strong>
+              <p>
+                Autorisez X10ECOM à accéder à votre boutique {{ selectedApp?.name }}.
+                Vos commandes seront synchronisées automatiquement.
+              </p>
+            </div>
+          </div>
+
+          <!-- Champ shop domain spécifique Shopify -->
+          <div class="shopify-domain-input"
+               *ngIf="selectedApp?.type === 'SHOPIFY' && (!selectedConn || selectedConn.status === 'DISCONNECTED')">
+            <label>Domaine de votre boutique Shopify</label>
+            <input type="text"
+                   [(ngModel)]="shopifyDomain"
+                   placeholder="mon-shop.myshopify.com"
+                   [disabled]="isActing" />
+            <small class="hint">Format exact : nom-boutique.myshopify.com</small>
+          </div>
+
+          <!-- Étapes connexion -->
+          <div class="oauth-steps" *ngIf="!selectedConn || selectedConn.status === 'DISCONNECTED'">
+            <div class="oauth-step">
+              <span class="step-num">1</span>
+              <p *ngIf="selectedApp?.type !== 'SHOPIFY'">Cliquez sur "Connecter ma boutique" ci-dessous.</p>
+              <p *ngIf="selectedApp?.type === 'SHOPIFY'">Saisissez votre domaine Shopify ci-dessus.</p>
+            </div>
+            <div class="oauth-step">
+              <span class="step-num">2</span>
+              <p>Une popup s'ouvre sur {{ selectedApp?.name }}. Connectez-vous et autorisez l'accès.</p>
+            </div>
+            <div class="oauth-step">
+              <span class="step-num">3</span>
+              <p>Vos commandes sont synchronisées automatiquement toutes les 5 minutes.</p>
+            </div>
+          </div>
+
+          <!-- Bouton connexion -->
+          <div class="action-center" *ngIf="!selectedConn || selectedConn.status === 'DISCONNECTED'">
+            <button class="btn-oauth" (click)="onMainAction()" [disabled]="isActing">
+              <i class="pi"
+                 [class.pi-spin]="isActing"
+                 [class.pi-spinner]="isActing"
+                 [class.pi-link]="!isActing"></i>
+              {{ isActing ? 'Redirection...' : 'Connecter ma boutique ' + selectedApp?.name }}
+            </button>
+          </div>
+
+        </ng-container>
+
+        <!-- ══ CAS WEBHOOK ENTRANT (Google Sheets, WordPress, Easy Orders) ══ -->
+        <ng-container *ngIf="selectedApp && !isOAuthApp(selectedApp)">
+
+          <!-- ACTIVE -->
+          <div class="status-banner banner-active" *ngIf="selectedConn?.status === 'ACTIVE'">
+            <i class="pi pi-check-circle"></i>
+            <div>
+              <strong>Connexion active</strong>
+              <p>
+                {{ selectedConn?.webhooksReceived ?? 0 }} commande(s) reçue(s).
+                <span *ngIf="selectedConn?.lastWebhookAt">
+                  Dernière : {{ selectedConn?.lastWebhookAt | date:'dd/MM/yyyy HH:mm' }}
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <!-- PENDING -->
+          <div class="status-banner banner-pending" *ngIf="selectedConn?.status === 'PENDING'">
+            <i class="pi pi-clock"></i>
+            <div>
+              <strong>En attente de la première commande…</strong>
+              <p>Copiez l'URL ci-dessous dans {{ selectedApp?.name }}. La connexion sera confirmée dès qu'une commande sera reçue.</p>
+            </div>
+          </div>
+
+          <!-- DISCONNECTED -->
+          <div class="status-banner banner-not_configured"
+               *ngIf="!selectedConn || selectedConn.status === 'DISCONNECTED'">
+            <i class="pi pi-info-circle"></i>
+            <div>
+              <strong>Non configuré</strong>
+              <p>Cliquez sur "Générer l'URL" pour obtenir votre URL de webhook unique.</p>
+            </div>
+          </div>
+
+          <!-- Bouton activation -->
+          <div class="action-center" *ngIf="!selectedConn || selectedConn.status === 'DISCONNECTED'">
+            <button class="btn-oauth" (click)="onMainAction()" [disabled]="isActing">
+              <i class="pi"
+                 [class.pi-spin]="isActing"
+                 [class.pi-spinner]="isActing"
+                 [class.pi-bolt]="!isActing"></i>
+              {{ isActing ? 'Génération...' : "Générer l'URL de webhook" }}
+            </button>
+          </div>
+
+          <!-- URL webhook -->
+          <div class="webhook-url-box" *ngIf="selectedConn && selectedConn.status !== 'DISCONNECTED'">
+            <label>URL de webhook à utiliser</label>
+            <div class="url-row">
+              <input type="text" [value]="selectedConn.webhookUrl" readonly />
+              <button class="copy-btn" (click)="copyWebhookUrl()" [title]="copiedUrl ? 'Copié !' : 'Copier'">
+                <i class="pi" [class.pi-check]="copiedUrl" [class.pi-copy]="!copiedUrl"></i>
+              </button>
+            </div>
+            <small class="hint">⚠️ Cette URL doit être accessible depuis Internet. Utilisez ngrok en développement.</small>
+          </div>
+
+          <!-- Instructions -->
+          <div class="setup-instructions" *ngIf="selectedConn && selectedApp!.setupInstructions">
+            <i class="pi pi-info-circle"></i>
+            <p>{{ selectedApp!.setupInstructions }}</p>
+          </div>
+
+          <!-- Format payload -->
+          <div class="method-note" *ngIf="selectedConn">
+            <p>Méthode : <strong>POST</strong> — corps JSON avec au minimum :
+              <code>productId</code>, <code>customerName</code>, <code>customerPhone</code>,
+              <code>country</code>, <code>city</code>, <code>fullAddress</code>, <code>quantity</code>.
+            </p>
+          </div>
+
+        </ng-container>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button class="regenerate-btn"
+                *ngIf="selectedApp && !isOAuthApp(selectedApp) && selectedConn && selectedConn.status !== 'DISCONNECTED'"
+                (click)="regenerateWebhookToken()">
+          <i class="pi pi-refresh"></i> Régénérer le lien
+        </button>
+        <button class="disconnect-btn"
+                *ngIf="selectedConn && selectedConn.status !== 'DISCONNECTED'"
+                (click)="disconnect()">
+          <i class="pi pi-times"></i>
+          {{ isOAuthApp(selectedApp!) ? 'Déconnecter la boutique' : 'Déconnecter' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

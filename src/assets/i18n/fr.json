@@ -1,0 +1,162 @@
+{
+  "TOPBAR": {
+    "SEARCH_PLACEHOLDER": "Rechercher un vendeur, une commande...",
+    "PROFILE": "Profil",
+    "SETTINGS": "Paramètres",
+    "LOGOUT": "Déconnexion",
+    "LANGUAGE": "Langue"
+  },
+  "LANG": {
+    "EN": "Anglais",
+    "FR": "Français",
+    "AR": "Arabe"
+  },
+  "NAV": {
+    "DASHBOARD": "Tableau de bord",
+    "SELLERS": "Vendeurs",
+    "ORDERS": "Commandes",
+    "PRODUCTS": "Produits",
+    "SOURCING": "Sourcing",
+    "WALLET": "Portefeuille",
+    "WITHDRAWALS": "Retraits",
+    "TRANSACTIONS": "Transactions",
+    "FEES": "Frais",
+    "APPS": "Applications",
+    "USERS": "Utilisateurs",
+    "SETTINGS": "Paramètres"
+  },
+  "COMMON": {
+    "SAVE": "Enregistrer",
+    "CANCEL": "Annuler",
+    "CONFIRM": "Confirmer",
+    "DELETE": "Supprimer",
+    "EDIT": "Modifier",
+    "ADD": "Ajouter",
+    "SEARCH": "Rechercher",
+    "LOADING": "Chargement...",
+    "NO_DATA": "Aucune donnée",
+    "ACTIVE": "Actif",
+    "INACTIVE": "Inactif",
+    "STATUS": "Statut",
+    "ACTIONS": "Actions",
+    "TOTAL": "Total",
+    "DATE": "Date",
+    "NAME": "Nom",
+    "EMAIL": "Email",
+    "PHONE": "Téléphone",
+    "COUNTRY": "Pays",
+    "PENDING": "En attente",
+    "APPROVED": "Approuvé",
+    "REJECTED": "Refusé",
+    "REFRESH": "Actualiser",
+    "CREATED_AT": "Créé le",
+    "PAGE": "Page",
+    "OF": "sur",
+    "PER_PAGE": "par page",
+    "SHOW": "Afficher",
+    "YES": "Oui",
+    "NO": "Non"
+  },
+  "AUTH": {
+    "LOGIN": "Connexion",
+    "LOGOUT": "Déconnexion",
+    "EMAIL": "Email",
+    "PASSWORD": "Mot de passe",
+    "WELCOME": "Bienvenue",
+    "SIGN_IN": "Se connecter"
+  },
+  "HOME": {
+    "NAV": {
+      "HOME": "Accueil",
+      "SERVICES": "Services",
+      "SOURCING": "Sourcing",
+      "CUSTOMS": "Dédouanement",
+      "WAREHOUSING": "Entrepôt & Fulfillment",
+      "CALLCENTER": "Call Center",
+      "SHIPPING": "Livraison",
+      "COD": "COD Remittance",
+      "ABOUT": "À Propos",
+      "CONTACT": "Contact",
+      "START": "Démarrer"
+    },
+    "HERO": {
+      "EYEBROW": "Solutions E-commerce pour la région MENA",
+      "H1_LINE1": "Automatisez votre business &",
+      "H1_LINE2": "Commencez Maintenant",
+      "GCC_PHRASE": "We help brands unlock the GCC market without building local operations.",
+      "SUB": "Accompagnement des vendeurs e-commerce pour étendre leur portée et soutien des affiliés marketing pour maximiser leur impact.",
+      "CTA": "Démarrer"
+    },
+    "BADGE": {
+      "NEW": "NOUVELLE OFFRE",
+      "TAG": "Couvert",
+      "SUB": "POUR CHAQUE VENDEUR"
+    },
+    "MOCKUP": {
+      "DATA_DRIVEN": "Data Driven",
+      "LOGISTICS": "Logistique Simplifiée",
+      "STATS": "Statistiques en direct"
+    },
+    "ABOUT": {
+      "EYEBROW": "NOTRE ENTREPRISE",
+      "TITLE": "OPTIMISEZ\nVOTRE BUSINESS",
+      "DESC": "X10ECOM est une entreprise spécialisée dans les solutions e-commerce pour les marchés MENA, du sourcing jusqu'à la livraison avec remboursement à la réception (COD). Nous accompagnons chaque étape de votre développement commercial dans la région."
+    },
+    "SERVICES": {
+      "EYEBROW": "NOS SERVICES",
+      "TITLE": "Tout ce dont vous avez besoin pour réussir"
+    },
+    "SVC": {
+      "S1_TITLE": "Sourcing",
+      "S1_DESC": "Nous nous engageons à approvisionner des produits de haute qualité à d'excellents prix, en assurant leur compatibilité avec les attentes des commerçants.",
+      "S2_TITLE": "Entrepôt",
+      "S2_DESC": "Nous proposons des services de stockage professionnels pour garder les produits prêts à être distribués efficacement depuis plusieurs points dans chaque pays.",
+      "S3_TITLE": "Call Center",
+      "S3_DESC": "Nous offrons un service client professionnel pour confirmer et assurer le suivi des commandes avant et après leur départ de l'entrepôt.",
+      "S4_TITLE": "Fulfillment",
+      "S4_DESC": "Nous réceptionnons les commandes, les préparons, emballons et étiquettons, puis les expédions aux clients pour une expérience d'achat fluide.",
+      "S5_TITLE": "Livraison",
+      "S5_DESC": "Nous offrons des services de livraison rapides et sécurisés, garantissant que les commandes parviennent aux clients dans toutes les régions MENA.",
+      "S6_TITLE": "Cash On Delivery",
+      "S6_DESC": "Nous proposons des services COD adaptés aux marchés MENA, avec remboursement sécurisé et rapide pour nos partenaires vendeurs."
+    },
+    "BENEFITS": {
+      "EYEBROW": "AVANTAGES",
+      "TITLE": "L'efficacité à chaque\nÉtape de votre business",
+      "B1": "Gestionnaire de Compte Professionnel",
+      "B2": "Simulateurs de Prix Automatiques",
+      "B3": "Suivi en Temps Réel",
+      "B4": "Entrepôt Gratuit"
+    },
+    "COUNTRIES": {
+      "EYEBROW": "PAYS",
+      "TITLE": "DÉVELOPPEZ VOTRE\nBUSINESS DANS LA\nRÉGION MENA",
+      "DESC": "Nous offrons des solutions e-commerce complètes pour les entreprises qui s'établissent sur les marchés MENA. Du sourcing jusqu'au COD, nous optimisons vos opérations.",
+      "C1": "Arabie Saoudite",
+      "C2": "Émirats Arabes Unis",
+      "C3": "Koweït",
+      "C4": "Qatar",
+      "C5": "Bahreïn",
+      "C6": "Oman"
+    },
+    "FOOTER": {
+      "BRAND_DESC": "Solutions e-commerce intelligentes pour les marchés MENA. Votre partenaire logistique de confiance.",
+      "SERVICES_TITLE": "Services",
+      "SVC1": "Fulfillment & Logistique",
+      "SVC2": "Sourcing & Fabrication",
+      "SVC3": "Livraison Last-Mile",
+      "SVC4": "Intégration Plateforme",
+      "ZONES_TITLE": "Zones",
+      "Z1": "Maroc",
+      "Z2": "Émirats Arabes Unis",
+      "Z3": "Arabie Saoudite",
+      "Z4": "Autres pays MENA",
+      "CONTACT_TITLE": "Contact",
+      "RIGHTS": "Tous droits réservés.",
+      "PRIVACY": "Confidentialité",
+      "TERMS": "Conditions d'utilisation",
+      "COOKIES": "Cookies"
+    },
+    "WHATSAPP": "Contactez-nous sur WhatsApp"
+  }
+}

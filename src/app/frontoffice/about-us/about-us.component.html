@@ -1,0 +1,337 @@
+<div class="about-wrapper">
+    <!-- Header Navigation -->
+    <header class="about-header">
+        <nav class="nav-container">
+            <div class="nav-content">
+                <div class="logo-section">
+                    <a routerLink="/" class="logo-link">
+                        <img src="/images/logo-x10ecom.jpeg" alt="Logo X10ECOM" class="logo-img">
+                        <div class="logo-text">
+                            <span class="logo-primary">X10</span>
+                            <span class="logo-secondary">ECOM</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="nav-menu">
+                    <a routerLink="/home" class="nav-link">Accueil</a>
+
+                    <div class="dropdown">
+                        <a href="#services" class="nav-link dropdown-toggle">
+                            Services
+                            <svg class="dropdown-icon" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M7 10l5 5 5-5z"/>
+                            </svg>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a [routerLink]="['/services']" [queryParams]="{section: 'sourcing'}" class="dropdown-item">Sourcing</a>
+                            <a [routerLink]="['/services']" [queryParams]="{section: 'customs-clearance'}" class="dropdown-item">Custom Clearance</a>
+                            <a [routerLink]="['/services']" [queryParams]="{section: 'warehousing'}" class="dropdown-item">Warehousing & Fulfillment</a>
+                            <a [routerLink]="['/services']" [queryParams]="{section: 'call-center'}" class="dropdown-item">Call Center</a>
+                            <a [routerLink]="['/services']" [queryParams]="{section: 'shipping'}" class="dropdown-item">Shipping</a>
+                            <a [routerLink]="['/services']" [queryParams]="{section: 'remittance'}" class="dropdown-item">COD Remittance</a>
+                        </div>
+                    </div>
+                    <a routerLink="/about-us" class="nav-link active">À Propos</a>
+                    <a href="/contact-us" class="nav-link">Contact</a>
+                </div>
+
+                <div class="nav-actions">
+                    <a routerLink="/auth/login-seller" class="btn-admin">
+                        <svg class="admin-icon" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v1c0 .55.45 1 1 1h14c.55 0 1-.45 1-1v-1c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                        Démarrer
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <div class="hero-background">
+            <div class="hero-gradient"></div>
+            <div class="hero-overlay"></div>
+        </div>
+        
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    <span class="hero-title-line">Libérez votre potentiel</span>
+                    <span class="hero-title-line highlight">E-commerce</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Nous aidons les entreprises à libérer tout leur potentiel en e-commerce 
+                    et à évoluer vers une nouvelle étape de croissance grâce à des solutions 
+                    intelligentes et flexibles.
+                </p>
+                <div class="hero-actions">
+                    <a routerLink="/auth/login-seller"  class="btn-primary">
+                        Démarrer maintenant
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hero-image">
+                <div class="image-container">
+                    <div class="main-image"></div>
+                    <div class="image-badge">
+                        <span>Plateforme Tout-en-un</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission-section">
+        <div class="section-container">
+            <div class="mission-content">
+                <div class="section-header">
+                    <div class="section-badge">Notre Mission</div>
+                    <h2 class="section-title">Une Plateforme <span class="highlight">Complète</span></h2>
+                    <p class="section-description">
+                        X10ECOM est une plateforme e-commerce tout-en-un conçue pour permettre 
+                        aux marques, commerçants et dropshippers de vendre facilement à travers 
+                        plusieurs pays de la région MENA.
+                    </p>
+                </div>
+
+                <div class="mission-text">
+                    <p>
+                        Notre écosystème intégré de bout en bout prend en charge l'ensemble des 
+                        opérations e-commerce — du sourcing et de la fabrication à la confirmation 
+                        des commandes, au fulfillment et à la livraison du dernier kilomètre — 
+                        afin que vous puissiez vous concentrer pleinement sur le marketing, la 
+                        croissance et le développement de votre activité.
+                    </p>
+                    <p>
+                        En connectant votre boutique à X10ECOM, vous accédez à un réseau solide 
+                        de centres d'appels, de fournisseurs fiables, d'usines, de centres de 
+                        fulfillment et de partenaires logistiques, réunis au sein d'un système 
+                        fluide et centralisé.
+                    </p>
+                </div>
+            </div>
+
+            <div class="mission-visual">
+                <div class="visual-container">
+                    <div class="visual-main">
+                        <div class="main-image-placeholder">
+                            <div class="image-overlay">
+                                <h3>Écosystème Intégré</h3>
+                                <p>Sourcing à Livraison</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solutions Section -->
+    <section id="solutions" class="solutions-section">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-badge">Nos Solutions</div>
+                <h2 class="section-title">Simplifiez vos <span class="highlight">Opérations</span></h2>
+                <p class="section-description">
+                    Nous transformons la complexité des opérations et de la logistique 
+                    en solutions simples et efficaces.
+                </p>
+            </div>
+            
+            <div class="solutions-grid">
+                <div class="solution-card" *ngFor="let solution of solutions">
+                    <div class="solution-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path [attr.fill]="solution.color" [attr.d]="solution.icon"/>
+                        </svg>
+                    </div>
+                    <h3>{{ solution.title }}</h3>
+                    <p>{{ solution.description }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quote Section -->
+    <section class="quote-section">
+        <div class="quote-container">
+            <div class="quote-content">
+                <div class="quote-text">
+                    <svg class="quote-icon" viewBox="0 0 24 24">
+                        <path fill="#10b981" d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/>
+                    </svg>
+                    <blockquote>
+                        <p class="quote">
+                            "Chez X10ECOM, nous sommes convaincus que la simplification des opérations 
+                            est le socle du succès digital, et que chaque défi représente une opportunité 
+                            de faire croître votre activité e-commerce avec confiance et intelligence."
+                        </p>
+                        <footer class="quote-author">
+                            <div class="author-avatar">SR</div>
+                            <div class="author-info">
+                                <h4>Soufiane Rafique</h4>
+                                <p>CEO – X10ECOM</p>
+                            </div>
+                        </footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Locations Section -->
+    <section id="locations" class="locations-section">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-badge">Notre Réseau</div>
+                <h2 class="section-title">Expansion <span class="highlight">Régionale</span></h2>
+                <p class="section-description">
+                    Notre réseau croissant d'entrepôts et de services intégrés garantit des 
+                    livraisons rapides et des délais de transit réduits.
+                </p>
+            </div>
+            
+            <div class="locations-content">
+                <div class="locations-text">
+                    <p>
+                        Grâce au réseau d'entrepôts en expansion de X10ECOM et à un support 
+                        opérationnel fluide, vous pouvez atteindre vos clients de manière efficace, 
+                        fiable et économique.
+                    </p>
+                    <p>
+                        Distribuez votre inventaire dans des entrepôts stratégiquement situés 
+                        dans plusieurs pays et régions, permettant à votre entreprise de se 
+                        développer et de servir les marchés avec facilité.
+                    </p>
+                    <div class="locations-stats">
+                        <div class="location-stat">
+                            <div class="stat-value">15+</div>
+                            <div class="stat-label">Pays desservis</div>
+                        </div>
+                        <div class="location-stat">
+                            <div class="stat-value">50+</div>
+                            <div class="stat-label">Entrepôts</div>
+                        </div>
+                        <div class="location-stat">
+                            <div class="stat-value">24/7</div>
+                            <div class="stat-label">Support</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="locations-map">
+                    <div class="map-visual">
+                        <div class="map-point" *ngFor="let location of locations" 
+                             [style.top]="location.top" 
+                             [style.left]="location.left">
+                            <div class="point-marker"></div>
+                            <div class="point-label">{{ location.country }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Footer -->
+    <footer class="about-footer">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <img src="/images/logo-x10ecom.jpeg" alt="Logo X10ECOM" class="logo-img">
+                        <div class="logo-text">
+                            <span class="logo-primary">X10</span>
+                            <span class="logo-secondary">ECOM</span>
+                        </div>
+                    </div>
+                    <p class="footer-description">
+                        Plateforme e-commerce tout-en-un pour la région MENA. 
+                        Solutions intelligentes pour votre croissance digitale.
+                    </p>
+                    <div class="footer-social">
+                        <a href="https://web.facebook.com/profile.php?id=61582321528493&rdid=SOr6wVlKdyNHw4CU&share_url=https%3A%2F%2Fweb.facebook.com%2Fshare%2F1AkT7kT8sp%2F%3F_rdc%3D1%26_rdr#" class="social-link" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                  fill="currentColor"
+                                  d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.019 4.388 11.01 10.125 11.927v-8.437H7.078v-3.49h3.047V9.413c0-3.007 1.792-4.669 4.533-4.669 1.313 0 2.686.235 2.686.235v2.953h-1.514c-1.491 0-1.956.926-1.956 1.874v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.083 24 18.092 24 12.073z"
+                                />
+                              </svg>
+                        </a>
+                        <a href="https://www.linkedin.com/company/x10ecom/about/" class="social-link" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+                            </svg>
+                        </a>
+                        <a href="https://www.instagram.com/x10ecom?igsh=MWs5NGRxY2g3ZHI2Mg%3D%3D" class="social-link" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h3 class="footer-title">Navigation</h3>
+                    <ul class="footer-links">
+                        <li><a routerLink="/">Accueil</a></li>
+                        <li><a routerLink="/about">À Propos</a></li>
+                        <li><a href="/services">Services</a></li>
+                        <li><a routerLink="/contact">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3 class="footer-title">Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="#solutions">Gestion des Commandes</a></li>
+                        <li><a href="#solutions">Fulfillment</a></li>
+                        <li><a href="#solutions">Sourcing</a></li>
+                        <li><a href="#solutions">Livraison Last-Mile</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3 class="footer-title">Contact</h3>
+                    <ul class="footer-contact">
+                        <li>
+                            <svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            </svg>
+                            <span>Région MENA</span>
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                            </svg>
+                            <span>contactx10ecom.com</span>
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M6.54 5c.06.89.21 1.76.45 2.59l-1.2 1.2c-.41-1.2-.67-2.47-.76-3.79h1.51m9.86 12.02c.85.24 1.72.39 2.6.45v1.49c-1.32-.09-2.59-.35-3.8-.75l1.2-1.19M7.5 3H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.49c0-.55-.45-1-1-1-1.24 0-2.45-.2-3.57-.57-.35-.11-.74-.03-1.02.24l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.59l2.2-2.21c.28-.26.36-.65.25-1C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1z"/>
+                            </svg>
+                            <span>+212 5 XX XX XX XX</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-copyright">
+                    © 2026 X10ECOM. Tous droits réservés.
+                </div>
+                <div class="footer-legal">
+                    <a href="#">Confidentialité</a>
+                    <a href="#">Conditions d'utilisation</a>
+                    <a href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>

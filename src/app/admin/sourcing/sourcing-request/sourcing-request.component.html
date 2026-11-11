@@ -1,0 +1,450 @@
+<div class="src-page">
+  <p-toast position="top-right"></p-toast>
+
+  <!-- ══ HEADER ══ -->
+  <div class="src-header">
+    <div class="src-header-left">
+      <div class="src-header-icon">
+        <i class="pi pi-shopping-cart"></i>
+      </div>
+      <div>
+        <h1 class="src-title">Demandes de sourcing</h1>
+        <p class="src-subtitle">Administration des demandes des vendeurs</p>
+      </div>
+    </div>
+    <button class="btn-refresh" (click)="loadRequests()" title="Actualiser">
+      <i class="pi pi-refresh"></i>
+      <span>Actualiser</span>
+    </button>
+  </div>
+
+  <!-- ══ KPI ══ -->
+  <div class="kpi-row">
+    <div class="kpi-card kpi-orange">
+      <div class="kpi-icon"><i class="pi pi-clock"></i></div>
+      <div class="kpi-body">
+        <span class="kpi-label">En attente</span>
+        <span class="kpi-value">{{ stats.pending }}</span>
+      </div>
+      <div class="kpi-bg"><i class="pi pi-clock"></i></div>
+    </div>
+    <div class="kpi-card kpi-green">
+      <div class="kpi-icon"><i class="pi pi-check-circle"></i></div>
+      <div class="kpi-body">
+        <span class="kpi-label">Approuvées</span>
+        <span class="kpi-value">{{ stats.approved }}</span>
+      </div>
+      <div class="kpi-bg"><i class="pi pi-check-circle"></i></div>
+    </div>
+    <div class="kpi-card kpi-blue">
+      <div class="kpi-icon"><i class="pi pi-box"></i></div>
+      <div class="kpi-body">
+        <span class="kpi-label">Produits créés</span>
+        <span class="kpi-value">{{ stats.completed }}</span>
+      </div>
+      <div class="kpi-bg"><i class="pi pi-box"></i></div>
+    </div>
+    <div class="kpi-card kpi-purple">
+      <div class="kpi-icon"><i class="pi pi-wallet"></i></div>
+      <div class="kpi-body">
+        <span class="kpi-label">Budget engagé</span>
+        <span class="kpi-value kpi-value-sm">{{ stats.totalAmount | currency:'USD' }}</span>
+      </div>
+      <div class="kpi-bg"><i class="pi pi-wallet"></i></div>
+    </div>
+  </div>
+
+  <!-- ══ FILTRES ══ -->
+  <div class="filters-card">
+    <!-- Search -->
+    <div class="search-wrap" [class.sf]="searchFocused">
+      <i class="pi pi-search si"></i>
+      <input
+        type="text"
+        [(ngModel)]="filters.name"
+        (ngModelChange)="applyFilters()"
+        (focus)="searchFocused=true"
+        (blur)="searchFocused=false"
+        placeholder="Rechercher un produit…"
+        class="search-input"
+      />
+      <button class="search-clear" *ngIf="filters.name" (click)="filters.name=''; applyFilters()">
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+
+    <!-- Filters row -->
+    <div class="filter-row">
+      <div class="filter-group">
+        <label class="fl">Statut</label>
+        <div class="sw">
+          <select [(ngModel)]="filters.status" (change)="applyFilters()" class="fs">
+            <option value="">Tous les statuts</option>
+            <option value="PENDING">En attente</option>
+            <option value="APPROVED">Approuvée</option>
+            <option value="PAID">Payée</option>
+            <option value="COMPLETED">Complétée</option>
+            <option value="CANCELLED">Annulée</option>
+          </select>
+          <i class="pi pi-chevron-down sa"></i>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label class="fl">Mode</label>
+        <div class="sw">
+          <select [(ngModel)]="filters.fulfillmentMode" (change)="applyFilters()" class="fs">
+            <option value="">Tous les modes</option>
+            <option value="CENTRALIZED">Centralisé</option>
+            <option value="LOCAL_SINGLE_COUNTRY">Local</option>
+          </select>
+          <i class="pi pi-chevron-down sa"></i>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label class="fl">Pays</label>
+        <div class="sw country-sw">
+          <i class="pi pi-map-marker country-icon"></i>
+          <input
+            type="text"
+            [(ngModel)]="filters.country"
+            (ngModelChange)="applyFilters()"
+            placeholder="Filtrer par pays…"
+            class="fs fs-input"
+          />
+        </div>
+      </div>
+
+      <button class="btn-reset" (click)="resetFilters()">
+        <i class="pi pi-filter-slash"></i>
+        Réinitialiser
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ TABLE ══ -->
+  <div class="table-card">
+
+    <div class="table-toolbar">
+      <span class="table-count">
+        <strong>{{ filteredRequests.length }}</strong> / <strong>{{ totalElements }}</strong> demandes
+      </span>
+      <div class="toolbar-right">
+        <div class="sw sw-sm">
+          <select [(ngModel)]="pageSize" (change)="onPageSizeChange()" class="fs">
+            <option *ngFor="let s of pageSizeOptions" [value]="s">{{ s }}</option>
+          </select>
+          <i class="pi pi-chevron-down sa"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Produit</th>
+            <th>Mode</th>
+            <th>Pays</th>
+            <th>Statut</th>
+            <th>Prix total</th>
+            <th class="th-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let req of filteredRequests" class="data-row">
+
+            <!-- Produit -->
+            <td class="td-product">
+              <div class="product-cell">
+                <div class="product-avatar">
+                  {{ req.nameProduct?.charAt(0)?.toUpperCase() || 'S' }}
+                </div>
+                <div class="product-info">
+                  <span class="product-name">{{ req.nameProduct }}</span>
+                  <span class="product-id">#{{ req.id?.slice(-6) }}</span>
+                </div>
+              </div>
+            </td>
+
+            <!-- Mode -->
+            <td>
+              <span class="badge-mode" [ngClass]="req.fulfillmentMode === 'CENTRALIZED' ? 'mode-c' : 'mode-l'">
+                <i class="pi" [ngClass]="req.fulfillmentMode === 'CENTRALIZED' ? 'pi-globe' : 'pi-map'"></i>
+                {{ req.fulfillmentMode === 'CENTRALIZED' ? 'Centralisé' : 'Local' }}
+              </span>
+            </td>
+
+            <!-- Pays -->
+            <td>
+              <div class="country-cell" *ngIf="req.country; else noCountry">
+                <i class="pi pi-map-marker cc-icon"></i>
+                {{ req.country }}
+              </div>
+              <ng-template #noCountry><span class="dash">—</span></ng-template>
+            </td>
+
+            <!-- Statut -->
+            <td>
+              <span class="badge-status" [ngClass]="'bs-' + req.status.toLowerCase()">
+                <span class="bs-dot"></span>
+                {{ getStatusLabel(req.status) }}
+              </span>
+            </td>
+
+            <!-- Prix -->
+            <td>
+              <span class="price-value" *ngIf="req.totalPrice">{{ req.totalPrice | currency:'USD' }}</span>
+              <span class="dash" *ngIf="!req.totalPrice">Non fixé</span>
+            </td>
+
+            <!-- Actions -->
+            <td class="td-center">
+              <div class="action-group">
+                <button *ngIf="canSetPrice(req)" class="act-btn act-green" title="Définir le prix" (click)="openPriceModal(req.id, 'total')">
+                  <i class="pi pi-dollar"></i>
+                </button>
+                <button *ngIf="canApprove(req)" class="act-btn act-teal" title="Approuver" (click)="approveRequest(req.id)">
+                  <i class="pi pi-check"></i>
+                </button>
+                <button *ngIf="canCreateProduct(req)" class="act-btn act-purple" title="Créer produit" (click)="createProduct(req.id)">
+                  <i class="pi pi-box"></i>
+                </button>
+                <button class="act-btn act-blue" title="Voir détails" (click)="view(req.id)">
+                  <i class="pi pi-eye"></i>
+                </button>
+              </div>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Empty state -->
+      <div class="empty-state" *ngIf="filteredRequests.length === 0">
+        <div class="empty-illustration">
+          <div class="er r1"></div>
+          <div class="er r2"></div>
+          <div class="er r3"></div>
+          <div class="ei"><i class="pi pi-shopping-cart"></i></div>
+        </div>
+        <h3 class="empty-title">Aucune demande trouvée</h3>
+        <p class="empty-desc">Aucune demande de sourcing ne correspond aux filtres appliqués.</p>
+        <button class="empty-cta" (click)="resetFilters()">
+          <i class="pi pi-filter-slash"></i>
+          Réinitialiser les filtres
+        </button>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" *ngIf="totalElements > 0">
+      <span class="pg-info">{{ getStartIndex() }} – {{ getEndIndex() }} sur {{ totalElements }}</span>
+      <div class="pg-controls">
+        <button class="pg-btn" [disabled]="firstPage" (click)="previousPage()">
+          <i class="pi pi-chevron-left"></i>
+        </button>
+        <button *ngFor="let n of getPageNumbers()"
+                class="pg-btn pg-num"
+                [class.pg-active]="n === currentPage"
+                (click)="goToPage(n)">
+          {{ n + 1 }}
+        </button>
+        <button class="pg-btn" [disabled]="lastPage" (click)="nextPage()">
+          <i class="pi pi-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MODAL PRIX ══ -->
+  <div class="modal-overlay" *ngIf="showPriceModal" (click)="closePriceModal()">
+  <div class="modal-box price-modal" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <div class="mh-icon mh-green"><i class="pi pi-dollar"></i></div>
+      <div class="mh-text">
+        <h3>Définir le prix</h3>
+        <p>{{ currentRequest?.nameProduct }} — Qté : <strong>{{ currentRequest?.estimatedQuantity ?? 1 }}</strong></p>
+      </div>
+      <button class="modal-close" (click)="closePriceModal()"><i class="pi pi-times"></i></button>
+    </div>
+
+    <div class="modal-body">
+
+      <!-- Prix unitaire USD -->
+      <div class="form-field">
+        <label class="form-label">
+          Prix unitaire (USD) <span class="req">*</span>
+        </label>
+        <div class="form-input-wrap">
+          <span class="fip">$</span>
+          <input type="number" [(ngModel)]="unitPriceInput" placeholder="0.00"
+                 class="form-input" min="0.01" step="0.01" />
+        </div>
+        <small class="form-hint">Prix par unité. Le total USD sera calculé automatiquement.</small>
+      </div>
+
+      <!-- Preview calcul USD -->
+      <div class="price-preview-row" *ngIf="unitPriceInput && unitPriceInput > 0">
+        <div class="ppv-item">
+          <span class="ppv-label">Prix unitaire</span>
+          <span class="ppv-val">{{ unitPriceInput | currency:'USD' }}</span>
+        </div>
+        <span class="ppv-sep">×</span>
+        <div class="ppv-item">
+          <span class="ppv-label">Quantité</span>
+          <span class="ppv-val">{{ currentRequest?.estimatedQuantity ?? 1 }}</span>
+        </div>
+        <span class="ppv-sep">=</span>
+        <div class="ppv-item ppv-total">
+          <span class="ppv-label">Total USD</span>
+          <span class="ppv-val">{{ computedTotalUSD | currency:'USD' }}</span>
+        </div>
+      </div>
+
+      <!-- Séparateur -->
+      <div class="modal-divider">
+        <span>Devise locale (optionnel)</span>
+      </div>
+
+      <!-- Devise locale -->
+      <div class="local-currency-row">
+        <div class="form-field lc-price">
+          <label class="form-label">
+            Prix total en devise locale
+            <span class="currency-badge" *ngIf="countryMeta">
+              {{ countryMeta.symbol }} {{ countryMeta.code }} — {{ countryMeta.name }}
+            </span>
+          </label>
+          <div class="form-input-wrap">
+            <span class="fip" *ngIf="countryMeta">{{ countryMeta.symbol }}</span>
+            <span class="fip" *ngIf="!countryMeta">¤</span>
+            <input type="number" [(ngModel)]="localCurrencyPriceInput" placeholder="0.00"
+                   class="form-input" min="0" step="0.01" />
+          </div>
+        </div>
+        <div class="form-field lc-code">
+          <label class="form-label">Code devise</label>
+          <div class="form-input-wrap">
+            <input type="text" [(ngModel)]="localCurrencyCodeInput" placeholder="AED"
+                   class="form-input" maxlength="5" style="text-transform:uppercase" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closePriceModal()">Annuler</button>
+      <button class="btn-confirm"
+              [disabled]="!unitPriceInput || unitPriceInput <= 0"
+              (click)="confirmPrice()">
+        <i class="pi pi-check"></i>
+        Confirmer le prix
+      </button>
+    </div>
+  </div>
+</div>
+
+  <!-- ══ MODAL DETAILS ══ -->
+  <div class="modal-overlay" *ngIf="showDetailsModal" (click)="closeDetailsModal()">
+    <div class="modal-box modal-lg" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <div class="mh-icon mh-blue"><i class="pi pi-list"></i></div>
+        <div class="mh-text">
+          <h3>Détails de la demande</h3>
+          <p *ngIf="selectedRequest">{{ selectedRequest.nameProduct }}</p>
+        </div>
+        <button class="modal-close" (click)="closeDetailsModal()"><i class="pi pi-times"></i></button>
+      </div>
+
+      <div class="modal-body" *ngIf="selectedRequest as req">
+
+        <!-- Statut + badges -->
+        <div class="details-top">
+          <span class="badge-status" [ngClass]="'bs-' + req.status.toLowerCase()">
+            <span class="bs-dot"></span>
+            {{ getStatusLabel(req.status) }}
+          </span>
+          <span class="badge-mode" [ngClass]="req.fulfillmentMode === 'CENTRALIZED' ? 'mode-c' : 'mode-l'">
+            <i class="pi" [ngClass]="req.fulfillmentMode === 'CENTRALIZED' ? 'pi-globe' : 'pi-map'"></i>
+            {{ req.fulfillmentMode === 'CENTRALIZED' ? 'Centralisé' : 'Local' }}
+          </span>
+          <span class="detail-price" *ngIf="req.totalPrice">{{ req.totalPrice | currency:'USD' }}</span>
+        </div>
+
+        <!-- Grille détails -->
+        <div class="details-grid">
+
+          <div class="detail-row detail-full">
+            <span class="dr-label"><i class="pi pi-tag"></i> Produit</span>
+            <span class="dr-value dr-bold">{{ req.nameProduct }}</span>
+          </div>
+
+          <div class="detail-row detail-full" *ngIf="req.description">
+            <span class="dr-label"><i class="pi pi-align-left"></i> Description</span>
+            <span class="dr-value">{{ req.description }}</span>
+          </div>
+
+          <div class="detail-row" *ngIf="req.linkProduct">
+            <span class="dr-label"><i class="pi pi-link"></i> Lien produit</span>
+            <a class="dr-link" [href]="req.linkProduct" target="_blank" rel="noopener">
+              Voir le produit <i class="pi pi-external-link"></i>
+            </a>
+          </div>
+
+          <div class="detail-row" *ngIf="req.variants">
+            <span class="dr-label"><i class="pi pi-palette"></i> Variantes</span>
+            <span class="dr-value">{{ req.variants }}</span>
+          </div>
+
+          <div class="detail-row" *ngIf="req.estimatedQuantity">
+            <span class="dr-label"><i class="pi pi-sort-amount-up"></i> Quantité estimée</span>
+            <span class="dr-value">{{ req.estimatedQuantity }}</span>
+          </div>
+
+          <div class="detail-row" *ngIf="req.country">
+            <span class="dr-label"><i class="pi pi-map-marker"></i> Pays</span>
+            <span class="dr-value">{{ req.country }}</span>
+          </div>
+
+          <div class="detail-row" *ngIf="req.createdAt">
+            <span class="dr-label"><i class="pi pi-calendar"></i> Créée le</span>
+            <span class="dr-value">{{ req.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+
+          <div class="detail-row detail-full" *ngIf="req.totalPrice">
+            <span class="dr-label"><i class="pi pi-dollar"></i> Prix total</span>
+            <span class="dr-value dr-price">{{ req.totalPrice | currency:'USD' }}</span>
+          </div>
+
+          <!-- Images -->
+          <div class="detail-row detail-full" *ngIf="req.images && req.images.length > 0">
+            <span class="dr-label"><i class="pi pi-images"></i> Photos</span>
+            <div class="img-gallery">
+              <a *ngFor="let img of req.images" [href]="getImageUrl(img)" target="_blank" class="img-thumb">
+                <img [src]="getImageUrl(img)" alt="Photo" />
+                <div class="img-overlay"><i class="pi pi-eye"></i></div>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="closeDetailsModal()">Fermer</button>
+        <button *ngIf="selectedRequest && canSetPrice(selectedRequest)" class="btn-confirm" (click)="closeDetailsModal(); openPriceModal(selectedRequest!.id, 'total')">
+          <i class="pi pi-dollar"></i> Définir le prix
+        </button>
+        <button *ngIf="selectedRequest && canApprove(selectedRequest)" class="btn-teal" (click)="closeDetailsModal(); approveRequest(selectedRequest!.id)">
+          <i class="pi pi-check"></i> Approuver
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

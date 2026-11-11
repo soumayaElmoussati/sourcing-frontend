@@ -1,0 +1,162 @@
+{
+  "TOPBAR": {
+    "SEARCH_PLACEHOLDER": "Search seller, order...",
+    "PROFILE": "Profile",
+    "SETTINGS": "Settings",
+    "LOGOUT": "Logout",
+    "LANGUAGE": "Language"
+  },
+  "LANG": {
+    "EN": "English",
+    "FR": "French",
+    "AR": "Arabic"
+  },
+  "NAV": {
+    "DASHBOARD": "Dashboard",
+    "SELLERS": "Sellers",
+    "ORDERS": "Orders",
+    "PRODUCTS": "Products",
+    "SOURCING": "Sourcing",
+    "WALLET": "Wallet",
+    "WITHDRAWALS": "Withdrawals",
+    "TRANSACTIONS": "Transactions",
+    "FEES": "Fees",
+    "APPS": "Apps",
+    "USERS": "Users",
+    "SETTINGS": "Settings"
+  },
+  "COMMON": {
+    "SAVE": "Save",
+    "CANCEL": "Cancel",
+    "CONFIRM": "Confirm",
+    "DELETE": "Delete",
+    "EDIT": "Edit",
+    "ADD": "Add",
+    "SEARCH": "Search",
+    "LOADING": "Loading...",
+    "NO_DATA": "No data available",
+    "ACTIVE": "Active",
+    "INACTIVE": "Inactive",
+    "STATUS": "Status",
+    "ACTIONS": "Actions",
+    "TOTAL": "Total",
+    "DATE": "Date",
+    "NAME": "Name",
+    "EMAIL": "Email",
+    "PHONE": "Phone",
+    "COUNTRY": "Country",
+    "PENDING": "Pending",
+    "APPROVED": "Approved",
+    "REJECTED": "Rejected",
+    "REFRESH": "Refresh",
+    "CREATED_AT": "Created at",
+    "PAGE": "Page",
+    "OF": "of",
+    "PER_PAGE": "per page",
+    "SHOW": "Show",
+    "YES": "Yes",
+    "NO": "No"
+  },
+  "AUTH": {
+    "LOGIN": "Login",
+    "LOGOUT": "Logout",
+    "EMAIL": "Email",
+    "PASSWORD": "Password",
+    "WELCOME": "Welcome",
+    "SIGN_IN": "Sign in"
+  },
+  "HOME": {
+    "NAV": {
+      "HOME": "Home",
+      "SERVICES": "Services",
+      "SOURCING": "Sourcing",
+      "CUSTOMS": "Customs Clearance",
+      "WAREHOUSING": "Warehousing & Fulfillment",
+      "CALLCENTER": "Call Center",
+      "SHIPPING": "Shipping",
+      "COD": "COD Remittance",
+      "ABOUT": "About Us",
+      "CONTACT": "Contact",
+      "START": "Get Started"
+    },
+    "HERO": {
+      "EYEBROW": "E-commerce solutions for the MENA region",
+      "H1_LINE1": "Automate your business &",
+      "H1_LINE2": "Start Now",
+      "GCC_PHRASE": "We help brands unlock the GCC market without building local operations.",
+      "SUB": "Supporting e-commerce sellers to extend their reach and empowering affiliates to maximize their impact.",
+      "CTA": "Get Started"
+    },
+    "BADGE": {
+      "NEW": "NEW OFFER",
+      "TAG": "Covered",
+      "SUB": "FOR EVERY SELLER"
+    },
+    "MOCKUP": {
+      "DATA_DRIVEN": "Data Driven",
+      "LOGISTICS": "Simplified Logistics",
+      "STATS": "Live Statistics"
+    },
+    "ABOUT": {
+      "EYEBROW": "OUR COMPANY",
+      "TITLE": "OPTIMIZE\nYOUR BUSINESS",
+      "DESC": "X10ECOM is a company specialized in e-commerce solutions for MENA markets, from sourcing to cash-on-delivery (COD). We support every step of your commercial development across the region."
+    },
+    "SERVICES": {
+      "EYEBROW": "OUR SERVICES",
+      "TITLE": "Everything you need to succeed"
+    },
+    "SVC": {
+      "S1_TITLE": "Sourcing",
+      "S1_DESC": "We are committed to sourcing high-quality products at excellent prices, ensuring they meet merchant expectations.",
+      "S2_TITLE": "Warehousing",
+      "S2_DESC": "We offer professional storage services to keep products ready for efficient distribution from multiple locations in each country.",
+      "S3_TITLE": "Call Center",
+      "S3_DESC": "We provide professional customer support to confirm and track orders before and after they leave the warehouse.",
+      "S4_TITLE": "Fulfillment",
+      "S4_DESC": "We receive, prepare, pack, label and ship orders to customers for a smooth and satisfying shopping experience.",
+      "S5_TITLE": "Shipping",
+      "S5_DESC": "We offer fast and secure delivery services, ensuring orders reach customers across all MENA regions.",
+      "S6_TITLE": "Cash On Delivery",
+      "S6_DESC": "We provide COD services tailored to MENA markets, with secure and fast remittance to our seller partners."
+    },
+    "BENEFITS": {
+      "EYEBROW": "ADVANTAGES",
+      "TITLE": "Efficiency at every\nstep of your business",
+      "B1": "Professional Account Manager",
+      "B2": "Automatic Price Simulators",
+      "B3": "Real-Time Tracking",
+      "B4": "Free Warehousing"
+    },
+    "COUNTRIES": {
+      "EYEBROW": "COUNTRIES",
+      "TITLE": "GROW YOUR BUSINESS\nACROSS THE\nMENA REGION",
+      "DESC": "We offer complete e-commerce solutions for businesses establishing themselves in MENA markets. From sourcing to COD, we optimize your operations so you can focus on growth.",
+      "C1": "Saudi Arabia",
+      "C2": "United Arab Emirates",
+      "C3": "Kuwait",
+      "C4": "Qatar",
+      "C5": "Bahrain",
+      "C6": "Oman"
+    },
+    "FOOTER": {
+      "BRAND_DESC": "Smart e-commerce solutions for MENA markets. Your trusted logistics partner.",
+      "SERVICES_TITLE": "Services",
+      "SVC1": "Fulfillment & Logistics",
+      "SVC2": "Sourcing & Manufacturing",
+      "SVC3": "Last-Mile Delivery",
+      "SVC4": "Platform Integration",
+      "ZONES_TITLE": "Zones",
+      "Z1": "Morocco",
+      "Z2": "United Arab Emirates",
+      "Z3": "Saudi Arabia",
+      "Z4": "Other MENA countries",
+      "CONTACT_TITLE": "Contact",
+      "RIGHTS": "All rights reserved.",
+      "PRIVACY": "Privacy",
+      "TERMS": "Terms of Use",
+      "COOKIES": "Cookies"
+    },
+    "WHATSAPP": "Chat with us on WhatsApp"
+  }
+}

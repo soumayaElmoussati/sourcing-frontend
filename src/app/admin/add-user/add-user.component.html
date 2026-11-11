@@ -1,0 +1,111 @@
+<div class="au-page">
+  <p-toast position="top-right"></p-toast>
+
+  <!-- Header -->
+  <div class="au-header">
+    <a routerLink="/admin/users" class="btn-back"><i class="pi pi-arrow-left"></i></a>
+    <div>
+      <h1 class="au-title">Nouvel utilisateur admin</h1>
+      <p class="au-subtitle">Le mot de passe sera généré automatiquement et envoyé par email.</p>
+    </div>
+  </div>
+
+  <div class="au-grid">
+
+    <!-- ─ Infos personnelles ─ -->
+    <div class="section-card">
+      <div class="sc-header">
+        <div class="sc-icon sc-purple"><i class="pi pi-user"></i></div>
+        <h2>Informations personnelles</h2>
+      </div>
+      <div class="sc-body">
+        <div class="form-row">
+          <div class="form-field">
+            <label>Prénom <span class="req">*</span></label>
+            <input type="text" [(ngModel)]="user.firstName" placeholder="Prénom" class="fi" />
+          </div>
+          <div class="form-field">
+            <label>Nom <span class="req">*</span></label>
+            <input type="text" [(ngModel)]="user.lastName" placeholder="Nom" class="fi" />
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Adresse email <span class="req">*</span></label>
+          <input type="email" [(ngModel)]="user.email" placeholder="admin@x10ecom.com" class="fi" />
+          <small class="hint">Le mot de passe temporaire sera envoyé à cette adresse.</small>
+        </div>
+        <div class="form-field">
+          <label>Rôle / Titre <span class="opt">(optionnel)</span></label>
+          <input type="text" [(ngModel)]="roleLabel" placeholder="Ex: Support, Finance, Opérations…" class="fi" />
+        </div>
+        <div class="form-field">
+          <label class="toggle-label">
+            <div class="toggle-wrap">
+              <input type="checkbox" [(ngModel)]="user.enabled" />
+              <span class="toggle-track"></span>
+            </div>
+            <span>Compte actif immédiatement</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─ Permissions ─ -->
+    <div class="section-card">
+      <div class="sc-header">
+        <div class="sc-icon sc-indigo"><i class="pi pi-lock-open"></i></div>
+        <h2>Permissions</h2>
+        <span class="perm-counter" *ngIf="selectedCount">{{ selectedCount }} sélectionnée(s)</span>
+      </div>
+
+      <div class="sc-body" *ngIf="!loading">
+        <div class="cat-block" *ngFor="let cat of categories">
+          <div class="cat-header" (click)="toggleCat(cat)">
+            <div class="cat-icon" [ngClass]="'ci-' + catColor(cat)">
+              <i class="pi" [ngClass]="catIcon(cat)"></i>
+            </div>
+            <span class="cat-name">{{ cat }}</span>
+            <span class="cat-count">{{ getPermissions(cat).length }} permissions</span>
+            <div class="cat-toggle-all" [class.full]="isCatFullySelected(cat)">
+              <i class="pi" [ngClass]="isCatFullySelected(cat) ? 'pi-check-square' : 'pi-stop'"></i>
+              {{ isCatFullySelected(cat) ? 'Tout désélectionner' : 'Tout sélectionner' }}
+            </div>
+          </div>
+
+          <div class="perm-grid">
+            <label class="perm-item" *ngFor="let perm of getPermissions(cat)"
+                   [class.perm-active]="isSelected(perm.id)"
+                   (click)="togglePerm(perm.id)">
+              <div class="pi-check-wrap" [class.checked]="isSelected(perm.id)">
+                <i class="pi pi-check" *ngIf="isSelected(perm.id)"></i>
+              </div>
+              <div class="perm-text">
+                <span class="perm-name">{{ perm.name.replace('_', ' ') }}</span>
+                <span class="perm-desc">{{ perm.description }}</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="empty-perms" *ngIf="categories.length === 0">
+          <i class="pi pi-spin pi-spinner"></i> Chargement des permissions…
+        </div>
+      </div>
+
+      <div class="sc-body" *ngIf="loading">
+        <div class="sk-perm" *ngFor="let i of [1,2,3]"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer actions -->
+  <div class="au-footer">
+    <a routerLink="/admin/users" class="btn-cancel">Annuler</a>
+    <button class="btn-save" (click)="save()" [disabled]="saving">
+      <i class="pi pi-spin pi-spinner" *ngIf="saving"></i>
+      <i class="pi pi-check" *ngIf="!saving"></i>
+      {{ saving ? 'Création…' : 'Créer le compte' }}
+    </button>
+  </div>
+</div>

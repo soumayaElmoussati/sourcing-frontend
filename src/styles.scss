@@ -1,0 +1,36 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'src/assets/layout/layout.scss';
+@import 'primeicons/primeicons.css';
+@import 'src/assets/demo/demo.scss';
+/* ══ RTL SUPPORT (Arabic) ══════════════════════════════════════════════════ */
+body.rtl {
+  direction: rtl;
+  text-align: right;
+
+  /* Flip margins/paddings for sidebar icons */
+  .pi { margin-right: 0 !important; margin-left: 0.35rem !important; }
+
+  /* Sidebar RTL */
+  .layout-sidebar { right: 0; left: auto; }
+  .layout-main    { margin-right: var(--sidebar-width, 300px); margin-left: 0; }
+
+  /* Nav items */
+  .layout-menu li a { flex-direction: row-reverse; }
+
+  /* Tables */
+  .data-table th, .data-table td { text-align: right; }
+
+  /* Topbar flip */
+  .topbar-start { margin-left: auto; margin-right: 0; }
+
+  /* Dropdown align for RTL */
+  .ls-dropdown { right: auto; left: 0; }
+
+  /* Modals */
+  .modal-header { flex-direction: row-reverse; }
+  .modal-footer { flex-direction: row-reverse; }
+
+  /* Forms */
+  .form-field label { text-align: right; }
+  .fi { text-align: right; }
+}

@@ -1,0 +1,333 @@
+<div class="profile-container" *ngIf="!isLoading && user">
+    <p-toast position="top-right"></p-toast>
+
+    <!-- ================= COVER + IDENTITY ================= -->
+    <div class="profile-hero">
+        <div class="hero-content">
+            <div class="hero-avatar">
+                <img *ngIf="photoPreview || user.profilePhotoPath" [src]="photoPreview || getPhotoUrl(user.profilePhotoPath!)" alt="Photo de profil">
+                <span *ngIf="!photoPreview && !user.profilePhotoPath" class="avatar-initials">{{ initials }}</span>
+            </div>
+            <div class="hero-info">
+                <h1>{{ fullName }}</h1>
+                <div class="hero-meta">
+                    <span *ngIf="user.sellerInfo?.country"><i class="pi pi-map-marker"></i> {{ user.sellerInfo?.country }}</span>
+                    <span><i class="pi pi-calendar"></i> Membre depuis {{ formatDate(user.createdAt) }}</span>
+                </div>
+            </div>
+            <span class="status-pill" [ngClass]="user.sellerInfo?.status">
+                <i class="pi pi-circle-fill"></i>
+                {{ statusLabel }}
+            </span>
+        </div>
+    </div>
+
+    <div class="profile-body">
+        <!-- ================= LEFT: ABOUT CARD ================= -->
+        <div class="about-card">
+            <span class="card-label">À propos</span>
+
+            <div class="about-row">
+                <span class="row-icon"><i class="pi pi-user"></i></span>
+                <div><span class="row-label">Nom complet</span><span class="row-value">{{ fullName }}</span></div>
+            </div>
+            <div class="about-row" *ngIf="user.sellerInfo?.country">
+                <span class="row-icon"><i class="pi pi-globe"></i></span>
+                <div><span class="row-label">Pays</span><span class="row-value">{{ user.sellerInfo?.country }}</span></div>
+            </div>
+            <div class="about-row" *ngIf="user.sellerInfo?.storeName">
+                <span class="row-icon"><i class="pi pi-shop"></i></span>
+                <div><span class="row-label">Boutique</span><span class="row-value">{{ user.sellerInfo?.storeName }}</span></div>
+            </div>
+            <div class="about-row" *ngIf="user.sellerInfo?.budget">
+                <span class="row-icon"><i class="pi pi-wallet"></i></span>
+                <div><span class="row-label">Budget de départ</span><span class="row-value">{{ user.sellerInfo?.budget }}</span></div>
+            </div>
+            <div class="about-row">
+                <span class="row-icon"><i class="pi pi-shopping-cart"></i></span>
+                <div><span class="row-label">Expérience e-commerce</span><span class="row-value">{{ user.sellerInfo?.commerceExperience ? 'Oui' : 'Non' }}</span></div>
+            </div>
+            <div class="about-row">
+                <span class="row-icon"><i class="pi pi-megaphone"></i></span>
+                <div><span class="row-label">Expérience publicité</span><span class="row-value">{{ user.sellerInfo?.adsExperience ? 'Oui' : 'Non' }}</span></div>
+            </div>
+            <div class="about-row">
+                <span class="row-icon"><i class="pi pi-check-circle"></i></span>
+                <div><span class="row-label">Statut</span><span class="row-value">{{ statusLabel }}</span></div>
+            </div>
+
+            <span class="card-label card-label-spaced">Contact</span>
+            <div class="about-row" *ngIf="user.sellerInfo?.phone">
+                <span class="row-icon"><i class="pi pi-phone"></i></span>
+                <div><span class="row-label">Téléphone</span><span class="row-value">{{ user.sellerInfo?.phone }}</span></div>
+            </div>
+            <div class="about-row">
+                <span class="row-icon"><i class="pi pi-envelope"></i></span>
+                <div><span class="row-label">Email</span><span class="row-value">{{ user.email }}</span></div>
+            </div>
+        </div>
+
+        <!-- ================= RIGHT: TABS ================= -->
+        <div class="tabs-section">
+            <div class="tabs-bar">
+                <button class="tab-btn" [class.active]="activeTab === 'profile'" (click)="setTab('profile')">
+                    <i class="pi pi-user-edit"></i> Profil
+                </button>
+                <button class="tab-btn" [class.active]="activeTab === 'security'" (click)="setTab('security')">
+                    <i class="pi pi-lock"></i> Sécurité
+                </button>
+                <button class="tab-btn" [class.active]="activeTab === 'documents'" (click)="setTab('documents')">
+                    <i class="pi pi-file"></i> Documents
+                </button>
+                <button class="tab-btn" [class.active]="activeTab === 'bank'" (click)="setTab('bank')">
+                    <i class="pi pi-building-columns"></i> Compte bancaire
+                </button>
+            </div>
+
+            <!-- ============ TAB: PROFILE ============ -->
+            <div class="tab-panel" *ngIf="activeTab === 'profile'">
+                <h3>Paramètres du profil</h3>
+
+                <div class="photo-row">
+                    <div class="photo-preview">
+                        <img *ngIf="photoPreview || user.profilePhotoPath" [src]="photoPreview || getPhotoUrl(user.profilePhotoPath!)" alt="Photo de profil">
+                        <span *ngIf="!photoPreview && !user.profilePhotoPath" class="avatar-initials">{{ initials }}</span>
+                    </div>
+                    <div class="photo-actions">
+                        <button class="btn-outline" (click)="triggerFileInput()" [disabled]="isUploadingPhoto">
+                            <i class="pi" [ngClass]="isUploadingPhoto ? 'pi-spin pi-spinner' : 'pi-upload'"></i>
+                            {{ isUploadingPhoto ? 'Envoi...' : 'Changer la photo' }}
+                        </button>
+                        <input type="file" #fileInput hidden accept="image/*" (change)="onPhotoSelected($event)">
+                        <small>JPG, PNG — 5 Mo max</small>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Prénom</label>
+                        <div class="input-wrapper">
+                            <i class="pi pi-user"></i>
+                            <input type="text" [(ngModel)]="form.firstName" name="firstName" class="form-input">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nom</label>
+                        <div class="input-wrapper">
+                            <i class="pi pi-user"></i>
+                            <input type="text" [(ngModel)]="form.lastName" name="lastName" class="form-input">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <div class="input-wrapper">
+                            <i class="pi pi-envelope"></i>
+                            <input type="text" [value]="user.email" disabled class="form-input readonly">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Téléphone</label>
+                        <div class="input-wrapper">
+                            <i class="pi pi-phone"></i>
+                            <input type="text" [(ngModel)]="form.phone" name="phone" placeholder="+212 6XX-XXXXXX" class="form-input">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Pays</label>
+                        <div class="input-wrapper">
+                            <i class="pi pi-globe"></i>
+                            <input type="text" [(ngModel)]="form.country" name="country" class="form-input">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Boutique</label>
+                        <div class="input-wrapper">
+                            <i class="pi pi-shop"></i>
+                            <input type="text" [(ngModel)]="form.storeName" name="storeName" class="form-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn-outline" (click)="cancelProfileEdit()" [disabled]="isSaving">Annuler</button>
+                    <button class="btn-primary" (click)="saveProfile()" [disabled]="isSaving">
+                        <i class="pi pi-spin pi-spinner" *ngIf="isSaving"></i>
+                        <span *ngIf="!isSaving">Enregistrer</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ============ TAB: SECURITY ============ -->
+            <div class="tab-panel" *ngIf="activeTab === 'security'">
+                <h3>Changer le mot de passe</h3>
+
+                <div class="form-grid single-col">
+                    <div class="form-group">
+                        <label>Mot de passe actuel</label>
+                        <div class="input-wrapper">
+                            <i class="pi pi-lock"></i>
+                            <input type="password" [(ngModel)]="passwordForm.currentPassword" name="currentPassword" class="form-input">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nouveau mot de passe</label>
+                        <div class="input-wrapper">
+                            <i class="pi pi-key"></i>
+                            <input type="password" [(ngModel)]="passwordForm.newPassword" name="newPassword" class="form-input">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirmer le nouveau mot de passe</label>
+                        <div class="input-wrapper">
+                            <i class="pi pi-key"></i>
+                            <input type="password" [(ngModel)]="passwordForm.confirmPassword" name="confirmPassword" class="form-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn-outline" (click)="cancelPasswordEdit()" [disabled]="isChangingPassword">Annuler</button>
+                    <button class="btn-primary" (click)="changePassword()" [disabled]="isChangingPassword">
+                        <i class="pi pi-spin pi-spinner" *ngIf="isChangingPassword"></i>
+                        <span *ngIf="!isChangingPassword">Enregistrer</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ============ TAB: DOCUMENTS ============ -->
+            <div class="tab-panel" *ngIf="activeTab === 'documents'">
+                <h3>Documents envoyés</h3>
+
+                <div class="documents-grid" *ngIf="user.sellerInfo?.idCardRectoPath || user.sellerInfo?.idCardVersoPath">
+                    <div class="document-card" *ngIf="user.sellerInfo?.idCardRectoPath">
+                        <span class="doc-tag"><i class="pi pi-id-card"></i> CIN (Recto)</span>
+                        <img [src]="getDocumentUrl(user.sellerInfo!.idCardRectoPath)" alt="CIN recto">
+                    </div>
+                    <div class="document-card" *ngIf="user.sellerInfo?.idCardVersoPath">
+                        <span class="doc-tag"><i class="pi pi-id-card"></i> CIN (Verso)</span>
+                        <img [src]="getDocumentUrl(user.sellerInfo!.idCardVersoPath)" alt="CIN verso">
+                    </div>
+                </div>
+
+                <div class="empty-hint" *ngIf="!user.sellerInfo?.idCardRectoPath && !user.sellerInfo?.idCardVersoPath">
+                    <div class="empty-hint-icon"><i class="pi pi-file"></i></div>
+                    <p>Aucun document sur votre compte.</p>
+                </div>
+            </div>
+
+            <!-- ============ TAB: BANK ACCOUNT ============ -->
+            <div class="tab-panel" *ngIf="activeTab === 'bank'">
+                <div class="tab-header-row">
+                    <h3>Comptes de paiement</h3>
+                    <button class="btn-primary small" (click)="openAddPaymentModal()">
+                        <i class="pi pi-plus"></i> Ajouter un compte
+                    </button>
+                </div>
+                <p class="tab-subtitle">Ces comptes seront proposés lors de vos demandes de retrait depuis votre wallet.</p>
+
+                <div class="payment-methods-list" *ngIf="!isLoadingPaymentMethods">
+                    <div class="payment-method-card" *ngFor="let method of paymentMethods">
+                        <span class="method-icon" [ngClass]="method.methodType.toLowerCase()">
+                            <i class="pi" [ngClass]="method.methodType === 'BINANCE' ? 'pi-wallet' : 'pi-building-columns'"></i>
+                        </span>
+                        <div class="method-info">
+                            <strong>{{ method.label }}</strong>
+                            <span>{{ method.methodType === 'BINANCE' ? 'Email / PayID' : 'IBAN / RIB' }} : {{ method.accountDetails }}</span>
+                            <small>Ajouté le {{ method.createdAt }}</small>
+                        </div>
+                        <div class="method-actions">
+                            <button class="edit-btn" (click)="openEditPaymentModal(method)">
+                                <i class="pi pi-pencil"></i> Modifier
+                            </button>
+                            <button class="delete-btn" (click)="openDeleteModal(method)">
+                                <i class="pi pi-trash"></i> Supprimer
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="empty-hint" *ngIf="paymentMethods.length === 0">
+                        <div class="empty-hint-icon"><i class="pi pi-building-columns"></i></div>
+                        <p>Aucun compte de paiement enregistré.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+</div>
+
+<!-- ================= ADD/EDIT PAYMENT METHOD MODAL ================= -->
+<div class="modal-overlay" *ngIf="showPaymentModal" (click)="closePaymentModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <span class="modal-icon"><i class="pi" [ngClass]="isEditingPaymentMethod ? 'pi-pencil' : 'pi-plus'"></i></span>
+            <h3>{{ isEditingPaymentMethod ? 'Modifier le compte' : 'Ajouter un compte de paiement' }}</h3>
+            <button class="close-btn" (click)="closePaymentModal()"><i class="pi pi-times"></i></button>
+        </div>
+
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Méthode</label>
+                <div class="method-options">
+                    <div class="method-option" [class.selected]="paymentForm.methodType === 'BINANCE'" (click)="paymentForm.methodType = 'BINANCE'; onPaymentMethodTypeChange()">
+                        <div class="method-option-check"><i class="pi pi-check-circle"></i></div>
+                        <span class="method-option-icon"><i class="pi pi-wallet"></i></span>
+                        <span class="method-option-label">Binance</span>
+                    </div>
+                    <div class="method-option" [class.selected]="paymentForm.methodType === 'BANK_TRANSFER'" (click)="paymentForm.methodType = 'BANK_TRANSFER'; onPaymentMethodTypeChange()">
+                        <div class="method-option-check"><i class="pi pi-check-circle"></i></div>
+                        <span class="method-option-icon"><i class="pi pi-building-columns"></i></span>
+                        <span class="method-option-label">Virement bancaire</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>{{ paymentForm.methodType === 'BINANCE' ? 'Nom du compte' : 'Nom de la banque' }}</label>
+                <div class="input-wrapper">
+                    <i class="pi pi-tag"></i>
+                    <input type="text" [(ngModel)]="paymentForm.label" name="label" [placeholder]="paymentForm.methodType === 'BINANCE' ? 'Binance' : 'Ex: Banque Populaire'" class="form-input">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>{{ paymentForm.methodType === 'BINANCE' ? 'Email / PayID' : 'IBAN / RIB' }}</label>
+                <div class="input-wrapper">
+                    <i class="pi pi-hashtag"></i>
+                    <input type="text" [(ngModel)]="paymentForm.accountDetails" name="accountDetails" [placeholder]="paymentForm.methodType === 'BINANCE' ? 'Ex: 1055698970' : 'Ex: MA64 1234 5678 9012 3456 7890'" class="form-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn-outline" (click)="closePaymentModal()" [disabled]="isSavingPaymentMethod">Annuler</button>
+            <button class="btn-primary" (click)="submitPaymentMethod()" [disabled]="isSavingPaymentMethod">
+                <i class="pi pi-spin pi-spinner" *ngIf="isSavingPaymentMethod"></i>
+                <span *ngIf="!isSavingPaymentMethod">{{ isEditingPaymentMethod ? 'Enregistrer' : 'Ajouter' }}</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ================= DELETE CONFIRM MODAL ================= -->
+<div class="modal-overlay" *ngIf="showDeleteModal" (click)="closeDeleteModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <span class="modal-icon danger"><i class="pi pi-exclamation-triangle"></i></span>
+            <h3>Supprimer ce compte</h3>
+            <button class="close-btn" (click)="closeDeleteModal()"><i class="pi pi-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <p>Êtes-vous sûr de vouloir supprimer le compte <strong>{{ paymentMethodToDelete?.label }}</strong> ?</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-outline" (click)="closeDeleteModal()">Annuler</button>
+            <button class="btn-danger" (click)="confirmDeletePaymentMethod()">
+                <i class="pi pi-trash"></i> Supprimer
+            </button>
+        </div>
+    </div>
+</div>

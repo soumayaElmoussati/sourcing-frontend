@@ -1,0 +1,474 @@
+<!-- ═══════════════════════════════ NAVBAR ═════════════════════════════════ -->
+<nav class="navbar" [class.scrolled]="isScrolled" [class.rtl]="isRtl">
+  <div class="nav-inner">
+
+    <!-- LOGO IMAGE (remplace le texte) -->
+    <a routerLink="/" class="logo">
+      <img src="/images/logo-x10ecom.jpeg" alt="X10ECOM" class="logo-img" />
+      <div class="logo-text">
+        <span class="logo-primary">X10</span>
+        <span class="logo-secondary">ECOM</span>
+      </div>
+    </a>
+
+    <!-- NAV LINKS -->
+    <ul class="nav-links">
+      <li>
+        <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+          {{ 'HOME.NAV.HOME' | translate }}
+        </a>
+      </li>
+      <li class="dropdown">
+        <a>
+          {{ 'HOME.NAV.SERVICES' | translate }}
+          <svg class="dropdown-chevron" viewBox="0 0 24 24"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+        </a>
+        <div class="dropdown-panel">
+          <a routerLink="/services" [queryParams]="{section:'sourcing'}">{{ 'HOME.NAV.SOURCING' | translate }}</a>
+          <a routerLink="/services" [queryParams]="{section:'customs-clearance'}">{{ 'HOME.NAV.CUSTOMS' | translate }}</a>
+          <a routerLink="/services" [queryParams]="{section:'warehousing'}">{{ 'HOME.NAV.WAREHOUSING' | translate }}</a>
+          <a routerLink="/services" [queryParams]="{section:'call-center'}">{{ 'HOME.NAV.CALLCENTER' | translate }}</a>
+          <a routerLink="/services" [queryParams]="{section:'shipping'}">{{ 'HOME.NAV.SHIPPING' | translate }}</a>
+          <a routerLink="/services" [queryParams]="{section:'remittance'}">{{ 'HOME.NAV.COD' | translate }}</a>
+        </div>
+      </li>
+      <li><a routerLink="/about-us" routerLinkActive="active">{{ 'HOME.NAV.ABOUT' | translate }}</a></li>
+      <li><a routerLink="/contact-us" routerLinkActive="active">{{ 'HOME.NAV.CONTACT' | translate }}</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <!-- Language switcher -->
+      <app-lang-switcher></app-lang-switcher>
+
+      <a routerLink="/auth/login-seller" class="nav-cta">
+        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v1h16v-1c0-2.66-5.33-4-8-4z"/></svg>
+        {{ 'HOME.NAV.START' | translate }}
+      </a>
+
+      <!-- Mobile burger -->
+      <button class="burger" (click)="toggleMenu()" [class.open]="menuOpen" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" [class.open]="menuOpen">
+    <a routerLink="/home" (click)="closeMenu()">{{ 'HOME.NAV.HOME' | translate }}</a>
+    <a routerLink="/services" (click)="closeMenu()">{{ 'HOME.NAV.SERVICES' | translate }}</a>
+    <a routerLink="/about-us" (click)="closeMenu()">{{ 'HOME.NAV.ABOUT' | translate }}</a>
+    <a routerLink="/contact-us" (click)="closeMenu()">{{ 'HOME.NAV.CONTACT' | translate }}</a>
+    <a routerLink="/auth/login-seller" class="mob-cta" (click)="closeMenu()">{{ 'HOME.NAV.START' | translate }}</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════ HERO ═══════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-arc arc-1"></div>
+    <div class="hero-arc arc-2"></div>
+    <div class="hero-arc arc-3"></div>
+    <div class="hero-particles">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">{{ 'HOME.HERO.EYEBROW' | translate }}</p>
+    <h1 class="hero-h1">
+      {{ 'HOME.HERO.H1_LINE1' | translate }}<br>
+      <span class="hero-accent">{{ 'HOME.HERO.H1_LINE2' | translate }}</span>
+    </h1>
+
+    <!-- GCC phrase en gras -->
+    <p class="hero-gcc">
+      <strong>{{ 'HOME.HERO.GCC_PHRASE' | translate }}</strong>
+    </p>
+
+    <p class="hero-sub">{{ 'HOME.HERO.SUB' | translate }}</p>
+
+    <a (click)="scrollTo('services')" class="hero-cta">
+      {{ 'HOME.HERO.CTA' | translate }}
+    </a>
+
+    <!-- Offer badge -->
+    <div class="offer-badge">
+      <div class="offer-badge-inner">
+        <p class="offer-new">{{ 'HOME.BADGE.NEW' | translate }}</p>
+        <p class="offer-pct">50%</p>
+        <p class="offer-tag">{{ 'HOME.BADGE.TAG' | translate }}</p>
+        <p class="offer-sub">{{ 'HOME.BADGE.SUB' | translate }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ DESKTOP MOCKUP (laptop frame) — visible ≥ 769px ══ -->
+  <div class="hero-mockup-wrap mockup-desktop">
+    <div class="mockup-label label-left">
+      <div class="label-dot"></div>
+      <span>{{ 'HOME.MOCKUP.DATA_DRIVEN' | translate }}</span>
+    </div>
+    <div class="mockup-label label-right label-top">
+      <span>{{ 'HOME.MOCKUP.LOGISTICS' | translate }}</span>
+    </div>
+    <div class="mockup-label label-right label-bottom">
+      <div class="label-dot dot-dark"></div>
+      <span>{{ 'HOME.MOCKUP.STATS' | translate }}</span>
+    </div>
+
+    <!-- Laptop shell -->
+    <div class="laptop-shell">
+      <div class="laptop-screen">
+        <div class="dashboard-screen">
+          <div class="db-sidebar">
+            <div class="db-logo">
+              <div class="db-logo-icon">X</div>
+              <span>X10ECOM</span>
+            </div>
+            <div class="db-search">
+              <svg viewBox="0 0 24 24"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+              <span>Rechercher</span>
+            </div>
+            <nav class="db-nav">
+              <a class="db-nav-item active">
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                <span>Tableau de bord</span>
+              </a>
+              <a class="db-nav-item">
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6z"/></svg>
+                <span>Employés</span>
+              </a>
+              <a class="db-nav-item">
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                <span>Commandes</span>
+              </a>
+              <a class="db-nav-item">
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+                <span>Produits</span>
+              </a>
+              <a class="db-nav-item">
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2z"/></svg>
+                <span>Sourcing</span>
+              </a>
+              <a class="db-nav-item">
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+                <span>Simulation</span>
+              </a>
+            </nav>
+          </div>
+          <div class="db-main">
+            <div class="db-header">
+              <div>
+                <h3>Bonjour, <strong>Utilisateur!</strong></h3>
+                <p>Voici votre aperçu d'activité</p>
+              </div>
+              <div class="db-tabs">
+                <button class="db-tab">Vendeur</button>
+                <button class="db-tab">Top Drop</button>
+                <button class="db-tab active">Affilié</button>
+                <button class="db-tab">Régulier</button>
+              </div>
+            </div>
+            <div class="db-stats-row">
+              <div class="db-stat-card blue">
+                <p class="stat-label">Reçu</p>
+                <p class="stat-val">215,18€</p>
+                <p class="stat-trend up">↑ vs mois dernier</p>
+              </div>
+              <div class="db-stat-card green">
+                <p class="stat-label">Bénéfice Brut</p>
+                <p class="stat-val">69,99€</p>
+                <p class="stat-trend down">↓ vs mois dernier</p>
+              </div>
+              <div class="db-stat-card red">
+                <p class="stat-label">Solde</p>
+                <p class="stat-val">614,08€</p>
+                <p class="stat-trend down">↓ vs mois dernier</p>
+              </div>
+              <div class="db-stat-card pink">
+                <p class="stat-label">Paiement</p>
+                <p class="stat-val">1 350,08€</p>
+                <p class="stat-trend up">↑ vs mois dernier</p>
+              </div>
+            </div>
+            <div class="db-charts-row">
+              <div class="db-chart-card">
+                <div>
+                  <p class="chart-title">Aperçu du Cycle de Commandes</p>
+                  <p class="chart-sub">Visualisation des étapes clés</p>
+                </div>
+                <div class="donut-chart">
+                  <svg viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="35" fill="none" stroke="#e2e8f0" stroke-width="12"/>
+                    <circle cx="50" cy="50" r="35" fill="none" stroke="#3b82f6" stroke-width="12" stroke-dasharray="65 135" stroke-dashoffset="25"/>
+                    <circle cx="50" cy="50" r="35" fill="none" stroke="#10b981" stroke-width="12" stroke-dasharray="40 160" stroke-dashoffset="-40"/>
+                    <circle cx="50" cy="50" r="35" fill="none" stroke="#ef4444" stroke-width="12" stroke-dasharray="25 175" stroke-dashoffset="-80"/>
+                    <circle cx="50" cy="50" r="35" fill="none" stroke="#f59e0b" stroke-width="12" stroke-dasharray="20 180" stroke-dashoffset="-105"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="laptop-base">
+        <div class="laptop-notch"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MOBILE MOCKUP (phone frame) — visible ≤ 768px ══ -->
+  <div class="hero-mockup-wrap mockup-mobile">
+    <div class="phone-shell">
+      <div class="phone-status-bar">
+        <span class="phone-time">9:41</span>
+        <div class="phone-icons">
+          <svg viewBox="0 0 24 24" width="12" height="12"><path fill="currentColor" d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+          <svg viewBox="0 0 24 24" width="12" height="12"><path fill="currentColor" d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+        </div>
+      </div>
+      <div class="phone-notch-bar">
+        <div class="phone-notch-pill"></div>
+      </div>
+      <div class="phone-content">
+        <div class="ph-topbar">
+          <div class="ph-logo">
+            <div class="ph-logo-icon">X</div>
+            <span>X10ECOM</span>
+          </div>
+          <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+        </div>
+        <div class="ph-hello">
+          <div>
+            <h3>Bonjour, <strong>Utilisateur!</strong></h3>
+          </div>
+          <div class="ph-hello-icons">
+            <div class="ph-icon-btn">⚙️</div>
+            <div class="ph-icon-btn">🔔</div>
+            <div class="ph-avatar">U</div>
+          </div>
+        </div>
+        <div class="ph-filters">
+          <button class="ph-filter-btn">Vendeur ▾</button>
+          <button class="ph-filter-btn">Régulier ▾</button>
+          <button class="ph-filter-btn active">Filtrer</button>
+        </div>
+        <div class="ph-stats">
+          <div class="ph-stat blue">
+            <p class="ph-stat-label">Reçu</p>
+            <p class="ph-stat-val">215,18€</p>
+            <p class="ph-stat-trend up">+12.15%</p>
+          </div>
+          <div class="ph-stat green">
+            <p class="ph-stat-label">Bénéfice</p>
+            <p class="ph-stat-val">69,99€</p>
+            <p class="ph-stat-trend down">-6.75%</p>
+          </div>
+          <div class="ph-stat lblue">
+            <p class="ph-stat-label">Solde</p>
+            <p class="ph-stat-val">614,08€</p>
+            <p class="ph-stat-trend down">-6.75%</p>
+          </div>
+          <div class="ph-stat pink">
+            <p class="ph-stat-label">Paiement</p>
+            <p class="ph-stat-val">1 350€</p>
+            <p class="ph-stat-trend up">+4.2%</p>
+          </div>
+        </div>
+        <div class="ph-chart-card">
+          <p class="ph-chart-title">Aperçu du Cycle de Commandes</p>
+          <p class="ph-chart-sub">Visualisation des étapes clés</p>
+          <div class="ph-donut">
+            <svg viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#e2e8f0" stroke-width="14"/>
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#3b82f6" stroke-width="14" stroke-dasharray="65 135" stroke-dashoffset="25"/>
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#10b981" stroke-width="14" stroke-dasharray="40 160" stroke-dashoffset="-40"/>
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#ef4444" stroke-width="14" stroke-dasharray="25 175" stroke-dashoffset="-80"/>
+              <circle cx="50" cy="50" r="35" fill="none" stroke="#f59e0b" stroke-width="14" stroke-dasharray="20 180" stroke-dashoffset="-105"/>
+              <text x="50" y="53" text-anchor="middle" font-size="8" font-weight="bold" fill="#0f172a">30%</text>
+            </svg>
+            <div class="ph-donut-labels">
+              <span class="dl-item"><span class="dl-dot" style="background:#3b82f6"></span>Livré 20%</span>
+              <span class="dl-item"><span class="dl-dot" style="background:#10b981"></span>Confirmé 25%</span>
+              <span class="dl-item"><span class="dl-dot" style="background:#ef4444"></span>Retour 18%</span>
+              <span class="dl-item"><span class="dl-dot" style="background:#f59e0b"></span>En attente 7%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-home-bar"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ ABOUT ══════════════════════════════════ -->
+<section id="about" class="about-section">
+  <div class="about-wrap">
+    <div class="about-visual">
+      <div class="about-img-wrap">
+        <div class="about-img-bg"></div>
+        <div class="about-img-placeholder">
+          <img src="/images/c69be1fc-822f-4db0-8574-39022e8617d8.jfif" alt="X10ECOM Team" loading="lazy" />
+        </div>
+      </div>
+    </div>
+
+    <div class="about-text">
+      <p class="section-eyebrow">{{ 'HOME.ABOUT.EYEBROW' | translate }}</p>
+      <h2 class="about-title">{{ 'HOME.ABOUT.TITLE' | translate }}</h2>
+      <p class="about-desc">{{ 'HOME.ABOUT.DESC' | translate }}</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ SERVICES ═══════════════════════════════ -->
+<section id="services" class="services-section">
+  <div class="services-wrap">
+    <p class="section-eyebrow center">{{ 'HOME.SERVICES.EYEBROW' | translate }}</p>
+    <h2 class="services-title">{{ 'HOME.SERVICES.TITLE' | translate }}</h2>
+
+    <div class="services-grid-6">
+      <div class="svc6-card" *ngFor="let s of services6">
+        <div class="svc6-icon">
+          <svg viewBox="0 0 24 24"><path [attr.fill]="'#10b981'" [attr.d]="s.icon"/></svg>
+        </div>
+        <h3>{{ s.titleKey | translate }}</h3>
+        <p>{{ s.descKey | translate }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ BENEFITS ═══════════════════════════════ -->
+<section id="benefits" class="benefits-section">
+  <div class="benefits-wrap">
+    <div class="benefits-text">
+      <p class="section-eyebrow">{{ 'HOME.BENEFITS.EYEBROW' | translate }}</p>
+      <h2 class="benefits-title">{{ 'HOME.BENEFITS.TITLE' | translate }}</h2>
+      <ul class="benefits-list">
+        <li *ngFor="let b of benefits" class="benefit-item">
+          <div class="benefit-icon">
+            <svg viewBox="0 0 24 24"><path fill="#fff" [attr.d]="b.icon"/></svg>
+          </div>
+          <span>{{ b.labelKey | translate }}</span>
+        </li>
+      </ul>
+    </div>
+    <div class="benefits-visual">
+      <div class="about-img-wrap">
+        <div class="about-img-bg"></div>
+        <div class="about-img-placeholder">
+          <img src="/images/a514f4e2-1156-48b7-a180-2ed0e992221e.jfif" alt="X10ECOM Benefits" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ COUNTRIES ══════════════════════════════ -->
+<section id="countries" class="countries-section">
+  <div class="countries-wrap">
+    <div class="countries-visual">
+      <div class="countries-blob">
+        <div class="flags-orbit">
+          <img src="/images/image_4_home.jpeg" alt="MENA region map" loading="lazy" />
+        </div>
+      </div>
+    </div>
+
+    <div class="countries-text">
+      <p class="section-eyebrow">{{ 'HOME.COUNTRIES.EYEBROW' | translate }}</p>
+      <h2 class="countries-title">{{ 'HOME.COUNTRIES.TITLE' | translate }}</h2>
+      <p class="countries-desc">{{ 'HOME.COUNTRIES.DESC' | translate }}</p>
+      <div class="countries-grid">
+        <div class="country-tag" *ngFor="let c of countries">
+          <span class="country-flag">{{c.flag}}</span>
+          <span>{{ c.nameKey | translate }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════ FOOTER ════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="/images/logo-x10ecom.jpeg" alt="Logo X10ECOM" class="footer-logo-img" />
+          <div class="logo-text">
+            <span class="logo-primary-dark">X10</span>
+            <span class="logo-secondary-dark">ECOM</span>
+          </div>
+        </div>
+        <p>{{ 'HOME.FOOTER.BRAND_DESC' | translate }}</p>
+        <div class="footer-socials">
+          <a href="https://web.facebook.com/profile.php?id=61582321528493" class="social-link" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.019 4.388 11.01 10.125 11.927v-8.437H7.078v-3.49h3.047V9.413c0-3.007 1.792-4.669 4.533-4.669 1.313 0 2.686.235 2.686.235v2.953h-1.514c-1.491 0-1.956.926-1.956 1.874v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.083 24 18.092 24 12.073z"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/company/x10ecom/about/" class="social-link" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/x10ecom" class="social-link" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>{{ 'HOME.FOOTER.SERVICES_TITLE' | translate }}</h4>
+        <ul>
+          <li><a (click)="scrollTo('services')">{{ 'HOME.FOOTER.SVC1' | translate }}</a></li>
+          <li><a (click)="scrollTo('services')">{{ 'HOME.FOOTER.SVC2' | translate }}</a></li>
+          <li><a (click)="scrollTo('services')">{{ 'HOME.FOOTER.SVC3' | translate }}</a></li>
+          <li><a (click)="scrollTo('services')">{{ 'HOME.FOOTER.SVC4' | translate }}</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>{{ 'HOME.FOOTER.ZONES_TITLE' | translate }}</h4>
+        <ul>
+          <li><a (click)="scrollTo('countries')">{{ 'HOME.FOOTER.Z1' | translate }}</a></li>
+          <li><a (click)="scrollTo('countries')">{{ 'HOME.FOOTER.Z2' | translate }}</a></li>
+          <li><a (click)="scrollTo('countries')">{{ 'HOME.FOOTER.Z3' | translate }}</a></li>
+          <li><a (click)="scrollTo('countries')">{{ 'HOME.FOOTER.Z4' | translate }}</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>{{ 'HOME.FOOTER.CONTACT_TITLE' | translate }}</h4>
+        <div class="footer-contact-item">
+          <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>
+          <span>Maroc, UAE, KSA</span>
+        </div>
+        <div class="footer-contact-item">
+          <svg viewBox="0 0 24 24"><path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z"/></svg>
+          <span>contact&#64;x10ecom.com</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 X10ECOM. {{ 'HOME.FOOTER.RIGHTS' | translate }}</p>
+      <div class="footer-legal">
+        <a href="#">{{ 'HOME.FOOTER.PRIVACY' | translate }}</a>
+        <a href="#">{{ 'HOME.FOOTER.TERMS' | translate }}</a>
+        <a href="#">{{ 'HOME.FOOTER.COOKIES' | translate }}</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════ WHATSAPP BUTTON ══════════════════════ -->
+<a
+  href="https://wa.me/212600000000"
+  class="whatsapp-fab"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z" fill="white"/>
+  </svg>
+  <span class="whatsapp-tooltip">{{ 'HOME.WHATSAPP' | translate }}</span>
+</a>

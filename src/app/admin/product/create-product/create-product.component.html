@@ -1,0 +1,274 @@
+<div class="create-product-container">
+  <p-toast position="top-right"></p-toast>
+  
+  <!-- Header avec navigation -->
+  <div class="page-header">
+      <div class="header-content">
+          <div class="header-title-section">
+              <button class="back-btn" (click)="annuler()">
+                  <i class="pi pi-arrow-left"></i>
+              </button>
+              <h1 class="page-title">
+                  <i class="pi pi-box title-icon"></i>
+                  Création du produit
+              </h1>
+          </div>
+          
+          <!-- Badge d'information sur la demande -->
+          <div class="info-badge" *ngIf="createForm.get('requestId')?.value">
+              <i class="pi pi-file"></i>
+              <span>Demande: {{ createForm.get('requestId')?.value }}</span>
+          </div>
+      </div>
+      <p class="page-subtitle">Complétez les informations pour créer le produit à partir de la demande de sourcing</p>
+  </div>
+
+  <!-- Formulaire -->
+  <form [formGroup]="createForm" (ngSubmit)="submit()" class="modern-form">
+      
+      <!-- Section: Informations sourcing (readonly) -->
+      <div class="form-section readonly-section">
+          <div class="section-header">
+              <i class="pi pi-file-import section-icon"></i>
+              <h2>Informations de la demande</h2>
+              <span class="readonly-badge">
+                  <i class="pi pi-lock"></i>
+                  Lecture seule
+              </span>
+          </div>
+
+          <div class="form-grid">
+              <!-- Référence demande -->
+              <div class="form-group">
+                  <label>
+                      <i class="pi pi-hashtag label-icon"></i>
+                      Référence demande
+                  </label>
+                  <div class="readonly-field">
+                      <i class="pi pi-file"></i>
+                      <input type="text" formControlName="requestId" readonly>
+                  </div>
+              </div>
+
+              <!-- Nom du produit -->
+              <div class="form-group">
+                  <label>
+                      <i class="pi pi-tag label-icon"></i>
+                      Nom du produit
+                  </label>
+                  <div class="readonly-field">
+                      <i class="pi pi-box"></i>
+                      <input type="text" formControlName="nameProduct" readonly>
+                  </div>
+              </div>
+
+              <!-- Description (full width) -->
+              <div class="form-group full-width">
+                  <label>
+                      <i class="pi pi-file-edit label-icon"></i>
+                      Description
+                  </label>
+                  <div class="readonly-field textarea-field">
+                      <i class="pi pi-align-left"></i>
+                      <textarea formControlName="description" readonly rows="3"></textarea>
+                  </div>
+              </div>
+
+              <!-- Lien du produit -->
+              <div class="form-group full-width">
+                  <label>
+                      <i class="pi pi-link label-icon"></i>
+                      Lien du produit
+                  </label>
+                  <div class="readonly-field">
+                      <i class="pi pi-globe"></i>
+                      <input type="text" formControlName="linkProduct" readonly>
+                  </div>
+              </div>
+
+              <!-- Mode de fulfillment -->
+              <div class="form-group">
+                  <label>
+                      <i class="pi pi-truck label-icon"></i>
+                      Mode de fulfillment
+                  </label>
+                  <div class="readonly-field">
+                      <i class="pi pi-truck"></i>
+                      <span class="readonly-text">{{ getFulfillmentModeLabel() }}</span>
+                  </div>
+              </div>
+
+              <!-- Pays déjà choisi pour cette demande -->
+              <div class="form-group">
+                  <label>
+                      <i class="pi pi-flag label-icon"></i>
+                      Pays
+                  </label>
+                  <div class="readonly-field">
+                      <img *ngIf="getCountryFlagCode()" class="flag-icon-inline" [src]="'https://flagcdn.com/24x18/' + getCountryFlagCode() + '.png'" [alt]="requestCountry">
+                      <i *ngIf="!getCountryFlagCode()" class="pi pi-flag"></i>
+                      <span class="readonly-text">{{ requestCountry || '-' }}</span>
+                  </div>
+              </div>
+
+              <!-- Photos fournies par le vendeur lors de la demande de sourcing -->
+              <div class="form-group full-width" *ngIf="requestImages.length > 0">
+                  <label>
+                      <i class="pi pi-images label-icon"></i>
+                      Photos du produit (fournies par le vendeur)
+                  </label>
+                  <div class="request-images-gallery">
+                      <a
+                          *ngFor="let img of requestImages"
+                          [href]="getImageUrl(img)"
+                          target="_blank"
+                          rel="noopener"
+                          class="gallery-thumb"
+                      >
+                          <img [src]="getImageUrl(img)" alt="Photo produit">
+                      </a>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Section: Informations produit à remplir -->
+      <div class="form-section">
+          <div class="section-header">
+              <i class="pi pi-box section-icon"></i>
+              <h2>Informations produit</h2>
+              <span class="required-badge">
+                  <span class="required-star">*</span>
+                  Champs obligatoires
+              </span>
+          </div>
+
+          <div class="form-grid">
+              <!-- Prix du produit -->
+              <div class="form-group">
+                  <label>
+                      Prix du produit
+                      <span class="required">*</span>
+                  </label>
+                  <div class="input-wrapper">
+                      <span class="currency-prefix">$</span>
+                      <input 
+                          type="number" 
+                          step="0.01" 
+                          formControlName="price"
+                          placeholder="0.00"
+                          [class.error]="createForm.get('price')?.invalid && createForm.get('price')?.touched"
+                      >
+                  </div>
+                  <div class="field-hint" *ngIf="!createForm.get('price')?.value">
+                      <i class="pi pi-info-circle"></i>
+                      Prix unitaire en dollars USD
+                  </div>
+                  <div class="error-message" *ngIf="createForm.get('price')?.invalid && createForm.get('price')?.touched">
+                      <i class="pi pi-exclamation-circle"></i>
+                      Le prix est requis
+                  </div>
+              </div>
+
+              <!-- Poids -->
+              <div class="form-group">
+                  <label>
+                      Poids
+                      <span class="required">*</span>
+                  </label>
+                  <div class="input-wrapper">
+                      <input 
+                          type="number" 
+                          step="0.01" 
+                          formControlName="weightKg"
+                          placeholder="0.00"
+                          [class.error]="createForm.get('weightKg')?.invalid && createForm.get('weightKg')?.touched"
+                      >
+                      <span class="suffix">kg</span>
+                  </div>
+                  <div class="field-hint" *ngIf="!createForm.get('weightKg')?.value">
+                      <i class="pi pi-info-circle"></i>
+                      Poids en kilogrammes
+                  </div>
+                  <div class="error-message" *ngIf="createForm.get('weightKg')?.invalid && createForm.get('weightKg')?.touched">
+                      <i class="pi pi-exclamation-circle"></i>
+                      Le poids est requis
+                  </div>
+              </div>
+
+              <!-- Quantité en stock -->
+              <div class="form-group">
+                  <label>
+                      Quantité en stock
+                      <span class="required">*</span>
+                  </label>
+                  <div class="input-wrapper">
+                      <i class="pi pi-hashtag"></i>
+                      <input 
+                          type="number" 
+                          formControlName="stockQuantity"
+                          placeholder="Ex: 100"
+                          [class.error]="createForm.get('stockQuantity')?.invalid && createForm.get('stockQuantity')?.touched"
+                      >
+                  </div>
+                  <div class="field-hint">
+                      <i class="pi pi-info-circle"></i>
+                      Quantité disponible en stock
+                  </div>
+                  <div class="error-message" *ngIf="createForm.get('stockQuantity')?.invalid && createForm.get('stockQuantity')?.touched">
+                      <i class="pi pi-exclamation-circle"></i>
+                      La quantité est requise
+                  </div>
+              </div>
+          </div>
+
+          <!-- Résumé des informations -->
+          <div class="summary-box" *ngIf="createForm.valid">
+              <div class="summary-header">
+                  <i class="pi pi-check-circle"></i>
+                  <span>Récapitulatif produit</span>
+              </div>
+              <div class="summary-grid">
+                  <div class="summary-item">
+                      <span class="summary-label">Prix unitaire:</span>
+                      <span class="summary-value">{{ createForm.get('price')?.value | currency:'USD' }}</span>
+                  </div>
+                  <div class="summary-item">
+                      <span class="summary-label">Poids:</span>
+                      <span class="summary-value">{{ createForm.get('weightKg')?.value }} kg</span>
+                  </div>
+                  <div class="summary-item">
+                      <span class="summary-label">Stock:</span>
+                      <span class="summary-value">{{ createForm.get('stockQuantity')?.value }} unités</span>
+                  </div>
+                  <div class="summary-item">
+                      <span class="summary-label">Valeur totale:</span>
+                      <span class="summary-value total">
+                          {{ (createForm.get('price')?.value || 0) * (createForm.get('stockQuantity')?.value || 0) | currency:'USD' }}
+                      </span>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Section: Actions -->
+      <div class="form-section actions-section">
+          <div class="form-actions">
+              <button type="button" class="btn-secondary" (click)="annuler()">
+                  <i class="pi pi-times"></i>
+                  Annuler
+              </button>
+              
+              <button type="submit" class="btn-primary" [disabled]="createForm.invalid">
+                  <i class="pi pi-check"></i>
+                  Créer le produit
+              </button>
+          </div>
+          
+          <div class="form-footer-note">
+              <i class="pi pi-info-circle"></i>
+              En créant ce produit, il sera ajouté à votre catalogue et la demande de sourcing sera marquée comme complétée
+          </div>
+      </div>
+  </form>
+</div>

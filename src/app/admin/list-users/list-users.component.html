@@ -1,0 +1,239 @@
+<div class="lu-page">
+  <p-toast position="top-right"></p-toast>
+
+  <!-- Header -->
+  <div class="lu-header">
+    <div class="lu-header-left">
+      <div class="lu-header-icon"><i class="pi pi-shield"></i></div>
+      <div>
+        <h1 class="lu-title">Utilisateurs admin</h1>
+        <p class="lu-subtitle">Gestion des accès et permissions de l'interface d'administration</p>
+      </div>
+    </div>
+    <a routerLink="/admin/add-user" class="btn-add">
+      <i class="pi pi-plus"></i> Nouvel utilisateur
+    </a>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-icon ki-slate"><i class="pi pi-users"></i></div>
+      <div class="kpi-body">
+        <span class="kpi-label">Total</span>
+        <span class="kpi-val">{{ stats.totalUsers }}</span>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon ki-green"><i class="pi pi-check-circle"></i></div>
+      <div class="kpi-body">
+        <span class="kpi-label">Actifs</span>
+        <span class="kpi-val">{{ stats.activeUsers }}</span>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon ki-red"><i class="pi pi-times-circle"></i></div>
+      <div class="kpi-body">
+        <span class="kpi-label">Inactifs</span>
+        <span class="kpi-val">{{ stats.inactiveUsers }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table card -->
+  <div class="table-card">
+    <div class="table-toolbar">
+      <div class="search-wrap" [class.sf]="searchFocused">
+        <i class="pi pi-search si"></i>
+        <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="onSearch()"
+               (focus)="searchFocused=true" (blur)="searchFocused=false"
+               placeholder="Rechercher par nom, email…" class="search-input" />
+        <button class="search-clear" *ngIf="searchQuery" (click)="searchQuery=''; onSearch()">
+          <i class="pi pi-times"></i>
+        </button>
+      </div>
+      <span class="table-count"><strong>{{ totalElements }}</strong> utilisateur(s)</span>
+    </div>
+
+    <!-- Skeleton -->
+    <div class="sk-rows" *ngIf="loading">
+      <div class="sk-row" *ngFor="let i of [1,2,3,4]"></div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap" *ngIf="!loading">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Utilisateur</th>
+            <th>Rôle</th>
+            <th>Permissions</th>
+            <th>Statut</th>
+            <th>Créé le</th>
+            <th class="th-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users" class="data-row" (click)="openDetails(user)">
+
+            <!-- User -->
+            <td class="td-user">
+              <div class="user-cell">
+                <div class="user-av" [class.av-inactive]="!user.enabled">
+                  {{ user.firstName?.charAt(0) }}{{ user.lastName?.charAt(0) }}
+                </div>
+                <div class="user-info">
+                  <span class="user-name">{{ user.firstName }} {{ user.lastName }}</span>
+                  <span class="user-email">{{ user.email }}</span>
+                </div>
+              </div>
+            </td>
+
+            <!-- Rôle -->
+            <td>
+              <span class="role-badge" *ngIf="user.roleLabel">{{ user.roleLabel }}</span>
+              <span class="dash" *ngIf="!user.roleLabel">—</span>
+            </td>
+
+            <!-- Permissions -->
+            <td (click)="$event.stopPropagation()">
+              <div class="perm-summary">
+                <span class="perm-count" *ngIf="user.permissions?.length">
+                  <i class="pi pi-lock-open"></i>
+                  {{ user.permissions.length }} permission(s)
+                </span>
+                <span class="dash" *ngIf="!user.permissions?.length">Aucune</span>
+              </div>
+            </td>
+
+            <!-- Statut -->
+            <td>
+              <span class="status-badge" [ngClass]="user.enabled ? 'sb-active' : 'sb-inactive'">
+                <span class="sb-dot"></span>
+                {{ user.enabled ? 'Actif' : 'Inactif' }}
+              </span>
+            </td>
+
+            <!-- Date -->
+            <td>
+              <span class="date-text">{{ user.createdAt | date:'dd/MM/yyyy' }}</span>
+            </td>
+
+            <!-- Actions -->
+            <td class="td-center" (click)="$event.stopPropagation()">
+              <div class="action-group">
+                <a [routerLink]="['/admin/users/edit', user.id]" class="act-btn act-blue" title="Modifier">
+                  <i class="pi pi-pencil"></i>
+                </a>
+                <button class="act-btn" [ngClass]="user.enabled ? 'act-orange' : 'act-green'"
+                        [title]="user.enabled ? 'Désactiver' : 'Activer'"
+                        (click)="toggleStatus(user)">
+                  <i class="pi" [ngClass]="user.enabled ? 'pi-pause' : 'pi-play'"></i>
+                </button>
+                <button class="act-btn act-red" title="Supprimer" (click)="openDelete(user)">
+                  <i class="pi pi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Empty -->
+      <div class="empty-state" *ngIf="users.length === 0">
+        <div class="empty-illustration">
+          <div class="er r1"></div><div class="er r2"></div><div class="er r3"></div>
+          <div class="ei"><i class="pi pi-users"></i></div>
+        </div>
+        <h3>Aucun utilisateur</h3>
+        <p>Créez le premier compte administrateur.</p>
+        <a routerLink="/admin/add-user" class="btn-add">
+          <i class="pi pi-plus"></i> Créer un utilisateur
+        </a>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" *ngIf="totalPages > 1 && !loading">
+      <span class="pg-info">Page {{ currentPage + 1 }} / {{ totalPages }}</span>
+      <div class="pg-controls">
+        <button class="pg-btn" [disabled]="currentPage === 0" (click)="changePage(currentPage - 1)">
+          <i class="pi pi-chevron-left"></i>
+        </button>
+        <button *ngFor="let p of getPageNumbers()" class="pg-btn"
+                [class.pg-active]="p === currentPage" (click)="changePage(p)">{{ p + 1 }}</button>
+        <button class="pg-btn" [disabled]="currentPage >= totalPages - 1" (click)="changePage(currentPage + 1)">
+          <i class="pi pi-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Détails -->
+<div class="modal-overlay" *ngIf="showDetailsModal" (click)="showDetailsModal=false">
+  <div class="modal-box modal-details" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div class="mh-av">{{ selectedUser?.firstName?.charAt(0) }}{{ selectedUser?.lastName?.charAt(0) }}</div>
+      <div class="mh-text">
+        <h3>{{ selectedUser?.firstName }} {{ selectedUser?.lastName }}</h3>
+        <p>{{ selectedUser?.email }}</p>
+      </div>
+      <button class="modal-close" (click)="showDetailsModal=false"><i class="pi pi-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="detail-meta">
+        <span class="role-badge" *ngIf="selectedUser?.roleLabel">{{ selectedUser?.roleLabel }}</span>
+        <span class="status-badge" [ngClass]="selectedUser?.enabled ? 'sb-active' : 'sb-inactive'">
+          <span class="sb-dot"></span>{{ selectedUser?.enabled ? 'Actif' : 'Inactif' }}
+        </span>
+      </div>
+      <div class="perm-cats" *ngFor="let cat of objectKeys(permissionsByCategory(selectedUser!))">
+        <div class="pc-header">
+          <span class="pc-dot" [ngClass]="'dot-' + catColor(cat)"></span>
+          {{ cat }}
+        </div>
+        <div class="pc-perms">
+          <span class="pc-perm" *ngFor="let p of permissionsByCategory(selectedUser!)[cat]">
+            <i class="pi pi-check"></i> {{ p.replace('_', ' ') }}
+          </span>
+        </div>
+      </div>
+      <div class="no-perms" *ngIf="!selectedUser?.permissions?.length">
+        Aucune permission attribuée.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="showDetailsModal=false">Fermer</button>
+      <a [routerLink]="['/admin/users/edit', selectedUser?.id]" class="btn-confirm">
+        <i class="pi pi-pencil"></i> Modifier
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Suppression -->
+<div class="modal-overlay" *ngIf="showDeleteModal" (click)="showDeleteModal=false">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div class="mh-icon mh-red"><i class="pi pi-trash"></i></div>
+      <div class="mh-text">
+        <h3>Supprimer l'utilisateur</h3>
+        <p>{{ selectedUser?.firstName }} {{ selectedUser?.lastName }}</p>
+      </div>
+      <button class="modal-close" (click)="showDeleteModal=false"><i class="pi pi-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="delete-warn">
+        <i class="pi pi-exclamation-triangle"></i>
+        <span>Cet utilisateur n'aura plus accès à l'interface admin. Cette action peut être irréversible.</span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="showDeleteModal=false">Annuler</button>
+      <button class="btn-danger" (click)="confirmDelete()">
+        <i class="pi pi-trash"></i> Supprimer
+      </button>
+    </div>
+  </div>
+</div>

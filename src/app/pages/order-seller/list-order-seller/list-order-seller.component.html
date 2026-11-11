@@ -1,0 +1,510 @@
+<div class="orders-container">
+  <p-toast position="top-right"></p-toast>
+
+  <!-- Header Section -->
+  <div class="page-header">
+      <div class="header-content">
+          <div class="header-title-section">
+              <div class="title-row">
+                  <span class="title-badge">
+                      <i class="pi pi-shopping-cart"></i>
+                  </span>
+                  <div class="title-text">
+                      <h3 class="page-title">Gestion des commandes</h3>
+                      <p class="page-subtitle">Suivez et gérez vos commandes</p>
+                  </div>
+              </div>
+          </div>
+
+          <div class="header-actions">
+              <button class="create-order-btn" (click)="goToCreateOrder()">
+                  <i class="pi pi-plus"></i>
+                  Nouvelle commande
+              </button>
+          </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+          <div class="stat-card stat-total">
+              <span class="stat-icon"><i class="pi pi-shopping-cart"></i></span>
+              <span class="stat-value">{{ stats.totalOrders }}</span>
+              <span class="stat-label">Total commandes</span>
+          </div>
+
+          <div class="stat-card stat-pending">
+              <span class="stat-icon"><i class="pi pi-clock"></i></span>
+              <span class="stat-value">{{ stats.pending }}</span>
+              <span class="stat-label">En attente</span>
+          </div>
+
+          <div class="stat-card stat-delivered">
+              <span class="stat-icon"><i class="pi pi-check-circle"></i></span>
+              <span class="stat-value">{{ stats.delivered }}</span>
+              <span class="stat-label">Livrées</span>
+          </div>
+
+          <div class="stat-card stat-revenue">
+              <span class="stat-icon"><i class="pi pi-wallet"></i></span>
+              <span class="stat-value">{{ stats.totalRevenue | currency:'USD' }}</span>
+              <span class="stat-label">Chiffre d'affaires</span>
+          </div>
+      </div>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="filters-section">
+      <div class="search-box">
+          <i class="pi pi-search search-icon"></i>
+          <input
+              type="text"
+              [(ngModel)]="search"
+              (ngModelChange)="applyFilters()"
+              placeholder="Rechercher par client ou n° commande..."
+              class="search-input"
+          >
+      </div>
+
+      <div class="filter-controls">
+          <div class="filter-group">
+              <label class="filter-label">Statut</label>
+              <select [(ngModel)]="statusFilter" (change)="applyFilters()" class="filter-select">
+                  <option value="ALL">Tous les statuts</option>
+                  <option value="PENDING">En attente</option>
+                  <option value="CONFIRMED">Confirmée</option>
+                  <option value="PROCESSING">En traitement</option>
+                  <option value="SHIPPED">Expédiée</option>
+                  <option value="DELIVERED">Livrée</option>
+                  <option value="CANCELLED">Annulée</option>
+              </select>
+          </div>
+
+          <div class="filter-group">
+              <label class="filter-label">Paiement</label>
+              <select [(ngModel)]="paymentFilter" (change)="applyFilters()" class="filter-select">
+                  <option value="ALL">Tous les modes</option>
+                  <option value="CASH_ON_DELIVERY">Paiement à la livraison</option>
+                  <option value="ONLINE">Paiement en ligne</option>
+              </select>
+          </div>
+
+          <button class="clear-filters" (click)="resetFilters()">
+              <i class="pi pi-filter-slash"></i>
+              Initialiser filtres
+          </button>
+      </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+      <i class="pi pi-spin pi-spinner"></i>
+      <p>Chargement des commandes...</p>
+  </div>
+
+  <!-- Table Section -->
+  <div class="table-container" *ngIf="!loading">
+      <div class="table-header">
+          <div class="table-info">
+              <span class="table-count">
+                  Affichage <strong>{{ filteredOrders.length }}</strong> de <strong>{{ totalElements }}</strong> commandes
+              </span>
+          </div>
+          <div class="table-actions">
+              <div class="columns-picker">
+                  <button class="columns-btn" (click)="showColumnsMenu = !showColumnsMenu" type="button">
+                      <i class="pi pi-sliders-h"></i>
+                      Colonnes
+                  </button>
+
+                  <!-- backdrop pour fermer le panneau au clic extérieur -->
+                  <div class="columns-backdrop" *ngIf="showColumnsMenu" (click)="showColumnsMenu = false"></div>
+
+                  <div class="columns-panel" *ngIf="showColumnsMenu">
+                      <div class="columns-panel-title">Afficher les colonnes</div>
+                      <label class="column-option" *ngFor="let col of toggleableColumns">
+                          <input type="checkbox" [checked]="col.visible" (change)="toggleColumn(col)">
+                          <span>{{ col.label }}</span>
+                      </label>
+                  </div>
+              </div>
+
+              <button class="refresh-btn" (click)="loadOrders()" title="Rafraîchir">
+                  <i class="pi pi-refresh"></i>
+              </button>
+          </div>
+      </div>
+
+      <!-- Table -->
+      <div class="modern-table">
+          <table>
+              <thead>
+                  <tr>
+                      <th>N° Commande</th>
+                      <th *ngIf="isColVisible('source')">Source</th>
+                      <th>Client</th>
+                      <th *ngIf="isColVisible('product')">Produit</th>
+                      <th *ngIf="isColVisible('country')">Pays</th>
+                      <th *ngIf="isColVisible('mode')">Mode</th>
+                      <th>Total</th>
+                      <th *ngIf="isColVisible('payment')">Paiement</th>
+                      <th>Statut</th>
+                      <th *ngIf="isColVisible('date')">Date</th>
+                      <th class="actions-col">Actions</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let o of filteredOrders">
+                      <td class="order-id">
+                          <span class="id-badge">#{{ o.id }}</span>
+                      </td>
+                      <td *ngIf="isColVisible('source')">
+                          <span class="source-badge" [ngClass]="(o.source || 'INTERNAL').toLowerCase()">
+                              {{ getSourceLabel(o.source) }}
+                          </span>
+                      </td>
+                      <td>
+                          <div class="customer-info">
+                              <strong>{{ o.customerName }}</strong>
+                              <small>{{ o.customerPhone }}</small>
+                          </div>
+                      </td>
+                      <td *ngIf="isColVisible('product')">
+                          <span class="product-ref">{{ o.productId }}</span>
+                      </td>
+                      <td *ngIf="isColVisible('country')">
+                          <div class="country-cell">
+                              <i class="pi pi-flag"></i>
+                              {{ o.country || '-' }}
+                          </div>
+                      </td>
+                      <td *ngIf="isColVisible('mode')">
+                          <span class="mode-badge" [ngClass]="o.fulfillmentMode.toLowerCase()">
+                              {{ getFulfillmentModeLabel(o.fulfillmentMode) }}
+                          </span>
+                      </td>
+                      <td>
+                          <span class="price-badge">
+                              {{ formatPrice(o) }}
+                          </span>
+                      </td>
+                      <td *ngIf="isColVisible('payment')">
+                          <span class="payment-badge" [ngClass]="o.paymentMode.toLowerCase()">
+                              <i class="pi" [ngClass]="o.paymentMode === 'CASH_ON_DELIVERY' ? 'pi-money-bill' : 'pi-credit-card'"></i>
+                              {{ o.paymentMode === 'CASH_ON_DELIVERY' ? 'Paiement à la livraison' : 'En ligne' }}
+                          </span>
+                      </td>
+                      <td>
+                          <span class="status-badge" [ngClass]="'status-' + o.status.toLowerCase()">
+                              {{ o.status }}
+                          </span>
+                      </td>
+                      <td *ngIf="isColVisible('date')">
+                          <div class="date-info">
+                              <i class="pi pi-calendar"></i>
+                              {{ o.createdAt | date:'dd/MM/yyyy' }}
+                              <small>{{ o.createdAt | date:'HH:mm' }}</small>
+                          </div>
+                      </td>
+                      <td class="actions-cell">
+                          <div class="action-buttons">
+                              <button class="action-btn view" title="Voir détails" (click)="viewOrderDetails(o.id)">
+                                  <i class="pi pi-eye"></i>
+                              </button>
+                              <button *ngIf="o.status === 'PENDING'" class="action-btn edit" title="Modifier" (click)="openEditModal(o)">
+                                  <i class="pi pi-pencil"></i>
+                              </button>
+                              <button *ngIf="o.status === 'PENDING'" class="action-btn cancel" title="Annuler" (click)="openCancelModal(o)">
+                                  <i class="pi pi-times"></i>
+                              </button>
+                          </div>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+
+          <!-- Empty State -->
+          <div class="empty-state" *ngIf="filteredOrders.length === 0">
+              <div class="empty-icon">
+                  <i class="pi pi-shopping-cart"></i>
+              </div>
+              <h3>Aucune commande trouvée</h3>
+              <p>Commencez par créer une nouvelle commande</p>
+              <button class="create-order-btn" (click)="goToCreateOrder()">
+                  <i class="pi pi-plus"></i>
+                  Nouvelle commande
+              </button>
+          </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination-container" *ngIf="totalElements > 0">
+          <div class="pagination-info">
+              <span>
+                  Affichage {{ getStartIndex() }} à {{ getEndIndex() }}
+                  sur {{ totalElements }} commandes
+              </span>
+          </div>
+          <div class="pagination-controls">
+              <button class="pagination-btn" [disabled]="firstPage" (click)="previousPage()">
+                  <i class="pi pi-chevron-left"></i>
+              </button>
+
+              <div class="page-numbers">
+                  <button *ngFor="let pageNum of getPageNumbers()"
+                          [class.active]="pageNum === currentPage"
+                          (click)="goToPage(pageNum)"
+                          class="page-btn">
+                      {{ pageNum + 1 }}
+                  </button>
+              </div>
+
+              <button class="pagination-btn" [disabled]="lastPage" (click)="nextPage()">
+                  <i class="pi pi-chevron-right"></i>
+              </button>
+
+              <div class="items-per-page">
+                  <label>Afficher</label>
+                  <select [(ngModel)]="pageSize" (change)="onPageSizeChange()" class="page-select">
+                      <option *ngFor="let size of pageSizeOptions" [value]="size">
+                          {{ size }}
+                      </option>
+                  </select>
+                  <label>par page</label>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- ================= DETAILS MODAL ================= -->
+  <div class="modal-overlay" *ngIf="showDetailsModal" (click)="closeDetailsModal()">
+      <div class="modal-container large" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+              <div class="modal-icon info">
+                  <i class="pi pi-eye"></i>
+              </div>
+              <h3>Détails de la commande</h3>
+              <button class="close-btn" (click)="closeDetailsModal()">
+                  <i class="pi pi-times"></i>
+              </button>
+          </div>
+
+          <div class="modal-body" *ngIf="selectedOrder as o">
+
+              <!-- Hero : commande + total -->
+              <div class="details-hero">
+                  <div class="hero-main">
+                      <span class="hero-id">#{{ o.id }}</span>
+                      <h4 class="hero-title">{{ o.customerName }}</h4>
+                      <div class="hero-badges">
+                          <span class="status-badge" [ngClass]="'status-' + o.status.toLowerCase()">
+                              {{ o.status }}
+                          </span>
+                          <span class="mode-badge" [ngClass]="o.fulfillmentMode.toLowerCase()">
+                              {{ getFulfillmentModeLabel(o.fulfillmentMode) }}
+                          </span>
+                      </div>
+                  </div>
+                  <div class="hero-price">
+                      <span class="hero-price-label">Total</span>
+                      <span class="hero-price-value">{{ formatPrice(o) }}</span>
+                  </div>
+              </div>
+
+              <!-- Section : client -->
+              <div class="details-section">
+                  <h5 class="section-title">Client</h5>
+                  <div class="fields-grid">
+                      <div class="detail-field">
+                          <span class="field-icon"><i class="pi pi-user"></i></span>
+                          <div class="field-body">
+                              <span class="field-label">Nom</span>
+                              <span class="field-value">{{ o.customerName }}</span>
+                          </div>
+                      </div>
+                      <div class="detail-field">
+                          <span class="field-icon"><i class="pi pi-phone"></i></span>
+                          <div class="field-body">
+                              <span class="field-label">Téléphone</span>
+                              <span class="field-value">{{ o.customerPhone }}</span>
+                          </div>
+                      </div>
+                      <div class="detail-field">
+                          <span class="field-icon"><i class="pi pi-map-marker"></i></span>
+                          <div class="field-body">
+                              <span class="field-label">Pays</span>
+                              <span class="field-value">{{ o.country }}</span>
+                          </div>
+                      </div>
+                      <div class="detail-field">
+                          <span class="field-icon"><i class="pi pi-building"></i></span>
+                          <div class="field-body">
+                              <span class="field-label">Ville</span>
+                              <span class="field-value">{{ o.city }}</span>
+                          </div>
+                      </div>
+                      <div class="detail-field full-width">
+                          <span class="field-icon"><i class="pi pi-home"></i></span>
+                          <div class="field-body">
+                              <span class="field-label">Adresse complète</span>
+                              <span class="field-value">{{ o.fullAddress }}</span>
+                          </div>
+                      </div>
+                      <div class="detail-field full-width" *ngIf="o.note">
+                          <span class="field-icon"><i class="pi pi-comment"></i></span>
+                          <div class="field-body">
+                              <span class="field-label">Note</span>
+                              <span class="field-value">{{ o.note }}</span>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Section : produit & quantité -->
+              <div class="details-section">
+                  <h5 class="section-title">Produit</h5>
+                  <div class="fields-grid">
+                      <div class="detail-field">
+                          <span class="field-icon"><i class="pi pi-box"></i></span>
+                          <div class="field-body">
+                              <span class="field-label">Référence</span>
+                              <span class="field-value">{{ o.productId }}</span>
+                          </div>
+                      </div>
+                      <div class="detail-field">
+                          <span class="field-icon"><i class="pi pi-hashtag"></i></span>
+                          <div class="field-body">
+                              <span class="field-label">Quantité</span>
+                              <span class="field-value">{{ o.quantity }}</span>
+                          </div>
+                      </div>
+                      <div class="detail-field">
+                          <span class="field-icon"><i class="pi pi-tag"></i></span>
+                          <div class="field-body">
+                              <span class="field-label">Prix unitaire</span>
+                              <span class="field-value">{{ formatUnitPrice(o) }}</span>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Section : paiement -->
+              <div class="details-section">
+                  <h5 class="section-title">Paiement</h5>
+                  <div class="fields-grid">
+                      <div class="detail-field">
+                          <span class="field-icon"><i class="pi" [ngClass]="o.paymentMode === 'CASH_ON_DELIVERY' ? 'pi-money-bill' : 'pi-credit-card'"></i></span>
+                          <div class="field-body">
+                              <span class="field-label">Mode de paiement</span>
+                              <span class="field-value">{{ o.paymentMode === 'CASH_ON_DELIVERY' ? 'Paiement à la livraison' : 'En ligne' }}</span>
+                          </div>
+                      </div>
+                      <div class="detail-field" *ngIf="o.createdAt">
+                          <span class="field-icon"><i class="pi pi-calendar"></i></span>
+                          <div class="field-body">
+                              <span class="field-label">Créée le</span>
+                              <span class="field-value">{{ o.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="modal-footer">
+              <button class="cancel-btn" (click)="closeDetailsModal()">
+                  <i class="pi pi-times"></i>
+                  Fermer
+              </button>
+          </div>
+      </div>
+  </div>
+
+  <!-- ================= EDIT MODAL ================= -->
+  <div class="modal-overlay" *ngIf="showEditModal" (click)="closeEditModal()">
+      <div class="modal-container" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+              <div class="modal-icon info">
+                  <i class="pi pi-pencil"></i>
+              </div>
+              <h3>Modifier la commande</h3>
+              <button class="close-btn" (click)="closeEditModal()">
+                  <i class="pi pi-times"></i>
+              </button>
+          </div>
+
+          <div class="modal-body">
+              <div class="form-group">
+                  <label>Nom du client</label>
+                  <input type="text" [(ngModel)]="editForm.customerName" name="editCustomerName" class="form-control" />
+              </div>
+              <div class="form-group">
+                  <label>Téléphone</label>
+                  <input type="text" [(ngModel)]="editForm.customerPhone" name="editCustomerPhone" class="form-control" />
+              </div>
+              <div class="form-group">
+                  <label>Ville</label>
+                  <input type="text" [(ngModel)]="editForm.city" name="editCity" class="form-control" />
+              </div>
+              <div class="form-group">
+                  <label>Adresse complète</label>
+                  <textarea [(ngModel)]="editForm.fullAddress" name="editFullAddress" rows="3" class="form-control"></textarea>
+              </div>
+              <div class="form-group">
+                  <label>Note</label>
+                  <textarea [(ngModel)]="editForm.note" name="editNote" rows="2" class="form-control"></textarea>
+              </div>
+          </div>
+
+          <div class="modal-footer">
+              <button class="cancel-btn" (click)="closeEditModal()" [disabled]="isSaving">
+                  Annuler
+              </button>
+              <button class="confirm-btn" (click)="confirmEdit()" [disabled]="isSaving">
+                  <i class="pi pi-spin pi-spinner" *ngIf="isSaving"></i>
+                  <span *ngIf="!isSaving">
+                      <i class="pi pi-check"></i>
+                      Enregistrer
+                  </span>
+              </button>
+          </div>
+      </div>
+  </div>
+
+  <!-- ================= CANCEL CONFIRM MODAL ================= -->
+  <div class="modal-overlay" *ngIf="showCancelModal" (click)="closeCancelModal()">
+      <div class="modal-container" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+              <div class="modal-icon danger">
+                  <i class="pi pi-exclamation-triangle"></i>
+              </div>
+              <h3>Annuler la commande</h3>
+              <button class="close-btn" (click)="closeCancelModal()">
+                  <i class="pi pi-times"></i>
+              </button>
+          </div>
+
+          <div class="modal-body">
+              <p>
+                  Êtes-vous sûr de vouloir annuler la commande
+                  <strong>#{{ orderToCancel?.id }}</strong> de
+                  <strong>{{ orderToCancel?.customerName }}</strong> ?
+              </p>
+              <p class="warning-text">
+                  Cette action est irréversible. Le client ne recevra pas cette commande.
+              </p>
+          </div>
+
+          <div class="modal-footer">
+              <button class="cancel-btn" (click)="closeCancelModal()" [disabled]="isCancelling">
+                  Retour
+              </button>
+              <button class="delete-btn" (click)="confirmCancel()" [disabled]="isCancelling">
+                  <i class="pi pi-spin pi-spinner" *ngIf="isCancelling"></i>
+                  <span *ngIf="!isCancelling">
+                      <i class="pi pi-times"></i>
+                      Annuler la commande
+                  </span>
+              </button>
+          </div>
+      </div>
+  </div>
+</div>

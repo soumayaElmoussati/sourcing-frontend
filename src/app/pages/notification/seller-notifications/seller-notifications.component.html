@@ -1,0 +1,130 @@
+<div class="notifications-page">
+
+  <!-- Header -->
+  <div class="page-header">
+      <div class="title-row">
+          <span class="title-badge">
+              <i class="pi pi-bell"></i>
+          </span>
+          <div class="title-text">
+              <h3 class="page-title">Mes notifications</h3>
+              <p class="page-subtitle" *ngIf="!loading">
+                  <span *ngIf="unreadCount > 0">{{ unreadCount }} non lue(s) sur {{ notifications.length }}</span>
+                  <span *ngIf="unreadCount === 0">Tout est à jour</span>
+              </p>
+          </div>
+      </div>
+
+      <button class="mark-all-btn" *ngIf="unreadCount > 0" (click)="markAllAsRead()">
+          <i class="pi pi-check-circle"></i>
+          Tout marquer comme lu
+      </button>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="loading">
+      <div class="spinner"></div>
+      <p>Chargement de vos notifications...</p>
+  </div>
+
+  <!-- Empty State (aucune notification du tout) -->
+  <div class="empty-state" *ngIf="!loading && notifications.length === 0">
+      <div class="empty-icon">
+          <i class="pi pi-bell"></i>
+      </div>
+      <h3>Aucune notification</h3>
+      <p>Vous serez averti ici dès qu'il y aura du nouveau.</p>
+  </div>
+
+  <!-- Toolbar : onglets + recherche -->
+  <div class="toolbar" *ngIf="!loading && notifications.length > 0">
+      <div class="tabs">
+          <button class="tab" [class.active]="filter === 'all'" (click)="setFilter('all')">
+              Toutes
+              <span class="tab-count">{{ notifications.length }}</span>
+          </button>
+          <button class="tab" [class.active]="filter === 'unread'" (click)="setFilter('unread')">
+              Non lues
+              <span class="tab-count" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+          </button>
+      </div>
+
+      <div class="search-box">
+          <i class="pi pi-search"></i>
+          <input
+              type="text"
+              [(ngModel)]="searchQuery"
+              placeholder="Rechercher une notification..."
+          >
+      </div>
+  </div>
+
+  <!-- Layout liste + détail -->
+  <div class="notifications-layout" *ngIf="!loading && notifications.length > 0">
+
+      <!-- Liste -->
+      <div class="notifications-list">
+          <div class="list-empty" *ngIf="filteredNotifications.length === 0">
+              <i class="pi pi-search"></i>
+              <p>Aucun résultat pour ces critères.</p>
+          </div>
+
+          <ng-container *ngFor="let group of groupedNotifications">
+              <div class="date-group-label">{{ group.label }}</div>
+
+              <button
+                  type="button"
+                  class="notification-row"
+                  *ngFor="let n of group.items"
+                  [class.unread]="!n.read"
+                  [class.active]="selected?.id === n.id"
+                  (click)="selectNotification(n)">
+
+                  <span class="row-dot" *ngIf="!n.read"></span>
+
+                  <span class="row-icon">
+                      <i class="pi pi-bell"></i>
+                  </span>
+
+                  <div class="row-body">
+                      <div class="row-top">
+                          <span class="row-title">{{ n.title }}</span>
+                          <span class="row-time">{{ n.createdAt | date:'shortTime' }}</span>
+                      </div>
+                      <p class="row-preview">{{ n.message }}</p>
+                  </div>
+              </button>
+          </ng-container>
+      </div>
+
+      <!-- Détail -->
+      <div class="notification-detail" *ngIf="selected as n">
+          <div class="detail-header">
+              <div class="detail-heading">
+                  <span class="detail-badge" *ngIf="!wasUnreadOnOpen">Lue</span>
+                  <span class="detail-badge new" *ngIf="wasUnreadOnOpen">Nouveau</span>
+                  <h4>{{ n.title }}</h4>
+                  <span class="detail-date">{{ n.createdAt | date:'EEEE d MMMM y, HH:mm' }}</span>
+              </div>
+          </div>
+
+          <p class="detail-message">{{ n.message }}</p>
+
+          <div class="detail-images" *ngIf="n.imgsNotifications?.length">
+              <a
+                  class="detail-image"
+                  *ngFor="let url of n.imgsNotifications"
+                  [href]="url"
+                  target="_blank"
+                  rel="noopener">
+                  <img [src]="url" (error)="onImageError($event)" alt="Pièce jointe de la notification">
+              </a>
+          </div>
+      </div>
+
+      <div class="notification-detail placeholder" *ngIf="!selected">
+          <i class="pi pi-inbox"></i>
+          <p>Sélectionnez une notification pour l'afficher</p>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,222 @@
+<div class="fees-page">
+  <p-toast position="top-right"></p-toast>
+
+  <!-- ══ PAGE HEADER ══ -->
+  <div class="fees-header">
+    <div class="fees-header-left">
+      <div class="fees-header-icon">
+        <i class="pi pi-percentage"></i>
+      </div>
+      <div>
+        <h1 class="fees-title">Gestion des frais</h1>
+        <p class="fees-subtitle">
+          Frais prélevés automatiquement sur le wallet vendeur selon le cycle de vie des commandes.
+        </p>
+      </div>
+    </div>
+    <button class="btn-add" (click)="openAddModal()" [disabled]="unconfiguredTypes.length === 0">
+      <i class="pi pi-plus"></i>
+      <span>Ajouter un frais</span>
+    </button>
+  </div>
+
+  <!-- ══ LOADING ══ -->
+  <div class="fees-grid" *ngIf="isLoading">
+    <div class="fee-skeleton" *ngFor="let i of [1,2,3]"></div>
+  </div>
+
+  <!-- ══ FEE CARDS ══ -->
+  <div class="fees-grid" *ngIf="!isLoading">
+    <div class="fee-card" *ngFor="let typeInfo of feeTypes"
+         [class.fee-card-active]="getFeeForType(typeInfo.value)"
+         [class.fee-card-empty]="!getFeeForType(typeInfo.value)">
+
+      <!-- Accent bar top -->
+      <div class="fee-card-accent"></div>
+
+      <!-- Card header -->
+      <div class="fee-card-head">
+        <div class="fee-card-icon" [ngClass]="'fci-' + typeInfo.value.toLowerCase().replace('_fee','')">
+          <i class="pi" [ngClass]="typeInfo.icon"></i>
+        </div>
+        <div class="fee-card-status">
+          <span class="fee-status-pill fee-status-active" *ngIf="getFeeForType(typeInfo.value)">
+            <i class="pi pi-check"></i> Actif
+          </span>
+          <span class="fee-status-pill fee-status-pending" *ngIf="!getFeeForType(typeInfo.value)">
+            <i class="pi pi-clock"></i> Non configuré
+          </span>
+        </div>
+      </div>
+
+      <!-- Card body -->
+      <div class="fee-card-body">
+        <h3 class="fee-card-title">{{ typeInfo.label }}</h3>
+        <p class="fee-card-desc">{{ typeInfo.description }}</p>
+
+        <!-- Montant configuré -->
+        <ng-container *ngIf="getFeeForType(typeInfo.value) as fee">
+          <div class="fee-amount-block">
+            <div class="fee-amount-inner">
+              <span class="fee-amount-label">Montant appliqué</span>
+              <div class="fee-amount-value">
+                <span class="fee-currency">$</span>
+                <span class="fee-number">{{ fee.amount | number:'1.2-2' }}</span>
+              </div>
+            </div>
+            <div class="fee-amount-graph">
+              <div class="fee-pulse"></div>
+            </div>
+          </div>
+
+          <div class="fee-card-actions">
+            <button class="btn-edit" (click)="openEditModal(fee)">
+              <i class="pi pi-pencil"></i>
+              Modifier
+            </button>
+            <button class="btn-delete" (click)="openDeleteModal(fee)">
+              <i class="pi pi-trash"></i>
+            </button>
+          </div>
+        </ng-container>
+
+        <!-- Non configuré -->
+        <ng-template [ngIf]="!getFeeForType(typeInfo.value)">
+          <div class="fee-empty-block">
+            <div class="fee-empty-icon">
+              <i class="pi pi-exclamation-triangle"></i>
+            </div>
+            <p class="fee-empty-text">
+              Aucun montant défini — ce frais ne sera pas prélevé.
+            </p>
+          </div>
+          <button class="btn-configure" (click)="openAddModal(typeInfo.value)">
+            <i class="pi pi-plus"></i>
+            Configurer ce frais
+          </button>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MODAL AJOUTER / MODIFIER ══ -->
+  <div class="modal-overlay" *ngIf="showFormModal" (click)="closeFormModal()">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <div class="modal-header-icon" [ngClass]="isEditMode ? 'mhi-edit' : 'mhi-add'">
+          <i class="pi" [ngClass]="isEditMode ? 'pi-pencil' : 'pi-plus'"></i>
+        </div>
+        <div class="modal-header-text">
+          <h3>{{ isEditMode ? 'Modifier le frais' : 'Configurer un frais' }}</h3>
+          <p>{{ isEditMode ? 'Ajustez le montant appliqué' : 'Définissez le type et le montant' }}</p>
+        </div>
+        <button class="modal-close" (click)="closeFormModal()">
+          <i class="pi pi-times"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- Type (lecture seule en edit) -->
+        <div class="form-field" *ngIf="!isEditMode">
+          <label class="form-label">Type de frais</label>
+          <div class="form-select-wrap">
+            <select [(ngModel)]="formType" class="form-select">
+              <option *ngFor="let t of unconfiguredTypes" [value]="t.value">{{ t.label }}</option>
+            </select>
+            <i class="pi pi-chevron-down form-select-arrow"></i>
+          </div>
+        </div>
+
+        <div class="form-field" *ngIf="isEditMode">
+          <label class="form-label">Type de frais</label>
+          <div class="form-readonly">
+            <i class="pi pi-tag form-readonly-icon"></i>
+            <span>{{ formType ? getFeeTypeInfo(formType).label : '' }}</span>
+          </div>
+        </div>
+
+        <!-- Montant -->
+        <div class="form-field">
+          <label class="form-label">Montant ($)</label>
+          <div class="form-input-wrap">
+            <span class="form-input-prefix">$</span>
+            <input
+              type="number"
+              min="0.01"
+              step="0.01"
+              [(ngModel)]="formAmount"
+              placeholder="0.00"
+              class="form-input"
+            />
+          </div>
+          <small class="form-hint">Montant minimum : $0.01</small>
+        </div>
+
+        <!-- Preview -->
+        <div class="form-preview" *ngIf="formAmount && formAmount > 0">
+          <i class="pi pi-eye form-preview-icon"></i>
+          <span>Ce frais sera de <strong>${{ formAmount | number:'1.2-2' }}</strong> par commande concernée.</span>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="closeFormModal()" [disabled]="isSaving">Annuler</button>
+        <button class="btn-confirm" (click)="submitForm()" [disabled]="isSaving || !formType || !formAmount || formAmount <= 0">
+          <i class="pi pi-spin pi-spinner" *ngIf="isSaving"></i>
+          <ng-container *ngIf="!isSaving">
+            <i class="pi pi-check"></i>
+            {{ isEditMode ? 'Enregistrer' : 'Ajouter' }}
+          </ng-container>
+          <span *ngIf="isSaving">Enregistrement…</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MODAL SUPPRIMER ══ -->
+  <div class="modal-overlay" *ngIf="showDeleteModal" (click)="closeDeleteModal()">
+    <div class="modal-box modal-box-sm" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <div class="modal-header-icon mhi-danger">
+          <i class="pi pi-trash"></i>
+        </div>
+        <div class="modal-header-text">
+          <h3>Supprimer ce frais</h3>
+          <p>Cette action est irréversible</p>
+        </div>
+        <button class="modal-close" (click)="closeDeleteModal()">
+          <i class="pi pi-times"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="delete-warning">
+          <p class="delete-msg">
+            Vous allez supprimer le frais
+            <strong>{{ feeToDelete ? getFeeTypeInfo(feeToDelete.type).label : '' }}</strong>.
+          </p>
+          <div class="delete-alert">
+            <i class="pi pi-exclamation-circle"></i>
+            <span>Ce type de frais ne sera plus prélevé tant qu'il n'est pas reconfiguré.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="closeDeleteModal()" [disabled]="isDeleting">Annuler</button>
+        <button class="btn-danger" (click)="confirmDelete()" [disabled]="isDeleting">
+          <i class="pi pi-spin pi-spinner" *ngIf="isDeleting"></i>
+          <ng-container *ngIf="!isDeleting">
+            <i class="pi pi-trash"></i>
+            Supprimer définitivement
+          </ng-container>
+          <span *ngIf="isDeleting">Suppression…</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

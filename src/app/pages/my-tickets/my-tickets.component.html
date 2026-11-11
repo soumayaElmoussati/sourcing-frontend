@@ -1,0 +1,607 @@
+<!-- my-tickets.component.html -->
+<div class="tickets-container">
+    <p-toast position="top-right"></p-toast>
+
+    <!-- Header Section -->
+    <div class="page-header">
+        <div class="header-content">
+
+            <div class="header-title-section">
+                <div class="title-row">
+                    <span class="title-badge">
+                        <i class="pi pi-headphones"></i>
+                    </span>
+                    <div class="title-text">
+                        <h3 class="page-title">Mes tickets support</h3>
+                        <p class="page-subtitle" *ngIf="!loading">
+                            {{ totalElements }} ticket(s) au total
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <button class="refresh-btn" (click)="refreshData()" [disabled]="loading" title="Actualiser">
+                    <i class="pi pi-refresh" [class.pi-spin]="loading"></i>
+                </button>
+                <button class="create-btn" (click)="showCreateModal = true">
+                    <i class="pi pi-plus"></i>
+                    Nouveau ticket
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card stat-total">
+                <span class="stat-icon"><i class="pi pi-ticket"></i></span>
+                <span class="stat-value">{{ stats.totalTickets }}</span>
+                <span class="stat-label">Total tickets</span>
+            </div>
+
+            <div class="stat-card stat-open">
+                <span class="stat-icon"><i class="pi pi-folder-open"></i></span>
+                <span class="stat-value">{{ stats.openTickets }}</span>
+                <span class="stat-label">Ouverts</span>
+            </div>
+
+            <div class="stat-card stat-progress">
+                <span class="stat-icon"><i class="pi pi-hourglass"></i></span>
+                <span class="stat-value">{{ stats.inProgressTickets }}</span>
+                <span class="stat-label">En cours</span>
+            </div>
+
+            <div class="stat-card stat-resolved">
+                <span class="stat-icon"><i class="pi pi-check-circle"></i></span>
+                <span class="stat-value">{{ stats.resolvedTickets }}</span>
+                <span class="stat-label">Résolus</span>
+            </div>
+
+            <div class="stat-card stat-unread">
+                <span class="stat-icon"><i class="pi pi-envelope"></i></span>
+                <span class="stat-value">{{ stats.unreadMessages }}</span>
+                <span class="stat-label">Non lus</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters & Search -->
+    <div class="filters-section">
+        <div class="search-box">
+            <i class="pi pi-search search-icon"></i>
+            <input 
+                type="text" 
+                [(ngModel)]="searchQuery" 
+                (ngModelChange)="applyFilters()"
+                placeholder="Rechercher par numéro, sujet..."
+                class="search-input"
+            >
+        </div>
+        
+        <div class="filter-controls">
+            <div class="filter-group">
+                <label class="filter-label">Statut</label>
+                <select [(ngModel)]="statusFilter" (change)="applyFilters()" class="filter-select">
+                    <option value="">Tous les statuts</option>
+                    <option *ngFor="let opt of statusOptions" [value]="opt.value">
+                        {{ opt.label }}
+                    </option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label class="filter-label">Priorité</label>
+                <select [(ngModel)]="priorityFilter" (change)="applyFilters()" class="filter-select">
+                    <option value="">Toutes les priorités</option>
+                    <option *ngFor="let opt of priorityOptions" [value]="opt.value">
+                        {{ opt.label }}
+                    </option>
+                </select>
+            </div>
+            
+            <button class="clear-filters" (click)="clearFilters()">
+                <i class="pi pi-filter-slash"></i>
+                Effacer les filtres
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-state" *ngIf="loading">
+        <div class="spinner"></div>
+        <p>Chargement de vos tickets...</p>
+    </div>
+
+    <!-- Table Section -->
+    <div class="table-container" *ngIf="!loading">
+        <div class="table-header">
+            <div class="table-info">
+                <span class="table-count">
+                    Affichage <strong>{{ getStartIndex() }} - {{ getEndIndex() }}</strong> sur 
+                    <strong>{{ filteredTickets.length }}</strong> ticket(s)
+                </span>
+            </div>
+            <div class="table-actions">
+                <button class="view-toggle" (click)="viewMode = viewMode === 'table' ? 'grid' : 'table'">
+                    <i class="pi" [ngClass]="viewMode === 'table' ? 'pi-th-large' : 'pi-list'"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Table View -->
+        <div class="modern-table" *ngIf="viewMode === 'table' && paginatedTickets.length > 0">
+            <table>
+                <thead>
+                    <tr>
+                        <th>N° Ticket</th>
+                        <th>Sujet</th>
+                        <th>Catégorie</th>
+                        <th>Priorité</th>
+                        <th>Statut</th>
+                        <th>Date</th>
+                        <th>Messages</th>
+                        <th class="actions-col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let ticket of paginatedTickets">
+                        <td>
+                            <div class="ticket-info">
+                                <span class="ticket-number">{{ ticket.ticketNumber }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="subject-cell" [title]="ticket.subject">
+                                {{ truncateText(ticket.subject, 40) }}
+                                <span class="unread-badge" *ngIf="hasUnreadAdminMessages(ticket)">
+                                    <i class="pi pi-circle-fill"></i>
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="category-badge">
+                                <i class="pi" [ngClass]="getCategoryIcon(ticket.category)"></i>
+                                {{ getCategoryLabel(ticket.category) }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="priority-badge" [ngClass]="getPriorityClass(ticket.priority)">
+                                <i class="pi" [ngClass]="getPriorityIcon(ticket.priority)"></i>
+                                {{ getPriorityLabel(ticket.priority) }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="status-badge" [ngClass]="getStatusClass(ticket.status)">
+                                <i class="pi" [ngClass]="getStatusIcon(ticket.status)"></i>
+                                {{ getStatusLabel(ticket.status) }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="assigned-info" *ngIf="ticket.assignedToName">
+                                <i class="pi pi-user-check"></i>
+                                {{ ticket.assignedToName }}
+                            </div>
+                            <span class="unassigned" *ngIf="!ticket.assignedToName">
+                                <i class="pi pi-clock"></i>
+                                En attente
+                            </span>
+                        </td>
+                        <td>
+                            <div class="date-cell">
+                                <i class="pi pi-calendar"></i>
+                                {{ formatDate(ticket.createdAt) }}
+                            </div>
+                        </td>
+                        <td>
+                            <span class="message-count">
+                                <i class="pi pi-comments"></i>
+                                {{ ticket.messageCount }}
+                            </span>
+                        </td>
+                        <td class="actions-cell">
+                            <div class="action-buttons">
+                                <button class="action-btn view" 
+                                        (click)="viewTicketDetails(ticket)"
+                                        title="Voir détails">
+                                    <i class="pi pi-eye"></i>
+                                </button>
+                                <button class="action-btn reply" 
+                                        (click)="openReplyModal(ticket)"
+                                        [disabled]="ticket.status === 'CLOSED'"
+                                        title="Répondre">
+                                    <i class="pi pi-reply"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Grid View -->
+        <div class="grid-view" *ngIf="viewMode === 'grid' && paginatedTickets.length > 0">
+            <div class="ticket-card" *ngFor="let ticket of paginatedTickets">
+                <div class="card-header">
+                    <div class="ticket-number">{{ ticket.ticketNumber }}</div>
+                    <span class="status-badge" [ngClass]="getStatusClass(ticket.status)">
+                        <i class="pi" [ngClass]="getStatusIcon(ticket.status)"></i>
+                        {{ getStatusLabel(ticket.status) }}
+                    </span>
+                </div>
+                
+                <div class="card-body">
+                    <div class="subject">
+                        <strong>{{ ticket.subject }}</strong>
+                        <span class="unread-badge" *ngIf="hasUnreadAdminMessages(ticket)">
+                            <i class="pi pi-circle-fill"></i> Nouveau
+                        </span>
+                    </div>
+                    
+                    <div class="ticket-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Catégorie:</span>
+                            <span class="detail-value">
+                                <i class="pi" [ngClass]="getCategoryIcon(ticket.category)"></i>
+                                {{ getCategoryLabel(ticket.category) }}
+                            </span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Priorité:</span>
+                            <span class="priority-badge" [ngClass]="getPriorityClass(ticket.priority)">
+                                <i class="pi" [ngClass]="getPriorityIcon(ticket.priority)"></i>
+                                {{ getPriorityLabel(ticket.priority) }}
+                            </span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Assigné à:</span>
+                            <span class="detail-value" *ngIf="ticket.assignedToName">
+                                {{ ticket.assignedToName }}
+                            </span>
+                            <span class="unassigned" *ngIf="!ticket.assignedToName">
+                                En attente
+                            </span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Messages:</span>
+                            <span class="message-count">
+                                <i class="pi pi-comments"></i>
+                                {{ ticket.messageCount }}
+                            </span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Créé le:</span>
+                            <span>{{ formatDate(ticket.createdAt) }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-footer">
+                    <button class="action-btn view" (click)="viewTicketDetails(ticket)">
+                        <i class="pi pi-eye"></i>
+                        Détails
+                    </button>
+                    <button class="action-btn reply" (click)="openReplyModal(ticket)" [disabled]="ticket.status === 'CLOSED'">
+                        <i class="pi pi-reply"></i>
+                        Répondre
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" *ngIf="filteredTickets.length === 0">
+            <div class="empty-icon">
+                <i class="pi pi-ticket"></i>
+            </div>
+            <h3>Aucun ticket trouvé</h3>
+            <p>Vous n'avez pas encore créé de ticket support.</p>
+            <button class="create-btn" (click)="showCreateModal = true">
+                <i class="pi pi-plus"></i>
+                Créer mon premier ticket
+            </button>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination-container" *ngIf="filteredTickets.length > 0">
+            <div class="pagination-info">
+                <span>Affichage {{ getStartIndex() }} à {{ getEndIndex() }} sur {{ filteredTickets.length }} tickets</span>
+            </div>
+            <div class="pagination-controls">
+                <button class="pagination-btn" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
+                    <i class="pi pi-chevron-left"></i>
+                </button>
+                
+                <div class="page-numbers">
+                    <button *ngFor="let page of getPages()" 
+                            [class.active]="page === currentPage"
+                            (click)="changePage(page)"
+                            class="page-btn">
+                        {{ page }}
+                    </button>
+                    <span *ngIf="showEllipsis">...</span>
+                </div>
+                
+                <button class="pagination-btn" [disabled]="currentPage === getTotalPages()" (click)="changePage(currentPage + 1)">
+                    <i class="pi pi-chevron-right"></i>
+                </button>
+                
+                <div class="items-per-page">
+                    <label>Afficher</label>
+                    <select [(ngModel)]="itemsPerPage" (change)="changeItemsPerPage()" class="page-select">
+                        <option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+                    </select>
+                    <label>par page</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Création -->
+    <div class="modal-overlay" *ngIf="showCreateModal" (click)="closeModals()">
+        <div class="modal-container" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-icon create">
+                    <i class="pi pi-plus"></i>
+                </div>
+                <h3>Nouveau ticket support</h3>
+                <button class="close-btn" (click)="closeModals()">
+                    <i class="pi pi-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Sujet <span class="required">*</span></label>
+                    <input 
+                        type="text" 
+                        [(ngModel)]="newTicket.subject" 
+                        placeholder="Ex: Problème de connexion, Question sur la facturation..."
+                        class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label>Catégorie <span class="required">*</span></label>
+                    <select [(ngModel)]="newTicket.category" class="form-select">
+                        <option *ngFor="let opt of categoryOptions" [value]="opt.value">
+                            {{ opt.label }}
+                        </option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Priorité <span class="required">*</span></label>
+                    <select [(ngModel)]="newTicket.priority" class="form-select">
+                        <option *ngFor="let opt of priorityOptions" [value]="opt.value">
+                            {{ opt.label }}
+                        </option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Description <span class="required">*</span></label>
+                    <textarea 
+                        [(ngModel)]="newTicket.description" 
+                        rows="5" 
+                        placeholder="Décrivez votre problème en détail..."
+                        class="form-control"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Pièce jointe (optionnel)</label>
+                    <input type="file" (change)="onFileSelected($event)" class="file-input">
+                    <small class="help-text">Formats acceptés: images, PDF, max 10MB</small>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="cancel-btn" (click)="closeModals()">
+                    Annuler
+                </button>
+                <button class="create-btn" (click)="createTicket()" [disabled]="loading || !newTicket.subject || !newTicket.description">
+                    <i class="pi pi-spin pi-spinner" *ngIf="loading"></i>
+                    <span *ngIf="!loading">
+                        <i class="pi pi-check"></i>
+                        Créer le ticket
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Détails -->
+    <div class="modal-overlay" *ngIf="showDetailsModal" (click)="closeModals()">
+        <div class="modal-container large" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-icon info">
+                    <i class="pi pi-ticket"></i>
+                </div>
+                <h3>Ticket {{ selectedTicket?.ticketNumber }}</h3>
+                <button class="close-btn" (click)="closeModals()">
+                    <i class="pi pi-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body" *ngIf="selectedTicket">
+                <!-- Informations du ticket -->
+                <div class="ticket-info-header">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Statut:</span>
+                            <span class="status-badge" [ngClass]="getStatusClass(selectedTicket.status)">
+                                <i class="pi" [ngClass]="getStatusIcon(selectedTicket.status)"></i>
+                                {{ getStatusLabel(selectedTicket.status) }}
+                            </span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Priorité:</span>
+                            <span class="priority-badge" [ngClass]="getPriorityClass(selectedTicket.priority)">
+                                <i class="pi" [ngClass]="getPriorityIcon(selectedTicket.priority)"></i>
+                                {{ getPriorityLabel(selectedTicket.priority) }}
+                            </span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Catégorie:</span>
+                            <span class="category-badge">
+                                <i class="pi" [ngClass]="getCategoryIcon(selectedTicket.category)"></i>
+                                {{ getCategoryLabel(selectedTicket.category) }}
+                            </span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Assigné à:</span>
+                            <span class="info-value" *ngIf="selectedTicket.assignedToName">
+                                {{ selectedTicket.assignedToName }}
+                            </span>
+                            <span class="unassigned" *ngIf="!selectedTicket.assignedToName">
+                                <i class="pi pi-clock"></i>
+                                En attente d'assignation
+                            </span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Créé le:</span>
+                            <span class="info-value">{{ formatDate(selectedTicket.createdAt) }}</span>
+                        </div>
+                        <div class="info-item" *ngIf="selectedTicket.resolvedAt">
+                            <span class="info-label">Résolu le:</span>
+                            <span class="info-value">{{ formatDate(selectedTicket.resolvedAt) }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Messages Section -->
+                <div class="messages-section">
+                    <h4 class="messages-title">Conversation</h4>
+                    
+                    <div class="messages-list" *ngIf="ticketMessages.length > 0">
+                        <div *ngFor="let message of ticketMessages" 
+                             class="message-item" 
+                             [ngClass]="message.senderRole === 'SELLER' ? 'client' : 'admin'">
+                            <div class="message-avatar">
+                                <i class="pi" [ngClass]="message.senderRole === 'SELLER' ? 'pi-user' : 'pi-users'"></i>
+                            </div>
+                            <div class="message-wrapper">
+                                <div class="message-header">
+                                    <span class="message-sender">
+                                        {{ message.senderRole === 'SELLER' ? 'Vous' : (message.senderName || 'Support') }}
+                                    </span>
+                                    <span class="message-time">
+                                        {{ formatRelativeDate(message.createdAt) }}
+                                        <i class="pi pi-check" *ngIf="message.read" 
+                                           [class.pi-check-circle]="message.read" 
+                                           style="color: #10b981; margin-left: 0.5rem;"></i>
+                                    </span>
+                                </div>
+                                <div class="message-content">
+                                    <p>{{ message.message }}</p>
+                                    <div class="message-attachments" *ngIf="message.attachmentsPath">
+                                        <div class="attachment-item">
+                                            <a href="javascript:void(0)" 
+                                               class="attachment-link"
+                                               (click)="viewImage(message.attachmentsPath)">
+                                                <i class="pi pi-paperclip"></i>
+                                                Voir la pièce jointe
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="no-messages" *ngIf="ticketMessages.length === 0">
+                        <i class="pi pi-comments" style="font-size: 2rem; color: #cbd5e1; margin-bottom: 1rem;"></i>
+                        <p>Aucun message pour le moment</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="cancel-btn" (click)="closeModals()">
+                    <i class="pi pi-times"></i>
+                    Fermer
+                </button>
+                <button class="reply-btn" 
+                        *ngIf="selectedTicket?.status !== 'CLOSED'"
+                        (click)="openReplyModal(selectedTicket!)">
+                    <i class="pi pi-reply"></i>
+                    Répondre
+                </button>
+                <button class="reopen-btn"  
+                        *ngIf="selectedTicket?.status === 'CLOSED'">
+                    <i class="pi pi-refresh"></i>
+                    Réouvrir
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Réponse -->
+    <div class="modal-overlay" *ngIf="showReplyModal" (click)="closeModals()">
+        <div class="modal-container" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-icon info">
+                    <i class="pi pi-reply"></i>
+                </div>
+                <h3>Répondre au ticket {{ selectedTicket?.ticketNumber }}</h3>
+                <button class="close-btn" (click)="closeModals()">
+                    <i class="pi pi-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Votre message <span class="required">*</span></label>
+                    <textarea 
+                        [(ngModel)]="replyMessage" 
+                        rows="5" 
+                        placeholder="Saisissez votre message..."
+                        class="form-control"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Pièce jointe (optionnel)</label>
+                    <input type="file" (change)="onReplyFileSelected($event)" class="file-input">
+                    <small class="help-text">Formats acceptés: images, PDF, max 10MB</small>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="cancel-btn" (click)="closeModals()">
+                    Annuler
+                </button>
+                <button class="reply-btn" (click)="sendReply()" [disabled]="loading || !replyMessage.trim()">
+                    <i class="pi pi-spin pi-spinner" *ngIf="loading"></i>
+                    <span *ngIf="!loading">
+                        <i class="pi pi-send"></i>
+                        Envoyer
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Image -->
+    <div class="modal-overlay image-modal" *ngIf="showImageModal" (click)="closeModals()">
+        <div class="modal-container" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-icon info">
+                    <i class="pi pi-image"></i>
+                </div>
+                <h3>Pièce jointe</h3>
+                <button class="close-btn" (click)="closeModals()">
+                    <i class="pi pi-times"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <img [src]="selectedImagePath" alt="Attachment" *ngIf="selectedImagePath">
+            </div>
+
+            <div class="modal-footer">
+                <button class="cancel-btn" (click)="closeModals()">
+                    Fermer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

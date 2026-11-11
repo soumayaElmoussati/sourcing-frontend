@@ -1,0 +1,529 @@
+// Variables
+$primary-color: #10b981;
+$background-color: #f8fafc;
+$surface-color: #ffffff;
+$text-primary: #1e293b;
+$text-secondary: #64748b;
+$border-color: #e2e8f0;
+
+.notifications-page {
+    padding: 2rem;
+    background: $background-color;
+    min-height: 100vh;
+    font-family: 'Inter', -apple-system, sans-serif;
+}
+
+// ============================================================
+// Header
+// ============================================================
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+
+    .title-row {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .title-badge {
+        flex-shrink: 0;
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(155deg, rgba($primary-color, .14), rgba($primary-color, .04));
+
+        i {
+            font-size: 1.35rem;
+            color: $primary-color;
+        }
+    }
+
+    .page-title {
+        margin: 0;
+        font-size: 1.55rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        color: $text-primary;
+    }
+
+    .page-subtitle {
+        margin: 0.2rem 0 0;
+        font-size: 0.9rem;
+        color: $text-secondary;
+    }
+
+    .mark-all-btn {
+        padding: 0.65rem 1.2rem;
+        border-radius: 11px;
+        font-weight: 600;
+        font-size: 0.86rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: 1px solid $border-color;
+        background: $surface-color;
+        color: $text-secondary;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+            color: $primary-color;
+            border-color: rgba($primary-color, .4);
+            background: rgba($primary-color, .05);
+        }
+
+        i {
+            font-size: 0.9rem;
+            color: $primary-color;
+        }
+    }
+}
+
+// ============================================================
+// Loading / Empty states
+// ============================================================
+.loading-state {
+    text-align: center;
+    padding: 3rem;
+    background: $surface-color;
+    border-radius: 16px;
+    border: 1px solid $border-color;
+
+    .spinner {
+        width: 42px;
+        height: 42px;
+        border: 3px solid $border-color;
+        border-top-color: $primary-color;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1rem;
+    }
+
+    p {
+        color: $text-secondary;
+        font-size: 0.95rem;
+        margin: 0;
+    }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: $surface-color;
+    border-radius: 16px;
+    border: 1px solid $border-color;
+
+    .empty-icon {
+        width: 72px;
+        height: 72px;
+        background: linear-gradient(155deg, rgba($primary-color, .14), rgba($primary-color, .04));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.25rem;
+
+        i {
+            font-size: 1.8rem;
+            color: $primary-color;
+        }
+    }
+
+    h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: $text-primary;
+        margin: 0 0 0.4rem;
+    }
+
+    p {
+        color: $text-secondary;
+        margin: 0;
+        font-size: 0.92rem;
+    }
+}
+
+// ============================================================
+// Toolbar : onglets + recherche
+// ============================================================
+.toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+
+    .tabs {
+        display: flex;
+        gap: 0.4rem;
+        background: $surface-color;
+        border: 1px solid $border-color;
+        border-radius: 12px;
+        padding: 0.3rem;
+
+        .tab {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.5rem 0.95rem;
+            border-radius: 9px;
+            border: none;
+            background: transparent;
+            color: $text-secondary;
+            font-weight: 600;
+            font-size: 0.86rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+
+            .tab-count {
+                font-size: 0.72rem;
+                font-weight: 700;
+                background: rgba($text-secondary, 0.12);
+                color: $text-secondary;
+                padding: 0.05rem 0.45rem;
+                border-radius: 999px;
+            }
+
+            &.active {
+                background: $text-primary;
+                color: white;
+
+                .tab-count {
+                    background: rgba(255, 255, 255, 0.18);
+                    color: white;
+                }
+            }
+
+            &:hover:not(.active) {
+                color: $text-primary;
+            }
+        }
+    }
+
+    .search-box {
+        flex: 1 1 260px;
+        max-width: 340px;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        background: $surface-color;
+        border: 1px solid $border-color;
+        border-radius: 12px;
+        padding: 0.6rem 0.9rem;
+
+        i {
+            color: $text-secondary;
+            font-size: 0.9rem;
+        }
+
+        input {
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 0.88rem;
+            color: $text-primary;
+            width: 100%;
+
+            &::placeholder {
+                color: rgba($text-secondary, 0.7);
+            }
+        }
+    }
+}
+
+// ============================================================
+// Layout liste / détail
+// ============================================================
+.notifications-layout {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 1.25rem;
+    align-items: start;
+}
+
+.notifications-list {
+    background: $surface-color;
+    border: 1px solid $border-color;
+    border-radius: 16px;
+    padding: 0.6rem;
+    max-height: 72vh;
+    overflow-y: auto;
+
+    scrollbar-width: thin;
+    scrollbar-color: rgba($text-secondary, 0.3) transparent;
+
+    &::-webkit-scrollbar { width: 7px; }
+    &::-webkit-scrollbar-track { background: transparent; }
+    &::-webkit-scrollbar-thumb {
+        background: rgba($text-secondary, 0.25);
+        border-radius: 999px;
+    }
+
+    .list-empty {
+        text-align: center;
+        padding: 2.5rem 1rem;
+        color: $text-secondary;
+
+        i {
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 0.6rem;
+            color: rgba($text-secondary, 0.5);
+        }
+
+        p {
+            margin: 0;
+            font-size: 0.88rem;
+        }
+    }
+
+    .date-group-label {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        color: rgba($text-secondary, 0.7);
+        padding: 0.85rem 0.7rem 0.4rem;
+    }
+
+    .notification-row {
+        width: 100%;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.7rem;
+        text-align: left;
+        padding: 0.75rem 0.7rem;
+        border-radius: 12px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        position: relative;
+        transition: background 0.15s ease;
+
+        & + .notification-row {
+            margin-top: 0.1rem;
+        }
+
+        &:hover {
+            background: rgba($primary-color, 0.05);
+        }
+
+        &.active {
+            background: rgba($primary-color, 0.1);
+        }
+
+        &.unread .row-title {
+            font-weight: 700;
+        }
+
+        .row-dot {
+            position: absolute;
+            top: 1.05rem;
+            left: 0.15rem;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: $primary-color;
+        }
+
+        .row-icon {
+            flex-shrink: 0;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: rgba($text-secondary, 0.1);
+            color: $text-secondary;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        &.unread .row-icon {
+            background: rgba($primary-color, 0.14);
+            color: $primary-color;
+        }
+
+        .row-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .row-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        .row-title {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: $text-primary;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .row-time {
+            flex-shrink: 0;
+            font-size: 0.72rem;
+            color: rgba($text-secondary, 0.85);
+        }
+
+        .row-preview {
+            margin: 0.15rem 0 0;
+            font-size: 0.82rem;
+            color: $text-secondary;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    }
+}
+
+// ---------- Panneau détail ----------
+.notification-detail {
+    background: $surface-color;
+    border: 1px solid $border-color;
+    border-radius: 16px;
+    padding: 1.75rem;
+    min-height: 72vh;
+
+    &.placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        color: rgba($text-secondary, 0.7);
+
+        i {
+            font-size: 2rem;
+        }
+
+        p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+    }
+
+    .detail-header {
+        margin-bottom: 1.25rem;
+        padding-bottom: 1.25rem;
+        border-bottom: 1px solid $border-color;
+    }
+
+    .detail-heading {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+
+        .detail-badge {
+            align-self: flex-start;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            color: $text-secondary;
+            background: rgba($text-secondary, 0.1);
+            padding: 0.18rem 0.55rem;
+            border-radius: 999px;
+
+            &.new {
+                color: $primary-color;
+                background: rgba($primary-color, 0.12);
+            }
+        }
+
+        h4 {
+            margin: 0.15rem 0 0;
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            color: $text-primary;
+        }
+
+        .detail-date {
+            font-size: 0.82rem;
+            color: $text-secondary;
+            text-transform: capitalize;
+        }
+    }
+
+    .detail-message {
+        margin: 0;
+        font-size: 0.98rem;
+        line-height: 1.7;
+        color: $text-primary;
+        white-space: pre-line;
+    }
+
+    .detail-images {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.85rem;
+        margin-top: 1.5rem;
+
+        .detail-image {
+            display: block;
+            width: 160px;
+            height: 120px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid $border-color;
+            transition: transform 0.2s ease;
+
+            &:hover {
+                transform: scale(1.03);
+            }
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+        }
+    }
+}
+
+// Responsive : liste au-dessus, détail en dessous
+@media (max-width: 900px) {
+    .notifications-page {
+        padding: 1rem;
+    }
+
+    .notifications-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .notifications-list {
+        max-height: 340px;
+    }
+
+    .notification-detail {
+        min-height: unset;
+    }
+
+    .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+
+        .search-box {
+            max-width: none;
+        }
+    }
+}

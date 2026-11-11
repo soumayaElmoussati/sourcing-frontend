@@ -1,0 +1,260 @@
+<div class="products-container">
+  <p-toast position="top-right"></p-toast>
+
+  <!-- Header Section -->
+  <div class="page-header">
+      <div class="header-content">
+          <div class="header-title-section">
+              <div class="title-row">
+                  <span class="title-badge">
+                      <i class="pi pi-box"></i>
+                  </span>
+                  <div class="title-text">
+                      <h3 class="page-title">Mes produits</h3>
+                      <p class="page-subtitle">Gérez votre catalogue de produits</p>
+                  </div>
+              </div>
+          </div>
+
+          <div class="header-actions">
+              <button class="create-order-btn" (click)="goToCreateOrderSansSelection()">
+                  <i class="pi pi-shopping-cart"></i>
+                  Créer une commande
+              </button>
+          </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+          <div class="stat-card stat-total">
+              <span class="stat-icon"><i class="pi pi-box"></i></span>
+              <span class="stat-value">{{ totalElements }}</span>
+              <span class="stat-label">Total produits</span>
+          </div>
+
+          <div class="stat-card stat-active">
+              <span class="stat-icon"><i class="pi pi-check-circle"></i></span>
+              <span class="stat-value">{{ activeProducts }}</span>
+              <span class="stat-label">Actifs</span>
+          </div>
+
+          <div class="stat-card stat-paused">
+              <span class="stat-icon"><i class="pi pi-pause-circle"></i></span>
+              <span class="stat-value">{{ pausedProducts }}</span>
+              <span class="stat-label">En pause</span>
+          </div>
+
+          <div class="stat-card stat-rejected">
+              <span class="stat-icon"><i class="pi pi-exclamation-triangle"></i></span>
+              <span class="stat-value">{{ rejectedProducts }}</span>
+              <span class="stat-label">Rejetés</span>
+          </div>
+      </div>
+  </div>
+
+  <!-- Table Section -->
+  <div class="table-container">
+      <div class="table-header">
+          <div class="table-info">
+              <span class="table-count">
+                  Affichage <strong>{{ products.length }}</strong> de <strong>{{ totalElements }}</strong> produits
+              </span>
+          </div>
+          <div class="table-actions">
+              <button class="refresh-btn" (click)="loadProducts()" title="Rafraîchir">
+                  <i class="pi pi-refresh"></i>
+              </button>
+          </div>
+      </div>
+
+      <!-- Table -->
+      <div class="modern-table">
+          <table>
+              <thead>
+                  <tr>
+                      <th>Produit</th>
+                      <th>Mode</th>
+                      <th>Stock</th>
+                      <th>Poids</th>
+                      <th>Prix</th>
+                      <th>Statut</th>
+                      <th class="actions-col">Actions</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let p of products">
+                      <!-- Product -->
+                      <td class="product-cell">
+                          <div class="product-info">
+                              <div class="product-name-row">
+                                  <span class="product-name">{{ p.nameProduct }}</span>
+                                  <span class="product-id">#{{ p.id }}</span>
+                              </div>
+                              <div class="product-meta">
+                                  <span class="product-country">
+                                      <img [src]="'https://flagcdn.com/w40/' + getFlagCode(p.country).toLowerCase() + '.png'">
+                                      {{ p.country }}
+                                  </span>
+                              </div>
+                              <!-- N'affiche le détail par entrepôt que si plusieurs entrepôts existent -->
+                              <div class="warehouses" *ngIf="p.inventories && p.inventories.length > 1">
+                                  <span class="warehouse-badge" *ngFor="let inv of p.inventories">
+                                      <i class="pi pi-map-marker"></i>
+                                      {{ inv.warehouse }}: {{ inv.available }}
+                                  </span>
+                              </div>
+                          </div>
+                      </td>
+
+                      <!-- Fulfillment -->
+                      <td>
+                          <span class="mode-badge" [ngClass]="p.fulfillmentMode.toLowerCase()">
+                              {{ p.fulfillmentMode === 'CENTRALIZED' ? 'Centralisé' : 'Local' }}
+                          </span>
+                      </td>
+
+                      <!-- Stock -->
+                      <td>
+                          <div class="stock-info">
+                              <div class="stock-item">
+                                  <span class="stock-value success">{{ getTotalAvailableStock(p) }}</span>
+                                  <span class="stock-label">Dispo</span>
+                              </div>
+                              <span class="stock-divider"></span>
+                              <div class="stock-item">
+                                  <span class="stock-value warning">{{ getReservedStock(p) }}</span>
+                                  <span class="stock-label">Résa.</span>
+                              </div>
+                              <span class="stock-divider"></span>
+                              <div class="stock-item">
+                                  <span class="stock-value info">{{ getReturnedStock(p) }}</span>
+                                  <span class="stock-label">Retour</span>
+                              </div>
+                          </div>
+                      </td>
+
+                      <!-- Weight -->
+                      <td>
+                          <span class="weight-value">{{ p.poidsKg }} kg</span>
+                      </td>
+
+                      <!-- Price -->
+                      <td>
+                          <span class="price-badge">
+                              {{ p.price | currency:'USD' }}
+                          </span>
+                      </td>
+
+                      <!-- Status -->
+                      <td>
+                          <span class="status-badge" [ngClass]="'status-' + p.status.toLowerCase()">
+                              {{ getStatusLabel(p.status) }}
+                          </span>
+                      </td>
+
+                      <!-- Actions -->
+                      <td class="actions-cell">
+                          <div class="action-buttons">
+                              <!-- ACTIVATE -->
+                              <button *ngIf="canActivate(p)" class="action-btn activate" title="Activer" (click)="activate(p.id)">
+                                  <i class="pi pi-play"></i>
+                              </button>
+
+                              <!-- PAUSE -->
+                              <button *ngIf="canPause(p)" class="action-btn pause" title="Mettre en pause" (click)="pause(p.id)">
+                                  <i class="pi pi-pause"></i>
+                              </button>
+
+                              <!-- REJECTED REASON -->
+                              <button *ngIf="canViewReason(p)" class="action-btn reject" title="Voir motif" (click)="viewReason(p)">
+                                  <i class="pi pi-exclamation-triangle"></i>
+                              </button>
+
+                              <!-- CREATE ORDER -->
+                              <button *ngIf="canCreateOrder(p)" class="action-btn order" title="Créer commande" (click)="goToCreateOrder(p)">
+                                  <i class="pi pi-shopping-cart"></i>
+                              </button>
+                          </div>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+
+          <!-- Empty State -->
+          <div class="empty-state" *ngIf="products.length === 0">
+              <div class="empty-icon">
+                  <i class="pi pi-box"></i>
+              </div>
+              <h3>Aucun produit trouvé</h3>
+              <p>Vous n'avez pas encore de produits dans votre catalogue</p>
+          </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination-container" *ngIf="totalElements > 0">
+          <div class="pagination-info">
+              <span>
+                  Affichage {{ getStartIndex() }} à {{ getEndIndex() }}
+                  sur {{ totalElements }} produits
+              </span>
+          </div>
+          <div class="pagination-controls">
+              <button class="pagination-btn" [disabled]="firstPage" (click)="previousPage()">
+                  <i class="pi pi-chevron-left"></i>
+              </button>
+
+              <div class="page-numbers">
+                  <button *ngFor="let pageNum of getPageNumbers()"
+                          [class.active]="pageNum === currentPage"
+                          (click)="goToPage(pageNum)"
+                          class="page-btn">
+                      {{ pageNum + 1 }}
+                  </button>
+              </div>
+
+              <button class="pagination-btn" [disabled]="lastPage" (click)="nextPage()">
+                  <i class="pi pi-chevron-right"></i>
+              </button>
+
+              <div class="items-per-page">
+                  <label>Afficher</label>
+                  <select [(ngModel)]="pageSize" (change)="onPageSizeChange()" class="page-select">
+                      <option *ngFor="let size of pageSizeOptions" [value]="size">
+                          {{ size }}
+                      </option>
+                  </select>
+                  <label>par page</label>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Modal pour voir la raison du rejet -->
+  <div class="modal-overlay" *ngIf="showRejectedModalAffiche" (click)="closeModal()">
+      <div class="modal-container" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+              <div class="modal-icon danger">
+                  <i class="pi pi-exclamation-triangle"></i>
+              </div>
+              <h3>Produit rejeté</h3>
+              <button class="close-btn" (click)="closeModal()">
+                  <i class="pi pi-times"></i>
+              </button>
+          </div>
+
+          <div class="modal-body">
+              <div class="reason-box">
+                  <span class="reason-label">Raison du rejet</span>
+                  <p>{{ rejectedReason }}</p>
+              </div>
+          </div>
+
+          <div class="modal-footer">
+              <button class="btn-secondary" (click)="closeModal()">
+                  <i class="pi pi-times"></i>
+                  Fermer
+              </button>
+          </div>
+      </div>
+  </div>
+</div>

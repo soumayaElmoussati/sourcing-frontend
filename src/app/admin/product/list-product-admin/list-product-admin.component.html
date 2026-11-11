@@ -1,0 +1,283 @@
+<div class="prod-page">
+  <p-toast position="top-right"></p-toast>
+
+  <!-- ══ HEADER ══ -->
+  <div class="prod-header">
+    <div class="prod-header-left">
+      <div class="prod-header-icon">
+        <i class="pi pi-box"></i>
+      </div>
+      <div>
+        <h1 class="prod-title">Gestion des produits</h1>
+        <p class="prod-subtitle">Administration du catalogue produits</p>
+      </div>
+    </div>
+    <button class="btn-refresh" (click)="loadProducts()" title="Rafraîchir">
+      <i class="pi pi-refresh"></i>
+      <span>Actualiser</span>
+    </button>
+  </div>
+
+  <!-- ══ KPI CARDS ══ -->
+  <div class="kpi-row">
+
+    <div class="kpi-card kpi-blue">
+      <div class="kpi-icon"><i class="pi pi-box"></i></div>
+      <div class="kpi-body">
+        <span class="kpi-label">Total produits</span>
+        <span class="kpi-value">{{ totalElements }}</span>
+      </div>
+      <div class="kpi-bg-icon"><i class="pi pi-box"></i></div>
+    </div>
+
+    <div class="kpi-card kpi-green">
+      <div class="kpi-icon"><i class="pi pi-check-circle"></i></div>
+      <div class="kpi-body">
+        <span class="kpi-label">Actifs</span>
+        <span class="kpi-value">{{ activeProducts }}</span>
+      </div>
+      <div class="kpi-bg-icon"><i class="pi pi-check-circle"></i></div>
+    </div>
+
+    <div class="kpi-card kpi-orange">
+      <div class="kpi-icon"><i class="pi pi-pause-circle"></i></div>
+      <div class="kpi-body">
+        <span class="kpi-label">En pause</span>
+        <span class="kpi-value">{{ pausedProducts }}</span>
+      </div>
+      <div class="kpi-bg-icon"><i class="pi pi-pause-circle"></i></div>
+    </div>
+
+    <div class="kpi-card kpi-red">
+      <div class="kpi-icon"><i class="pi pi-times-circle"></i></div>
+      <div class="kpi-body">
+        <span class="kpi-label">Rejetés</span>
+        <span class="kpi-value">{{ rejectedProducts }}</span>
+      </div>
+      <div class="kpi-bg-icon"><i class="pi pi-times-circle"></i></div>
+    </div>
+
+  </div>
+
+  <!-- ══ TABLE CARD ══ -->
+  <div class="table-card">
+
+    <!-- Table toolbar -->
+    <div class="table-toolbar">
+      <div class="table-toolbar-left">
+        <span class="table-count">
+          <strong>{{ products.length }}</strong> / <strong>{{ totalElements }}</strong> produits
+        </span>
+      </div>
+      <div class="table-toolbar-right">
+        <div class="items-per-page">
+          <label>Par page</label>
+          <select [(ngModel)]="pageSize" (change)="onPageSizeChange()" class="page-select">
+            <option *ngFor="let s of pageSizeOptions" [value]="s">{{ s }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Produit</th>
+            <th>Mode</th>
+            <th>Poids</th>
+            <th>Prix</th>
+            <th>Statut</th>
+            <th class="th-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of products" class="data-row">
+
+            <!-- Produit -->
+            <td class="td-product">
+              <div class="product-cell">
+                <div class="product-avatar">
+                  {{ p.nameProduct?.charAt(0)?.toUpperCase() || 'P' }}
+                </div>
+                <div class="product-info">
+                  <span class="product-name">{{ p.nameProduct }}</span>
+                  <div class="product-meta">
+                    <span class="meta-id">#{{ p.id }}</span>
+                    <span class="meta-country">
+                      <i class="pi pi-map-marker"></i> {{ p.country }}
+                    </span>
+                  </div>
+                  <div class="seller-tag" *ngIf="p.seller">
+                    <i class="pi pi-user"></i>
+                    {{ p.seller.storeName || p.seller.email }}
+                  </div>
+                </div>
+              </div>
+            </td>
+
+            <!-- Mode -->
+            <td>
+              <span class="badge-mode" [ngClass]="p.fulfillmentMode === 'CENTRALIZED' ? 'mode-central' : 'mode-local'">
+                <i class="pi" [ngClass]="p.fulfillmentMode === 'CENTRALIZED' ? 'pi-globe' : 'pi-map'"></i>
+                {{ p.fulfillmentMode === 'CENTRALIZED' ? 'Centralisé' : 'Local' }}
+              </span>
+            </td>
+
+            <!-- Poids -->
+            <td>
+              <span class="badge-weight">
+                <i class="pi pi-sort-amount-down"></i>
+                {{ p.poidsKg }} kg
+              </span>
+            </td>
+
+            <!-- Prix -->
+            <td>
+              <span class="price-value">{{ p.price | currency:'USD' }}</span>
+            </td>
+
+            <!-- Statut -->
+            <td>
+              <span class="badge-status" [ngClass]="'st-' + p.status.toLowerCase()">
+                <span class="status-dot"></span>
+                {{ getStatusLabel(p.status) }}
+              </span>
+            </td>
+
+            <!-- Actions -->
+            <td class="td-actions">
+              <div class="action-group">
+                <button *ngIf="canSubmit(p)"   class="act-btn act-blue"   title="Soumettre"    (click)="submit(p.id)">
+                  <i class="pi pi-send"></i>
+                </button>
+                <button *ngIf="canApprove(p)"  class="act-btn act-green"  title="Approuver"   (click)="approve(p.id)">
+                  <i class="pi pi-check"></i>
+                </button>
+                <button *ngIf="canActivate(p)" class="act-btn act-green"  title="Activer"     (click)="activate(p.id)">
+                  <i class="pi pi-play"></i>
+                </button>
+                <button *ngIf="canPause(p)"    class="act-btn act-orange" title="Mettre en pause" (click)="pause(p.id)">
+                  <i class="pi pi-pause"></i>
+                </button>
+                <button *ngIf="canReject(p)"   class="act-btn act-red"    title="Rejeter"     (click)="openRejectModal(p.id)">
+                  <i class="pi pi-times"></i>
+                </button>
+                <button *ngIf="canViewReason(p)" class="act-btn act-orange" title="Voir motif" (click)="viewReason(p)">
+                  <i class="pi pi-eye"></i>
+                </button>
+              </div>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- ── Empty state ── -->
+      <div class="empty-state" *ngIf="products.length === 0">
+        <div class="empty-illustration">
+          <div class="empty-ring empty-ring-1"></div>
+          <div class="empty-ring empty-ring-2"></div>
+          <div class="empty-ring empty-ring-3"></div>
+          <div class="empty-icon-wrap">
+            <i class="pi pi-box"></i>
+          </div>
+        </div>
+        <h3 class="empty-title">Aucun produit trouvé</h3>
+        <p class="empty-desc">Le catalogue est vide ou aucun produit ne correspond aux critères actuels.</p>
+        <button class="empty-cta" (click)="loadProducts()">
+          <i class="pi pi-refresh"></i>
+          Recharger
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Pagination ── -->
+    <div class="pagination" *ngIf="totalElements > 0">
+      <span class="pagination-info">
+        {{ getStartIndex() }} – {{ getEndIndex() }} sur {{ totalElements }}
+      </span>
+      <div class="pagination-controls">
+        <button class="pg-btn" [disabled]="firstPage" (click)="previousPage()">
+          <i class="pi pi-chevron-left"></i>
+        </button>
+        <button *ngFor="let n of getPageNumbers()"
+                class="pg-btn pg-num"
+                [class.pg-active]="n === currentPage"
+                (click)="goToPage(n)">
+          {{ n + 1 }}
+        </button>
+        <button class="pg-btn" [disabled]="lastPage" (click)="nextPage()">
+          <i class="pi pi-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ MODAL REJETER ══ -->
+  <div class="modal-overlay" *ngIf="showRejectModalInpute" (click)="closeRejectModal()">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <div class="mh-icon mh-danger"><i class="pi pi-times-circle"></i></div>
+        <div class="mh-text">
+          <h3>Rejeter le produit</h3>
+          <p>Précisez la raison du rejet</p>
+        </div>
+        <button class="modal-close" (click)="closeRejectModal()"><i class="pi pi-times"></i></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-field">
+          <label class="form-label">Motif du rejet <span class="req">*</span></label>
+          <textarea
+            [(ngModel)]="rejectReasonInput"
+            rows="4"
+            placeholder="Décrivez la raison du rejet..."
+            class="form-textarea"
+          ></textarea>
+          <small class="form-hint">Ce message sera visible par le vendeur.</small>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="closeRejectModal()">Annuler</button>
+        <button class="btn-danger" [disabled]="!rejectReasonInput.trim()" (click)="rejectProduct()">
+          <i class="pi pi-times-circle"></i>
+          Confirmer le rejet
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ MODAL VOIR RAISON ══ -->
+  <div class="modal-overlay" *ngIf="showRejectedModalAffiche" (click)="closeModal()">
+    <div class="modal-box modal-box-sm" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <div class="mh-icon mh-orange"><i class="pi pi-exclamation-triangle"></i></div>
+        <div class="mh-text">
+          <h3>Motif de rejet</h3>
+          <p>Raison communiquée au vendeur</p>
+        </div>
+        <button class="modal-close" (click)="closeModal()"><i class="pi pi-times"></i></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="reason-box">
+          <i class="pi pi-comment reason-box-icon"></i>
+          <p class="reason-text">{{ rejectedReason }}</p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" (click)="closeModal()">Fermer</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

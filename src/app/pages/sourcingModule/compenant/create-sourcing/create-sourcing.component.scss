@@ -1,0 +1,635 @@
+// Variables
+$primary-color: #10b981;
+$primary-hover: #0ea5e9;
+$background-color: #f8fafc;
+$surface-color: #ffffff;
+$text-primary: #1e293b;
+$text-secondary: #64748b;
+$border-color: #e2e8f0;
+$danger-color: #ef4444;
+
+
+
+.create-sourcing-container {
+    padding: 2rem;
+    background: $background-color;
+    min-height: 100vh;
+    font-family: 'Inter', -apple-system, sans-serif;
+}
+
+// Header
+.page-header {
+    margin-bottom: 2rem;
+    
+    .header-content {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .header-title-section {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        
+        .back-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            border: 1px solid $border-color;
+            background: $surface-color;
+            color: $text-secondary;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            
+            &:hover {
+                border-color: $primary-color;
+                color: $primary-color;
+                transform: translateX(-4px);
+            }
+            
+            i {
+                font-size: 1.2rem;
+            }
+        }
+        
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: $text-primary;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 0;
+            
+            .title-icon {
+                color: $primary-color;
+                font-size: 2rem;
+            }
+        }
+    }
+}
+
+// Formulaire
+.modern-form {
+    .form-section {
+        background: $surface-color;
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid $border-color;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba($border-color, 0.5);
+            
+            .section-icon {
+                font-size: 1.5rem;
+                color: $primary-color;
+                background: rgba($primary-color, 0.1);
+                padding: 0.75rem;
+                border-radius: 12px;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+                font-weight: 600;
+                color: $text-primary;
+                margin: 0;
+            }
+        }
+    }
+    
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        
+        .full-width {
+            grid-column: span 2;
+        }
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+        
+        label {
+            display: block;
+            color: $text-primary;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            
+            .required {
+                color: $danger-color;
+                margin-left: 0.25rem;
+            }
+
+            .optional-tag {
+                color: $text-secondary;
+                font-weight: 500;
+                font-size: 0.85rem;
+                margin-left: 0.35rem;
+            }
+        }
+
+        .field-hint {
+            color: $text-secondary;
+            font-size: 0.85rem;
+            margin: -0.25rem 0 0.75rem;
+        }
+
+        // ================= UPLOAD PHOTOS =================
+        .image-upload-zone {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+
+            .upload-dropzone {
+                flex: 1;
+                min-width: 220px;
+                border: 2px dashed $border-color;
+                border-radius: 14px;
+                padding: 1.75rem 1rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 0.35rem;
+                cursor: pointer;
+                color: $text-secondary;
+                background: $background-color;
+                transition: all 0.25s ease;
+                text-align: center;
+
+                &:hover {
+                    border-color: $primary-color;
+                    background: rgba($primary-color, 0.04);
+                    color: $primary-color;
+                }
+
+                i {
+                    font-size: 1.75rem;
+                    color: $primary-color;
+                }
+
+                span {
+                    font-weight: 600;
+                    color: $text-primary;
+                    font-size: 0.9rem;
+                }
+
+                small {
+                    color: $text-secondary;
+                    font-size: 0.75rem;
+                }
+            }
+
+            .image-previews {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.75rem;
+                flex: 2;
+                min-width: 220px;
+
+                .image-preview {
+                    position: relative;
+                    width: 96px;
+                    height: 96px;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    border: 1px solid $border-color;
+
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+
+                    .remove-image-btn {
+                        position: absolute;
+                        top: 4px;
+                        right: 4px;
+                        width: 22px;
+                        height: 22px;
+                        border-radius: 50%;
+                        border: none;
+                        background: rgba(0, 0, 0, 0.6);
+                        color: white;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        font-size: 0.7rem;
+                        transition: background 0.2s ease;
+
+                        &:hover {
+                            background: $danger-color;
+                        }
+                    }
+                }
+            }
+        }
+        
+        .input-wrapper, .textarea-wrapper {
+            position: relative;
+            
+            i {
+                position: absolute;
+                left: 1rem;
+                top: 50%;
+                transform: translateY(-50%);
+                color: $text-secondary;
+                font-size: 1rem;
+                z-index: 1;
+            }
+        }
+        
+        .textarea-wrapper {
+            i {
+                top: 1.2rem;
+                transform: none;
+            }
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 2.8rem;
+            border: 2px solid $border-color;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: $surface-color;
+            color: $text-primary;
+            
+            &:focus {
+                outline: none;
+                border-color: $primary-color;
+                box-shadow: 0 0 0 4px rgba($primary-color, 0.1);
+            }
+            
+            &.error {
+                border-color: $danger-color;
+                
+                &:focus {
+                    box-shadow: 0 0 0 4px rgba($danger-color, 0.1);
+                }
+            }
+            
+            &::placeholder {
+                color: lighten($text-secondary, 30%);
+            }
+        }
+        
+        textarea {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        select {
+            padding-left: 1rem;
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2364748b'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.5rem;
+            appearance: none;
+            
+            &.fulfillment-select {
+                padding-left: 1rem;
+            }
+            
+            &.country-select {
+                padding-left: 2.8rem;
+            }
+        }
+    }
+    
+    .info-box {
+        background: rgba($primary-color, 0.05);
+        border-left: 4px solid $primary-color;
+        padding: 1rem;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: $text-primary;
+        margin-top: 1rem;
+        
+        i {
+            color: $primary-color;
+            font-size: 1.2rem;
+        }
+    }
+
+    // ================= FULFILLMENT CARDS =================
+    .fulfillment-cards {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+
+        @media (max-width: 640px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .fulfillment-card {
+        position: relative;
+        border: 2px solid $border-color;
+        border-radius: 14px;
+        padding: 1.5rem;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        background: $surface-color;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+
+        &:hover {
+            border-color: rgba($primary-color, 0.4);
+            transform: translateY(-2px);
+        }
+
+        &.selected {
+            border-color: $primary-color;
+            background: rgba($primary-color, 0.04);
+            box-shadow: 0 4px 14px rgba($primary-color, 0.15);
+
+            .card-check {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .card-check {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: $primary-color;
+            font-size: 1.3rem;
+            opacity: 0;
+            transform: scale(0.6);
+            transition: all 0.2s ease;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: white;
+
+            &.centralized {
+                background: linear-gradient(135deg, $primary-color, $primary-hover);
+            }
+
+            &.local {
+                background: linear-gradient(135deg, #f59e0b, #f97316);
+            }
+        }
+
+        .card-content {
+            h3 {
+                margin: 0 0 0.35rem;
+                font-size: 1.05rem;
+                font-weight: 700;
+                color: $text-primary;
+            }
+
+            p {
+                margin: 0 0 0.75rem;
+                color: $text-secondary;
+                font-size: 0.875rem;
+                line-height: 1.4;
+            }
+
+            .card-country {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                background: rgba($primary-color, 0.08);
+                color: $text-primary;
+                padding: 0.4rem 0.75rem;
+                border-radius: 8px;
+                font-size: 0.85rem;
+                font-weight: 600;
+            }
+
+            .card-country-select {
+                margin-top: 0.5rem;
+                cursor: default;
+
+                label {
+                    display: block;
+                    font-size: 0.85rem;
+                    font-weight: 600;
+                    color: $text-primary;
+                    margin-bottom: 0.4rem;
+
+                    .required {
+                        color: $danger-color;
+                        margin-left: 0.15rem;
+                    }
+                }
+            }
+        }
+    }
+
+    .field-error {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: $danger-color;
+        font-size: 0.85rem;
+        margin: 0.75rem 0 0;
+    }
+}
+
+// Form actions
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+    
+    button {
+        padding: 0.875rem 2rem;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        
+        i {
+            font-size: 1rem;
+        }
+        
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, $primary-color, $primary-hover);
+        color: white;
+        box-shadow: 0 4px 15px rgba($primary-color, 0.2);
+        
+        &:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba($primary-color, 0.3);
+        }
+    }
+    
+    .btn-secondary {
+        background: transparent;
+        color: $text-secondary;
+        border: 1px solid $border-color;
+        
+        &:hover {
+            background: rgba($border-color, 0.5);
+            color: $text-primary;
+            border-color: $text-secondary;
+        }
+    }
+}
+
+/* Select pays avec icône de drapeau */
+
+.input-wrapper {
+  position: relative;
+
+  i.pi-flag {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    color: $text-secondary;
+    z-index: 2;
+  }
+
+ /* Fix pour PrimeNG p-dropdown avec drapeaux */
+.p-dropdown {
+  .p-dropdown-label,
+  .p-dropdown-item {
+    display: flex !important;
+    align-items: center;
+    gap: 0.5rem;
+    line-height: 1.2rem; // réduit pour éviter saut de ligne
+    white-space: nowrap;  // force texte sur une seule ligne
+  }
+
+  img.flag-icon {
+    width: 24px;
+    height: 18px;
+    object-fit: cover;
+    vertical-align: middle;
+  }
+
+  /* Pour que le texte sélectionné reste sur une ligne */
+  .p-dropdown-label-container {
+    display: flex !important;
+    align-items: center;
+  }
+
+
+  /* Alignement options */
+.country-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Alignement pays sélectionné */
+.country-selected {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* taille du drapeau */
+.flag-icon {
+  width: 24px;
+  height: 18px;
+  object-fit: cover;
+}
+}
+
+
+
+}
+
+
+
+.info-box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-left: 4px solid $primary-color;
+  background: rgba($primary-color, 0.05);
+  border-radius: 10px;
+  color: $text-primary;
+
+  i.pi-info-circle {
+    font-size: 1.2rem;
+    color: $primary-color;
+  }
+
+  img.flag-icon-inline {
+    width: 24px;
+    height: 18px;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+
+// Responsive
+@media (max-width: 768px) {
+    .create-sourcing-container {
+        padding: 1rem;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr !important;
+        
+        .full-width {
+            grid-column: auto !important;
+        }
+    }
+    
+    .form-actions {
+        flex-direction: column-reverse;
+        
+        button {
+            width: 100%;
+        }
+    }
+}
+

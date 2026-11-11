@@ -1,0 +1,210 @@
+<div class="dash">
+
+  <!-- ══ HEADER ══ -->
+  <div class="dash-header">
+    <div class="dash-header-left">
+      <div class="dash-header-icon"><i class="pi pi-chart-bar"></i></div>
+      <div>
+        <h1 class="dash-title">Dashboard</h1>
+        <p class="dash-sub">Vue d'ensemble de votre activité</p>
+      </div>
+    </div>
+    <button class="dash-refresh" (click)="loadDashboard()" [disabled]="isLoading">
+      <i class="pi" [ngClass]="isLoading ? 'pi-spin pi-spinner' : 'pi-refresh'"></i>
+      Actualiser
+    </button>
+  </div>
+
+  <!-- ══ ERROR ══ -->
+  <div class="dash-error" *ngIf="error && !isLoading">
+    <i class="pi pi-exclamation-triangle"></i>
+    <span>{{ error }}</span>
+    <button (click)="loadDashboard()">Réessayer</button>
+  </div>
+
+  <!-- ══ SKELETON ══ -->
+  <ng-container *ngIf="isLoading">
+    <div class="kpi-grid">
+      <div class="skeleton-card" *ngFor="let i of [1,2,3,4]"></div>
+    </div>
+    <div class="charts-row">
+      <div class="skeleton-chart"></div>
+      <div class="skeleton-chart"></div>
+    </div>
+  </ng-container>
+
+  <!-- ══ CONTENU ══ -->
+  <ng-container *ngIf="!isLoading && dashboard">
+
+    <!-- ── KPI Row ── -->
+    <div class="kpi-grid">
+
+      <!-- Total commandes -->
+      <div class="kpi-card">
+        <div class="kpi-icon kpi-purple">
+          <i class="pi pi-shopping-cart"></i>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Total commandes</span>
+          <span class="kpi-value">{{ formatNumber(dashboard.totalOrders) }}</span>
+          <span class="kpi-sub">depuis le début</span>
+        </div>
+        <div class="kpi-trend kpi-neutral">
+          <i class="pi pi-calendar"></i>
+        </div>
+      </div>
+
+      <!-- Ce mois -->
+      <div class="kpi-card">
+        <div class="kpi-icon kpi-blue">
+          <i class="pi pi-calendar-plus"></i>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Ce mois-ci</span>
+          <span class="kpi-value">{{ formatNumber(dashboard.monthlyOrders) }}</span>
+          <span class="kpi-sub">commandes en cours</span>
+        </div>
+        <div class="kpi-trend kpi-up" *ngIf="dashboard.monthlyOrders > 0">
+          <i class="pi pi-arrow-up"></i>
+        </div>
+      </div>
+
+      <!-- Taux de livraison -->
+      <div class="kpi-card">
+        <div class="kpi-icon kpi-green">
+          <i class="pi pi-check-circle"></i>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Taux de livraison</span>
+          <span class="kpi-value">{{ dashboard.deliveryRate }}%</span>
+          <div class="kpi-bar">
+            <div class="kpi-bar-fill kpi-bar-green"
+                 [style.width.%]="dashboard.deliveryRate"></div>
+          </div>
+        </div>
+        <div class="kpi-trend"
+             [ngClass]="dashboard.deliveryRate >= 70 ? 'kpi-up' : 'kpi-down'">
+          <i class="pi"
+             [ngClass]="dashboard.deliveryRate >= 70 ? 'pi-arrow-up' : 'pi-arrow-down'"></i>
+        </div>
+      </div>
+
+      <!-- Taux de retour -->
+      <div class="kpi-card">
+        <div class="kpi-icon kpi-orange">
+          <i class="pi pi-reply"></i>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-label">Taux de retour</span>
+          <span class="kpi-value">{{ dashboard.returnRate }}%</span>
+          <div class="kpi-bar">
+            <div class="kpi-bar-fill kpi-bar-orange"
+                 [style.width.%]="dashboard.returnRate"></div>
+          </div>
+        </div>
+        <div class="kpi-trend"
+             [ngClass]="dashboard.returnRate <= 10 ? 'kpi-up' : 'kpi-down'">
+          <i class="pi"
+             [ngClass]="dashboard.returnRate <= 10 ? 'pi-arrow-down' : 'pi-arrow-up'"></i>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Charts Row ── -->
+    <div class="charts-row">
+
+      <!-- Pie chart : Répartition statuts -->
+      <div class="chart-card chart-pie-card">
+        <div class="chart-header">
+          <h2><i class="pi pi-chart-pie"></i> Répartition des commandes</h2>
+          <span class="chart-total-pill">{{ getTotalFromMap() }} total</span>
+        </div>
+
+        <div class="pie-body">
+          <!-- Canvas donut -->
+          <div class="pie-canvas-wrap">
+            <canvas #pieCanvas width="220" height="220"></canvas>
+            <!-- Centre overlay si 0 commandes -->
+            <div class="pie-empty-center" *ngIf="getTotalFromMap() === 0">
+              <i class="pi pi-inbox"></i>
+              <span>Aucune</span>
+            </div>
+          </div>
+
+          <!-- Légende -->
+          <div class="pie-legend">
+            <div class="pie-legend-item" *ngFor="let s of statusRows">
+              <div class="pie-legend-dot" [style.background]="s.color"></div>
+              <div class="pie-legend-info">
+                <span class="pie-legend-label">{{ s.label }}</span>
+                <span class="pie-legend-count">{{ getStatusCount(s.key) }}</span>
+              </div>
+              <div class="pie-legend-bar">
+                <div class="pie-legend-bar-fill"
+                     [style.background]="s.color"
+                     [style.width.%]="getStatusPercent(s.key)"></div>
+              </div>
+              <span class="pie-legend-pct">{{ getStatusPercent(s.key) }}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bar chart : Activité mensuelle -->
+      <div class="chart-card chart-bar-card">
+        <div class="chart-header">
+          <h2><i class="pi pi-chart-bar"></i> Activité mensuelle</h2>
+          <span class="chart-badge-mock">6 derniers mois</span>
+        </div>
+        <div class="bar-canvas-wrap">
+          <canvas #barCanvas></canvas>
+        </div>
+        <div class="bar-footer">
+          <div class="bar-stat">
+            <span class="bar-stat-label">Mois le plus actif</span>
+            <strong>Juin</strong>
+          </div>
+          <div class="bar-stat">
+            <span class="bar-stat-label">Moyenne / mois</span>
+            <strong>{{ monthlyAverage }}</strong>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Pipeline table ── -->
+    <div class="pipeline-card">
+      <div class="chart-header">
+        <h2><i class="pi pi-list-check"></i> Pipeline des commandes</h2>
+        <span class="chart-total-pill">{{ dashboard.totalOrders }} commandes</span>
+      </div>
+
+      <div class="pipeline-grid">
+        <div class="pipeline-item" *ngFor="let s of statusRows">
+          <div class="pipeline-icon" [style.background]="s.color + '18'">
+            <i class="pi" [ngClass]="s.icon" [style.color]="s.color"></i>
+          </div>
+          <div class="pipeline-info">
+            <span class="pipeline-label">{{ s.label }}</span>
+            <div class="pipeline-track">
+              <div class="pipeline-fill"
+                   [style.background]="s.color"
+                   [style.width.%]="getStatusPercent(s.key)">
+              </div>
+            </div>
+          </div>
+          <div class="pipeline-meta">
+            <span class="pipeline-count" [style.color]="s.color">
+              {{ getStatusCount(s.key) }}
+            </span>
+            <span class="pipeline-pct">{{ getStatusPercent(s.key) }}%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+
+</div>

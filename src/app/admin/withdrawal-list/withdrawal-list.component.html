@@ -1,0 +1,335 @@
+<div class="wd-page">
+  <p-toast position="top-right"></p-toast>
+
+  <!-- ══ HEADER ══ -->
+  <div class="wd-header">
+    <div class="wd-header-left">
+      <div class="wd-header-icon">
+        <i class="pi pi-money-bill"></i>
+      </div>
+      <div>
+        <h1 class="wd-title">Gestion des retraits</h1>
+        <p class="wd-subtitle">Traitez les demandes de retrait des vendeurs (Binance, virement bancaire…)</p>
+      </div>
+    </div>
+    <div class="wd-header-right">
+      <!-- Status pills -->
+      <div class="status-pills">
+        <button class="sp" [class.active]="statusFilter === ''"          (click)="statusFilter = ''">Tous</button>
+        <button class="sp sp-orange" [class.active]="statusFilter === 'PENDING'"   (click)="statusFilter = 'PENDING'">
+          <i class="pi pi-clock"></i> En attente
+        </button>
+        <button class="sp sp-green"  [class.active]="statusFilter === 'COMPLETED'" (click)="statusFilter = 'COMPLETED'">
+          <i class="pi pi-check-circle"></i> Complétés
+        </button>
+        <button class="sp sp-red"    [class.active]="statusFilter === 'REJECTED'"  (click)="statusFilter = 'REJECTED'">
+          <i class="pi pi-times-circle"></i> Rejetés
+        </button>
+      </div>
+      <button class="btn-refresh" (click)="loadWithdrawals()" [disabled]="isLoading">
+        <i class="pi pi-refresh" [class.pi-spin]="isLoading"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ KPI ══ -->
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-icon ki-slate"><i class="pi pi-list"></i></div>
+      <div class="kpi-body">
+        <span class="kpi-label">Total</span>
+        <span class="kpi-value">{{ totalElements }}</span>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon ki-orange"><i class="pi pi-clock"></i></div>
+      <div class="kpi-body">
+        <span class="kpi-label">En attente</span>
+        <span class="kpi-value">{{ countByStatus('PENDING') }}</span>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon ki-green"><i class="pi pi-check-circle"></i></div>
+      <div class="kpi-body">
+        <span class="kpi-label">Complétés</span>
+        <span class="kpi-value">{{ countByStatus('COMPLETED') }}</span>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon ki-red"><i class="pi pi-times-circle"></i></div>
+      <div class="kpi-body">
+        <span class="kpi-label">Rejetés</span>
+        <span class="kpi-value">{{ countByStatus('REJECTED') }}</span>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon ki-teal"><i class="pi pi-dollar"></i></div>
+      <div class="kpi-body">
+        <span class="kpi-label">Montant traité</span>
+        <span class="kpi-value kpi-sm">{{ totalCompleted() | currency:'USD' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TABLE CARD ══ -->
+  <div class="table-card">
+
+    <div class="table-toolbar">
+      <span class="table-count">
+        <strong>{{ filteredWithdrawals.length }}</strong> demande(s)
+        <span class="tf-badge" *ngIf="statusFilter"> — {{ getStatusLabel(statusFilter) }}</span>
+      </span>
+      <span class="page-ind" *ngIf="totalPages > 1">
+        Page <strong>{{ currentPage + 1 }}</strong> / <strong>{{ totalPages }}</strong>
+      </span>
+    </div>
+
+    <!-- Skeleton -->
+    <div class="skeleton-rows" *ngIf="isLoading">
+      <div class="sk-row" *ngFor="let i of [1,2,3,4,5]"></div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap" *ngIf="!isLoading">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Vendeur</th>
+            <th class="th-right">Montant</th>
+            <th>Méthode</th>
+            <th>Compte de réception</th>
+            <th>Statut</th>
+            <th>Date</th>
+            <th class="th-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let w of filteredWithdrawals" class="data-row">
+
+            <!-- Vendeur -->
+            <td class="td-seller">
+              <div class="seller-cell">
+                <div class="seller-av">
+                  {{ w.walletInfo?.sellerName?.charAt(0)?.toUpperCase() || 'V' }}
+                </div>
+                <div class="seller-info">
+                  <span class="seller-name">{{ w.walletInfo?.sellerName }}</span>
+                  <span class="seller-email">{{ w.walletInfo?.sellerEmail }}</span>
+                </div>
+              </div>
+            </td>
+
+            <!-- Montant -->
+            <td class="td-right">
+              <span class="amount-val">{{ w.amount | currency:'USD' }}</span>
+            </td>
+
+            <!-- Méthode -->
+            <td>
+              <span class="badge-method" [ngClass]="w.paymentMethod === 'BINANCE' ? 'bm-binance' : 'bm-bank'">
+                <i class="pi" [ngClass]="w.paymentMethod === 'BINANCE' ? 'pi-wallet' : 'pi-building-columns'"></i>
+                {{ getPaymentMethodLabel(w.paymentMethod) }}
+              </span>
+            </td>
+
+            <!-- Compte -->
+            <td class="td-account">
+              <span class="account-text" [title]="w.accountDetails">{{ w.accountDetails }}</span>
+            </td>
+
+            <!-- Statut -->
+            <td>
+              <span class="badge-status" [ngClass]="'bs-' + w.status.toLowerCase()">
+                <span class="bs-dot"></span>
+                {{ getStatusLabel(w.status) }}
+              </span>
+            </td>
+
+            <!-- Date -->
+            <td>
+              <div class="date-cell">
+                <i class="pi pi-calendar dc-icon"></i>
+                {{ formatDate(w.createdAt) }}
+              </div>
+            </td>
+
+            <!-- Actions -->
+            <td class="td-center">
+              <div class="action-group">
+                <ng-container *ngIf="w.status === 'PENDING'">
+                  <button class="act-btn act-green" title="Approuver" (click)="openProcessModal(w, 'APPROVE')">
+                    <i class="pi pi-check"></i>
+                  </button>
+                  <button class="act-btn act-red" title="Rejeter" (click)="openProcessModal(w, 'REJECT')">
+                    <i class="pi pi-times"></i>
+                  </button>
+                </ng-container>
+                <button *ngIf="w.proofDocumentPath" class="act-btn act-blue" title="Voir justificatif" (click)="viewProof(w.proofDocumentPath)">
+                  <i class="pi pi-image"></i>
+                </button>
+              </div>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Empty state -->
+      <div class="empty-state" *ngIf="filteredWithdrawals.length === 0">
+        <div class="empty-illustration">
+          <div class="er r1"></div>
+          <div class="er r2"></div>
+          <div class="er r3"></div>
+          <div class="ei"><i class="pi pi-money-bill"></i></div>
+        </div>
+        <h3 class="empty-title">Aucune demande de retrait</h3>
+        <p class="empty-desc">
+          {{ statusFilter ? 'Aucun retrait ne correspond au filtre sélectionné.' : 'Aucune demande de retrait pour le moment.' }}
+        </p>
+        <button class="empty-cta" *ngIf="statusFilter" (click)="statusFilter = ''">
+          <i class="pi pi-times"></i>
+          Effacer le filtre
+        </button>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" *ngIf="totalPages > 1 && !isLoading">
+      <span class="pg-info">Page {{ currentPage + 1 }} sur {{ totalPages }}</span>
+      <div class="pg-controls">
+        <button class="pg-btn" [disabled]="currentPage === 0" (click)="changePage(currentPage - 1)">
+          <i class="pi pi-chevron-left"></i>
+        </button>
+        <button *ngFor="let p of getPageNumbers()"
+                class="pg-btn pg-num"
+                [class.pg-active]="p === currentPage"
+                (click)="changePage(p)">
+          {{ p + 1 }}
+        </button>
+        <button class="pg-btn" [disabled]="currentPage >= totalPages - 1" (click)="changePage(currentPage + 1)">
+          <i class="pi pi-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ MODAL PROCESS ══ -->
+<div class="modal-overlay" *ngIf="showProcessModal" (click)="closeProcessModal()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <div class="mh-icon" [ngClass]="processAction === 'APPROVE' ? 'mh-green' : 'mh-red'">
+        <i class="pi" [ngClass]="processAction === 'APPROVE' ? 'pi-check-circle' : 'pi-times-circle'"></i>
+      </div>
+      <div class="mh-text">
+        <h3>{{ processAction === 'APPROVE' ? 'Approuver le retrait' : 'Rejeter le retrait' }}</h3>
+        <p>{{ processAction === 'APPROVE' ? 'Le wallet sera débité et le vendeur notifié' : 'Le vendeur recevra un email' }}</p>
+      </div>
+      <button class="modal-close" (click)="closeProcessModal()"><i class="pi pi-times"></i></button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Recap -->
+      <div class="process-recap">
+        <div class="pr-row">
+          <span class="pr-label">Vendeur</span>
+          <span class="pr-val">{{ withdrawalToProcess?.walletInfo?.sellerName }}</span>
+        </div>
+        <div class="pr-row">
+          <span class="pr-label">Montant</span>
+          <span class="pr-val pr-price">{{ withdrawalToProcess?.amount | currency:'USD' }}</span>
+        </div>
+        <div class="pr-row">
+          <span class="pr-label">Méthode</span>
+          <span class="pr-val">{{ getPaymentMethodLabel(withdrawalToProcess?.paymentMethod || '') }}</span>
+        </div>
+        <div class="pr-row">
+          <span class="pr-label">Compte</span>
+          <span class="pr-val pr-mono">{{ withdrawalToProcess?.accountDetails }}</span>
+        </div>
+      </div>
+
+      <!-- Approve : upload justificatif -->
+      <ng-container *ngIf="processAction === 'APPROVE'">
+        <div class="approve-hint">
+          <i class="pi pi-info-circle"></i>
+          Vérifiez le compte de réception ci-dessus avant de confirmer. Le justificatif est optionnel.
+        </div>
+        <div class="form-field">
+          <label class="form-label">Justificatif de paiement <span class="opt">(optionnel)</span></label>
+          <label class="upload-zone" for="proofUpload">
+            <div class="uz-content" *ngIf="!proofFile">
+              <i class="pi pi-cloud-upload uz-icon"></i>
+              <span class="uz-title">Glissez ou cliquez pour sélectionner</span>
+              <small class="uz-hint">Image ou PDF</small>
+            </div>
+            <div class="uz-file" *ngIf="proofFile">
+              <i class="pi pi-file"></i>
+              <span>{{ proofFile.name }}</span>
+              <button type="button" class="uz-remove" (click)="proofFile = null; $event.stopPropagation()">
+                <i class="pi pi-times"></i>
+              </button>
+            </div>
+          </label>
+          <input type="file" id="proofUpload" accept="image/*,.pdf" (change)="onProofSelected($event)" class="file-hidden" />
+        </div>
+      </ng-container>
+
+      <!-- Reject : raison -->
+      <ng-container *ngIf="processAction === 'REJECT'">
+        <div class="reject-alert">
+          <i class="pi pi-exclamation-triangle"></i>
+          <span>Le vendeur sera notifié par email avec la raison indiquée.</span>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Raison du rejet <span class="req">*</span></label>
+          <textarea
+            [(ngModel)]="rejectReason"
+            rows="3"
+            placeholder="Ex: Compte Binance invalide ou introuvable…"
+            class="form-textarea"
+          ></textarea>
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeProcessModal()" [disabled]="isProcessing">Annuler</button>
+      <button
+        [ngClass]="processAction === 'APPROVE' ? 'btn-confirm' : 'btn-danger'"
+        (click)="confirmProcess()"
+        [disabled]="isProcessing || (processAction === 'REJECT' && !rejectReason.trim())"
+      >
+        <i class="pi pi-spin pi-spinner" *ngIf="isProcessing"></i>
+        <ng-container *ngIf="!isProcessing">
+          <i class="pi" [ngClass]="processAction === 'APPROVE' ? 'pi-check' : 'pi-times'"></i>
+          {{ processAction === 'APPROVE' ? 'Confirmer le paiement' : 'Rejeter la demande' }}
+        </ng-container>
+        <span *ngIf="isProcessing">Traitement…</span>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ MODAL IMAGE ══ -->
+<div class="modal-overlay modal-img-ov" *ngIf="showImageModal" (click)="closeImageModal()">
+  <div class="modal-img-box" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div class="mh-icon mh-blue"><i class="pi pi-image"></i></div>
+      <div class="mh-text"><h3>Justificatif de paiement</h3></div>
+      <button class="modal-close" (click)="closeImageModal()"><i class="pi pi-times"></i></button>
+    </div>
+    <div class="img-body">
+      <img [src]="getFullImagePath(selectedImagePath)" alt="Justificatif" class="proof-img" />
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeImageModal()">Fermer</button>
+      <a [href]="getFullImagePath(selectedImagePath)" target="_blank" class="btn-confirm" download>
+        <i class="pi pi-download"></i> Télécharger
+      </a>
+    </div>
+  </div>
+</div>

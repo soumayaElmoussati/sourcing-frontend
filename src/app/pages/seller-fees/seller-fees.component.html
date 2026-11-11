@@ -1,0 +1,215 @@
+<div class="fees-page">
+
+  <!-- ══ HEADER ══ -->
+  <div class="fees-header">
+    <div class="fh-left">
+      <div class="fh-icon"><i class="pi pi-percentage"></i></div>
+      <div>
+        <h1 class="fh-title">Grille des frais</h1>
+        <p class="fh-subtitle">Frais appliqués automatiquement sur vos commandes et retraits</p>
+      </div>
+    </div>
+    <button class="btn-refresh" (click)="loadFees()" [disabled]="isLoading">
+      <i class="pi pi-refresh" [class.pi-spin]="isLoading"></i>
+    </button>
+  </div>
+
+  <!-- ══ INFO BANNER ══ -->
+  <div class="info-banner">
+    <i class="pi pi-info-circle"></i>
+    <span>Ces frais sont prélevés <strong>automatiquement</strong> sur votre wallet selon l'avancement de vos commandes. Gardez un solde suffisant pour éviter tout blocage.</span>
+  </div>
+
+  <!-- ══ SKELETON ══ -->
+  <div class="sk-grid" *ngIf="isLoading">
+    <div class="sk-card" *ngFor="let i of [1,2,3]"></div>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+
+    <!-- ══ TIMELINE DU PROCESS ══ -->
+    <div class="process-title">
+      <span class="pt-dot"></span>
+      Frais appliqués pendant le cycle de vie de vos commandes
+    </div>
+
+    <div class="process-flow">
+
+      <!-- STEP : Création commande ─ LEAD_FEE -->
+      <div class="pf-step">
+        <div class="pf-connector pf-connector-start"></div>
+        <div class="pf-node" [ngClass]="getFeeDot('LEAD_FEE')">
+          <i class="pi pi-shopping-cart"></i>
+        </div>
+        <div class="pf-content">
+          <div class="pfc-header">
+            <span class="pfc-event">Création de commande</span>
+            <span class="pfc-badge badge-blue">Immédiat</span>
+          </div>
+          <div class="pfc-card" [ngClass]="'pfc-blue'">
+            <div class="pfc-fee-row">
+              <div class="pfc-fee-label">
+                <span class="fee-tag">LEAD FEE</span>
+                <span class="fee-desc">Prélevé dès que vous créez une commande</span>
+              </div>
+              <div class="pfc-fee-amount">
+                <ng-container *ngIf="getFee('LEAD_FEE') as f">
+                  <span class="fa-val">{{ f.amount | currency:'USD' }}</span>
+                  <span class="fa-per">/ commande</span>
+                </ng-container>
+                <span class="fa-not-set" *ngIf="!getFee('LEAD_FEE')">Non configuré</span>
+              </div>
+            </div>
+            <p class="pfc-note">
+              <i class="pi pi-wallet"></i>
+              Votre solde wallet doit couvrir ce montant pour passer une commande.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Flèche -->
+      <div class="pf-arrow"><i class="pi pi-arrow-down"></i></div>
+
+      <!-- STEP : Statuts intermédiaires (aucun frais) -->
+      <div class="pf-step pf-step-neutral">
+        <div class="pf-node pf-neutral">
+          <i class="pi pi-list"></i>
+        </div>
+        <div class="pf-content">
+          <div class="pfc-header">
+            <span class="pfc-event">CONFIRMED → PREPARED → SHIPPED</span>
+            <span class="pfc-badge badge-slate">Aucun frais</span>
+          </div>
+          <p class="pfc-neutral-note">Ces statuts ne génèrent aucun prélèvement sur votre wallet.</p>
+        </div>
+      </div>
+
+      <!-- Flèche -->
+      <div class="pf-arrow"><i class="pi pi-arrow-down"></i></div>
+
+      <!-- STEP : DELIVERED ─ DELIVERED_FEE -->
+      <div class="pf-step">
+        <div class="pf-node pf-green"><i class="pi pi-check-circle"></i></div>
+        <div class="pf-content">
+          <div class="pfc-header">
+            <span class="pfc-event">Commande livrée (DELIVERED)</span>
+            <span class="pfc-badge badge-green">+ Revenu</span>
+          </div>
+          <div class="pfc-card pfc-green">
+
+            <!-- Revenu -->
+            <div class="pfc-fee-row pfc-income-row">
+              <div class="pfc-fee-label">
+                <span class="fee-tag fee-tag-income">REVENU</span>
+                <span class="fee-desc">Montant de la commande crédité sur votre wallet</span>
+              </div>
+              <div class="pfc-fee-amount">
+                <span class="fa-val fa-income">+ Prix commande</span>
+              </div>
+            </div>
+
+            <div class="pfc-divider"></div>
+
+            <!-- Delivered fee -->
+            <div class="pfc-fee-row">
+              <div class="pfc-fee-label">
+                <span class="fee-tag">DELIVERED FEE</span>
+                <span class="fee-desc">Frais de livraison prélevé sur votre wallet</span>
+              </div>
+              <div class="pfc-fee-amount">
+                <ng-container *ngIf="getFee('DELIVERED_FEE') as f">
+                  <span class="fa-val fa-debit">− {{ f.amount | currency:'USD' }}</span>
+                  <span class="fa-per">/ commande</span>
+                </ng-container>
+                <span class="fa-not-set" *ngIf="!getFee('DELIVERED_FEE')">Non configuré</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Flèche ─ branchement retour -->
+      <div class="pf-arrow pf-arrow-split">
+        <span class="pas-label pas-return">Si retour</span>
+        <i class="pi pi-arrow-down"></i>
+      </div>
+
+      <!-- STEP : RETURNED ─ RETURNED_FEE -->
+      <div class="pf-step">
+        <div class="pf-node pf-orange"><i class="pi pi-replay"></i></div>
+        <div class="pf-content">
+          <div class="pfc-header">
+            <span class="pfc-event">Commande retournée (RETURNED)</span>
+            <span class="pfc-badge badge-orange">Frais retour</span>
+          </div>
+          <div class="pfc-card pfc-orange">
+            <div class="pfc-fee-row">
+              <div class="pfc-fee-label">
+                <span class="fee-tag">RETURNED FEE</span>
+                <span class="fee-desc">Frais prélevé en cas de retour par le client</span>
+              </div>
+              <div class="pfc-fee-amount">
+                <ng-container *ngIf="getFee('RETURNED_FEE') as f">
+                  <span class="fa-val fa-debit">− {{ f.amount | currency:'USD' }}</span>
+                  <span class="fa-per">/ commande</span>
+                </ng-container>
+                <span class="fa-not-set" *ngIf="!getFee('RETURNED_FEE')">Non configuré</span>
+              </div>
+            </div>
+            <p class="pfc-note pfc-note-warn">
+              <i class="pi pi-exclamation-triangle"></i>
+              Ce frais s'ajoute au fait que vous ne percevez pas le revenu de cette commande.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══ RETRAIT ══ -->
+    <div class="process-title">
+      <span class="pt-dot pt-orange"></span>
+      Frais sur les retraits
+    </div>
+
+    <div class="withdrawal-fee-card">
+      <div class="wfc-left">
+        <div class="wfc-icon"><i class="pi pi-arrow-circle-up"></i></div>
+        <div>
+          <h3>Frais de retrait</h3>
+          <p>Prélevé à chaque demande de retrait de fonds depuis votre wallet</p>
+        </div>
+      </div>
+      <div class="wfc-right">
+        <span class="wfc-percent">{{ WITHDRAWAL_FEE_PERCENT }}%</span>
+        <span class="wfc-label">du montant retiré</span>
+      </div>
+    </div>
+
+    <!-- Simulateur -->
+    <div class="sim-card">
+      <div class="sim-header">
+        <i class="pi pi-calculator"></i>
+        <span>Exemple de retrait de <strong>$100</strong></span>
+      </div>
+      <div class="sim-rows">
+        <div class="sim-row">
+          <span>Montant demandé</span>
+          <span class="sr-neutral">$100.00</span>
+        </div>
+        <div class="sim-row">
+          <span>Frais {{ WITHDRAWAL_FEE_PERCENT }}%</span>
+          <span class="sr-debit">− $2.00</span>
+        </div>
+        <div class="sim-row sim-total">
+          <span>Vous recevez</span>
+          <span class="sr-credit">$98.00</span>
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+
+</div>

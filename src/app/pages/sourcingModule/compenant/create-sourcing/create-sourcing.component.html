@@ -1,0 +1,211 @@
+<div class="create-sourcing-container">
+    <!-- Header avec navigation -->
+    <div class="page-header">
+        <div class="header-content">
+            <div class="header-title-section">
+                <button class="back-btn" (click)="router.navigate(['/seller/sourcing'])">
+                    <i class="pi pi-arrow-left"></i>
+                </button>
+                <h1 class="page-title">
+                    <i class="pi pi-plus-circle title-icon"></i>
+                    Nouvelle demande de sourcing
+                </h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formulaire -->
+    <form [formGroup]="createForm" (ngSubmit)="submit()" class="modern-form">
+        <!-- Section produit -->
+        <div class="form-section">
+            <div class="section-header">
+                <i class="pi pi-box section-icon"></i>
+                <h2>Informations produit</h2>
+            </div>
+
+            <div class="form-grid">
+                <!-- Nom du produit -->
+                <div class="form-group full-width">
+                    <label>
+                        Nom du produit
+                        <span class="required">*</span>
+                    </label>
+                    <div class="input-wrapper">
+                        <i class="pi pi-tag"></i>
+                        <input type="text" formControlName="nameProduct" placeholder="Ex: iPhone 15 Pro Max" [class.error]="createForm.get('nameProduct')?.invalid && createForm.get('nameProduct')?.touched" />
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group full-width">
+                    <label>
+                        Description
+                        <span class="required">*</span>
+                    </label>
+                    <div class="textarea-wrapper">
+                        <i class="pi pi-file-edit"></i>
+                        <textarea formControlName="description" rows="4" placeholder="Décrivez le produit en détail..." [class.error]="createForm.get('description')?.invalid && createForm.get('description')?.touched"></textarea>
+                    </div>
+                </div>
+
+                <!-- Lien du produit -->
+                <div class="form-group full-width">
+                    <label>
+                        Lien du produit
+                        <span class="required">*</span>
+                    </label>
+                    <div class="input-wrapper">
+                        <i class="pi pi-link"></i>
+                        <input type="url" formControlName="linkProduct" placeholder="https://exemple.com/produit" [class.error]="createForm.get('linkProduct')?.invalid && createForm.get('linkProduct')?.touched" />
+                    </div>
+                </div>
+
+                <!-- Variantes -->
+                <div class="form-group">
+                    <label>
+                        Variantes
+                        <span class="required">*</span>
+                    </label>
+                    <div class="input-wrapper">
+                        <i class="pi pi-palette"></i>
+                        <input type="text" formControlName="variants" placeholder="Couleur, taille, modèle..." [class.error]="createForm.get('variants')?.invalid && createForm.get('variants')?.touched" />
+                    </div>
+                </div>
+
+                <!-- Quantité estimée -->
+                <div class="form-group">
+                    <label>Quantité estimée</label>
+                    <div class="input-wrapper">
+                        <i class="pi pi-hashtag"></i>
+                        <input type="number" formControlName="estimatedQuantity" placeholder="Ex: 1000" />
+                    </div>
+                </div>
+
+                <!-- Photos du produit (optionnel) -->
+                <div class="form-group full-width">
+                    <label>
+                        Photos du produit
+                        <span class="optional-tag">(optionnel)</span>
+                    </label>
+                    <p class="field-hint">
+                        Ajoutez quelques photos pour aider l'équipe à identifier le produit (ex : plusieurs faces, étiquette, emballage). Jusqu'à {{ maxImages }} photos.
+                    </p>
+
+                    <div class="image-upload-zone">
+                        <label class="upload-dropzone" *ngIf="selectedImages.length < maxImages">
+                            <i class="pi pi-cloud-upload"></i>
+                            <span>Cliquez pour ajouter des photos</span>
+                            <small>JPG, PNG — 5 Mo max par photo</small>
+                            <input type="file" accept="image/*" multiple hidden (change)="onImagesSelected($event)" />
+                        </label>
+
+                        <div class="image-previews" *ngIf="imagePreviews.length > 0">
+                            <div class="image-preview" *ngFor="let preview of imagePreviews; let i = index">
+                                <img [src]="preview" alt="Photo produit" />
+                                <button type="button" class="remove-image-btn" (click)="removeImage(i)" title="Supprimer">
+                                    <i class="pi pi-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section fulfillment -->
+        <div class="form-section">
+            <div class="section-header">
+                <i class="pi pi-globe section-icon"></i>
+                <h2>Mode de fulfillment</h2>
+            </div>
+
+            <div class="fulfillment-cards">
+                <!-- Carte Centralisé -->
+                <div
+                    class="fulfillment-card"
+                    [class.selected]="createForm.value.fulfillmentMode === 'CENTRALIZED'"
+                    (click)="selectMode('CENTRALIZED')"
+                >
+                    <div class="card-check">
+                        <i class="pi pi-check-circle"></i>
+                    </div>
+                    <div class="card-icon centralized">
+                        <i class="pi pi-building"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Centralisé</h3>
+                        <p>Votre stock est géré depuis notre entrepôt central.</p>
+                        <div class="card-country">
+                            <img class="flag-icon-inline" src="https://flagcdn.com/24x18/ae.png" alt="UAE" />
+                            Pays : UAE
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carte Local -->
+                <div
+                    class="fulfillment-card"
+                    [class.selected]="createForm.value.fulfillmentMode === 'LOCAL_SINGLE_COUNTRY'"
+                    (click)="selectMode('LOCAL_SINGLE_COUNTRY')"
+                >
+                    <div class="card-check">
+                        <i class="pi pi-check-circle"></i>
+                    </div>
+                    <div class="card-icon local">
+                        <i class="pi pi-map-marker"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Local</h3>
+                        <p>Votre stock est géré depuis le pays de votre choix.</p>
+
+                        <div
+                            class="card-country-select"
+                            *ngIf="createForm.value.fulfillmentMode === 'LOCAL_SINGLE_COUNTRY'"
+                            (click)="$event.stopPropagation()"
+                        >
+                            <label>
+                                Pays
+                                <span class="required">*</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <p-dropdown [options]="countries" optionLabel="name" formControlName="country" placeholder="-- Choisir un pays --" [style]="{'width':'100%'}">
+                                    <ng-template let-country pTemplate="item">
+                                        <div class="country-option">
+                                            <img class="flag-icon" [src]="'https://flagcdn.com/24x18/' + country.code + '.png'" alt="{{ country.name }}" />
+                                            <span>{{ country.name }}</span>
+                                        </div>
+                                    </ng-template>
+
+                                    <ng-template let-country pTemplate="selectedItem">
+                                        <div class="country-selected">
+                                            <img class="flag-icon" [src]="'https://flagcdn.com/24x18/' + country.code + '.png'" alt="{{ country.name }}" />
+                                            <span>{{ country.name }}</span>
+                                        </div>
+                                    </ng-template>
+                                </p-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="field-error" *ngIf="createForm.get('fulfillmentMode')?.invalid && createForm.get('fulfillmentMode')?.touched">
+                <i class="pi pi-exclamation-circle"></i>
+                Veuillez choisir un mode de fulfillment.
+            </p>
+        </div>
+
+        <!-- Actions du formulaire -->
+        <div class="form-actions">
+            <button type="button" class="btn-secondary" (click)="router.navigate(['/sourcing'])">
+                <i class="pi pi-times"></i>
+                Annuler
+            </button>
+
+            <button type="submit" class="btn-primary" [disabled]="createForm.invalid">
+                <i class="pi pi-check"></i>
+                Créer la demande
+            </button>
+        </div>
+    </form>
+</div>

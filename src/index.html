@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>X10Ecom</title>
+        <base href="/" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <link rel="preconnect" href="https://primefaces.org" />
+        <link href="https://fonts.cdnfonts.com/css/lato" rel="stylesheet" />
+        <link rel="icon" type="image/x-icon" href="/favicon.png" />
+        <link rel="stylesheet" type="text/css" href="/layout/styles/preloading.css" />
+
+        <!-- Styles ajoutés uniquement pour le preloader (inline) -->
+        <style>
+            .layout-preloader-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                width: 100vw;
+                background-color: #f8f9fa;
+            }
+            .custom-preloader {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            .custom-preloader img {
+                height: 70px;
+                width: auto;
+                animation: pulse 1.5s infinite ease-in-out;
+            }
+            .custom-preloader h1 {
+                font-family: 'Lato', sans-serif;
+                font-size: 1.6rem;
+                font-weight: 700;
+                color: #1e293b;
+                margin: 0;
+                letter-spacing: 1px;
+            }
+            @keyframes pulse {
+                0%   { transform: scale(1);   opacity: 1; }
+                50%  { transform: scale(1.05); opacity: 0.8; }
+                100% { transform: scale(1);   opacity: 1; }
+            }
+        </style>
+    </head>
+
+    <body>
+        <app-root>
+            <div class="layout-preloader-container">
+                <div class="custom-preloader">
+                    <!-- Remplacez ce chemin par celui de votre logo -->
+                    <img src="/images/logoSourcing.png" alt="X10Ecom"  height="200" width="200" />
+                    <!-- Le spinner d'origine est conservé -->
+                    <div class="layout-preloader">
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </app-root>
+    </body>
+</html>

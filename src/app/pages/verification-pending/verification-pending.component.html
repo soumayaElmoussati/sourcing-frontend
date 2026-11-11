@@ -1,0 +1,374 @@
+<div class="home-wrapper">
+    <!-- Header -->
+    <header class="home-header">
+        <nav class="nav-container">
+            <div class="nav-content">
+                <div class="logo-section">
+                    <a routerLink="/" class="logo-link">
+                        <img src="/images/logo-x10ecom.jpeg" alt="Logo X10ECOM" class="logo-img">
+                        <div class="logo-text">
+                            <span class="logo-primary">X10</span>
+                            <span class="logo-secondary">ECOM</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="nav-menu">
+                    <a routerLink="/" class="nav-link">Accueil</a>
+                    <a routerLink="/about-us" class="nav-link">À Propos</a>
+                 
+                    <!-- Menu déroulant Services -->
+                    <div class="dropdown">
+                        <a href="#services" class="nav-link dropdown-toggle">
+                            Services
+                            <svg class="dropdown-icon" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M7 10l5 5 5-5z"/>
+                            </svg>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a [routerLink]="['/services']" [queryParams]="{section: 'sourcing'}" class="dropdown-item">Sourcing</a>
+                            <a [routerLink]="['/services']" [queryParams]="{section: 'customs-clearance'}" class="dropdown-item">Custom Clearance</a>
+                            <a [routerLink]="['/services']" [queryParams]="{section: 'warehousing'}" class="dropdown-item">Warehousing & Fulfillment</a>
+                            <a [routerLink]="['/services']" [queryParams]="{section: 'call-center'}" class="dropdown-item">Call Center</a>
+                            <a [routerLink]="['/services']" [queryParams]="{section: 'shipping'}" class="dropdown-item">Shipping</a>
+                            <a [routerLink]="['/services']" [queryParams]="{section: 'remittance'}" class="dropdown-item">COD Remittance</a>
+                        </div>
+                    </div>
+                    
+                    <a href="/contact-us" class="nav-link">Contact</a>
+                </div>
+
+                <div class="nav-actions">
+                    <a routerLink="/auth/login-seller" class="btn-admin">
+                        <svg class="admin-icon" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v1c0 .55.45 1 1 1h14c.55 0 1-.45 1-1v-1c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                        Espace Partenaire
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+ 
+
+    </header>
+
+        <div class="verification-wrapper">
+            <!-- Header simple -->
+            <div class="verification-header">
+                <div class="header-content">
+                    <div class="header-title">
+                        <h1>
+                            <i class="pi pi-shield"></i>
+                            Vérification en cours
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Contenu principal -->
+            <div class="verification-container">
+                <div class="verification-card">
+                    <!-- Icône animée -->
+                    <div class="verification-icon">
+                        <div class="icon-circle">
+                            <i class="pi pi-clock"></i>
+                        </div>
+                        <div class="pulse-ring"></div>
+                    </div>
+        
+                    <!-- Titre -->
+                    <h2 class="verification-title">
+                        Merci pour votre inscription !
+                    </h2>
+        
+                    <!-- Sous-titre -->
+                    <p class="verification-subtitle">
+                        Nous vérifions vos informations
+                    </p>
+        
+                    <!-- Message principal -->
+                    <div class="verification-message">
+                        <p>
+                            Votre demande de création de compte vendeur a bien été reçue. 
+                            Notre équipe procède à la vérification de vos documents et informations.
+                        </p>
+                    </div>
+        
+                    <!-- Statut de vérification -->
+                    <div class="status-container">
+                        <div class="status-item">
+                            <div class="status-icon pending">
+                                <i class="pi pi-id-card"></i>
+                            </div>
+                            <div class="status-content">
+                                <span class="status-label">Documents d'identité</span>
+                                <span class="status-value pending">En cours de vérification</span>
+                            </div>
+                        </div>
+        
+                        <div class="status-item">
+                            <div class="status-icon pending">
+                                <i class="pi pi-envelope"></i>
+                            </div>
+                            <div class="status-content">
+                                <span class="status-label">Email</span>
+                                <span class="status-value pending">En attente de confirmation</span>
+                            </div>
+                        </div>
+        
+                        <div class="status-item">
+                            <div class="status-icon pending">
+                                <i class="pi pi-phone"></i>
+                            </div>
+                            <div class="status-content">
+                                <span class="status-label">Téléphone</span>
+                                <span class="status-value pending">En attente de vérification</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Délai d'activation -->
+                    <div class="activation-timer">
+                        <div class="timer-icon">
+                            <i class="pi pi-hourglass"></i>
+                        </div>
+                        <div class="timer-content">
+                            <span class="timer-label">Délai d'activation estimé</span>
+                            <span class="timer-value">24 à 48 heures</span>
+                        </div>
+                    </div>
+        
+                    <!-- Barre de progression -->
+                    <div class="progress-section">
+                        <div class="progress-info">
+                            <span class="progress-text">Vérification des documents</span>
+                            <span class="progress-percent">60%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 60%"></div>
+                        </div>
+                    </div>
+        
+                    <!-- Actions -->
+                    <div class="verification-actions">
+                        
+                        <button class="action-btn secondary" (click)="contactSupport()">
+                            <i class="pi pi-question-circle"></i>
+                            Contacter le support
+                        </button>
+                    </div>
+        
+                    <!-- Informations complémentaires -->
+                    <div class="info-box">
+                        <div class="info-icon">
+                            <i class="pi pi-info-circle"></i>
+                        </div>
+                        <div class="info-content">
+                            <p>
+                                <strong>Vous recevrez un email</strong> dès que votre compte sera activé. 
+                                Vous pourrez ensuite commencer à vendre sur notre plateforme.
+                            </p>
+                        </div>
+                    </div>
+        
+          
+                </div>
+        
+                <!-- Sidebar avec aide et conseils -->
+                <div class="verification-sidebar">
+                    <!-- Carte d'aide -->
+                    <div class="help-card">
+                        <h3>
+                            <i class="pi pi-question-circle"></i>
+                            Besoin d'aide ?
+                        </h3>
+                        <p>
+                            Notre équipe support est à votre disposition pour répondre à toutes vos questions.
+                        </p>
+                        <div class="help-contacts">
+                            <div class="contact-item">
+                                <i class="pi pi-phone"></i>
+                                <span>+1 (555) 123-4567</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="pi pi-envelope"></i>
+                                <span>support&#64;vendeurs.com</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="pi pi-comments"></i>
+                                <span>Chat en ligne (9h-18h)</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Conseils -->
+                    <div class="tips-card">
+                        <h3>
+                            <i class="pi pi-lightbulb"></i>
+                            En attendant l'activation
+                        </h3>
+                        <ul class="tips-list">
+                            <li>
+                                <i class="pi pi-check-circle"></i>
+                                <span>Préparez vos photos de produits</span>
+                            </li>
+                            <li>
+                                <i class="pi pi-check-circle"></i>
+                                <span>Rédigez vos descriptions de vente</span>
+                            </li>
+                            <li>
+                                <i class="pi pi-check-circle"></i>
+                                <span>Définissez votre politique de retour</span>
+                            </li>
+                            <li>
+                                <i class="pi pi-check-circle"></i>
+                                <span>Consultez notre guide du vendeur</span>
+                            </li>
+                        </ul>
+                    </div>
+        
+                    <!-- Foire aux questions -->
+                    <div class="faq-card">
+                        <h3>
+                            <i class="pi pi-question"></i>
+                            Questions fréquentes
+                        </h3>
+                        <div class="faq-item">
+                            <div class="faq-question" (click)="toggleFaq(0)">
+                                <span>Combien de temps dure la vérification ?</span>
+                                <i class="pi" [ngClass]="faqOpen[0] ? 'pi-chevron-up' : 'pi-chevron-down'"></i>
+                            </div>
+                            <div class="faq-answer" *ngIf="faqOpen[0]">
+                                La vérification prend généralement entre 24 et 48 heures ouvrées.
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question" (click)="toggleFaq(1)">
+                                <span>Que faire si mes documents sont rejetés ?</span>
+                                <i class="pi" [ngClass]="faqOpen[1] ? 'pi-chevron-up' : 'pi-chevron-down'"></i>
+                            </div>
+                            <div class="faq-answer" *ngIf="faqOpen[1]">
+                                Vous recevrez un email avec les motifs du rejet et pourrez soumettre de nouveaux documents.
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question" (click)="toggleFaq(2)">
+                                <span>Puis-je commencer à vendre immédiatement ?</span>
+                                <i class="pi" [ngClass]="faqOpen[2] ? 'pi-chevron-up' : 'pi-chevron-down'"></i>
+                            </div>
+                            <div class="faq-answer" *ngIf="faqOpen[2]">
+                                Non, vous devez attendre que votre compte soit activé par notre équipe.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Footer avec liens utiles -->
+            <div class="verification-footer">
+                <div class="footer-links">
+                    <a href="#">Guide du vendeur</a>
+                    <a href="#">Conditions générales</a>
+                    <a href="#">Politique de confidentialité</a>
+                    <a href="#">Centre d'aide</a>
+                </div>
+                <div class="footer-copyright">
+                    © 2026 VotrePlateforme. Tous droits réservés.
+                </div>
+            </div>
+        </div>
+        
+
+    <!-- Footer -->
+    <footer class="home-footer">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <img src="/images/logo-x10ecom.jpeg" alt="Logo X10ECOM" class="logo-img">
+                        <div class="logo-text">
+                            <span class="logo-primary">X10</span>
+                            <span class="logo-secondary">ECOM</span>
+                        </div>
+                    </div>
+                    <p class="footer-description">
+                        Solutions e-commerce intelligentes pour les marchés MENA
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-2.5 15h-9v-1.5h9V18zm0-4.5h-9V12h9v1.5zm0-4.5h-9V7.5h9V9z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h3 class="footer-title">Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="#services">Fulfillment & Logistique</a></li>
+                        <li><a href="#services">Sourcing & Fabrication</a></li>
+                        <li><a href="#services">Livraison Last-Mile</a></li>
+                        <li><a href="#services">Intégration Plateforme</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3 class="footer-title">Zones</h3>
+                    <ul class="footer-links">
+                        <li><a href="#locations">Maroc</a></li>
+                        <li><a href="#locations">Émirats</a></li>
+                        <li><a href="#locations">Arabie Saoudite</a></li>
+                        <li><a href="#locations">Pays du Golfe</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3 class="footer-title">Contact</h3>
+                    <ul class="footer-contact">
+                        <li>
+                            <svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            </svg>
+                            <span>Région MENA & Irak</span>
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                            </svg>
+                            <span>contact&#64;x10ecom.com</span>
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M6.54 5c.06.89.21 1.76.45 2.59l-1.2 1.2c-.41-1.2-.67-2.47-.76-3.79h1.51m9.86 12.02c.85.24 1.72.39 2.6.45v1.49c-1.32-.09-2.59-.35-3.8-.75l1.2-1.19M7.5 3H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.49c0-.55-.45-1-1-1-1.24 0-2.45-.2-3.57-.57-.35-.11-.74-.03-1.02.24l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.59l2.2-2.21c.28-.26.36-.65.25-1C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1z"/>
+                            </svg>
+                            <span>+212 5 XX XX XX XX</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-copyright">
+                    © 2026 X10ECOM. Tous droits réservés.
+                </div>
+                <div class="footer-legal">
+                    <a href="#">Confidentialité</a>
+                    <a href="#">Conditions d'utilisation</a>
+                    <a href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>

@@ -1,0 +1,285 @@
+<div class="notification-container">
+  <p-toast position="top-right"></p-toast>
+  
+  <!-- Header -->
+  <div class="page-header">
+      <div class="header-content">
+          <div class="header-title-section">
+              <button class="back-btn" (click)="goBack()">
+                  <i class="pi pi-arrow-left"></i>
+              </button>
+              <h1 class="page-title">
+                  <i class="pi pi-bell title-icon" [ngClass]="{'edit-mode': isEdit}"></i>
+                  {{ isEdit ? 'Modifier la notification' : 'Créer une notification' }}
+              </h1>
+          </div>
+          
+          <!-- Badge d'information -->
+          <div class="info-badge" *ngIf="isEdit">
+              <i class="pi pi-info-circle"></i>
+              <span>Modification en cours</span>
+          </div>
+      </div>
+      
+      <p class="page-subtitle">
+          {{ isEdit ? 'Modifiez les détails de votre notification' : 'Remplissez les informations pour créer une nouvelle notification' }}
+      </p>
+  </div>
+
+  <!-- Formulaire -->
+  <form [formGroup]="form" (ngSubmit)="submit()" class="modern-form">
+      
+      <!-- Section: Informations générales -->
+      <div class="form-section">
+          <div class="section-header">
+              <div class="section-icon">
+                  <i class="pi pi-info-circle"></i>
+              </div>
+              <div class="section-title">
+                  <h2>Informations générales</h2>
+                  <p>Les informations de base de votre notification</p>
+              </div>
+          </div>
+
+          <div class="form-grid">
+              <!-- Titre -->
+              <div class="form-group full-width">
+                  <label class="field-label">
+                      Titre
+                      <span class="required-star">*</span>
+                  </label>
+                  <div class="input-wrapper">
+                      <i class="pi pi-tag input-icon"></i>
+                      <input 
+                          formControlName="title" 
+                          class="form-input"
+                          [class.error]="form.get('title')?.invalid && form.get('title')?.touched"
+                          placeholder="Ex: Maintenance prévue, Nouvelle fonctionnalité..."
+                      >
+                  </div>
+                  <div class="error-message" *ngIf="form.get('title')?.invalid && form.get('title')?.touched">
+                      <i class="pi pi-exclamation-circle"></i>
+                      Le titre est obligatoire
+                  </div>
+              </div>
+
+              <!-- Message -->
+              <div class="form-group full-width">
+                  <label class="field-label">
+                      Message
+                      <span class="required-star">*</span>
+                  </label>
+                  <div class="textarea-wrapper">
+                      <i class="pi pi-file-edit input-icon"></i>
+                      <textarea 
+                          formControlName="message" 
+                          class="form-textarea"
+                          [class.error]="form.get('message')?.invalid && form.get('message')?.touched"
+                          rows="4"
+                          placeholder="Contenu détaillé de la notification..."
+                      ></textarea>
+                  </div>
+                  <div class="char-counter" *ngIf="form.get('message')?.value">
+                      {{ form.get('message')?.value?.length || 0 }}/500
+                  </div>
+                  <div class="error-message" *ngIf="form.get('message')?.invalid && form.get('message')?.touched">
+                      <i class="pi pi-exclamation-circle"></i>
+                      Le message est obligatoire
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Section: Type et ciblage -->
+      <div class="form-section">
+          <div class="section-header">
+              <div class="section-icon">
+                  <i class="pi pi-users"></i>
+              </div>
+              <div class="section-title">
+                  <h2>Type et ciblage</h2>
+                  <p>Définissez la portée de votre notification</p>
+              </div>
+          </div>
+
+          <div class="form-grid">
+              <!-- Type de notification -->
+              <div class="form-group full-width">
+                  <label class="field-label">
+                      Type de notification
+                      <span class="required-star">*</span>
+                  </label>
+                  
+                  <div class="type-selector">
+                      <div class="type-card" 
+                           [class.active]="form.get('type')?.value === 'GLOBAL'"
+                           (click)="form.patchValue({type: 'GLOBAL'})">
+                          <div class="type-radio">
+                              <div class="radio-circle">
+                                  <div class="radio-dot" *ngIf="form.get('type')?.value === 'GLOBAL'"></div>
+                              </div>
+                          </div>
+                          <div class="type-content">
+                              <div class="type-header">
+                                  <i class="pi pi-globe type-icon"></i>
+                                  <span class="type-name">Globale</span>
+                              </div>
+                              <p class="type-description">
+                                  Tous les utilisateurs recevront cette notification
+                              </p>
+                              <div class="type-badge">Tous les utilisateurs</div>
+                          </div>
+                      </div>
+
+                      <div class="type-card" 
+                           [class.active]="form.get('type')?.value === 'TARGETED'"
+                           (click)="form.patchValue({type: 'TARGETED'})">
+                          <div class="type-radio">
+                              <div class="radio-circle">
+                                  <div class="radio-dot" *ngIf="form.get('type')?.value === 'TARGETED'"></div>
+                              </div>
+                          </div>
+                          <div class="type-content">
+                              <div class="type-header">
+                                  <i class="pi pi-users type-icon"></i>
+                                  <span class="type-name">Ciblée</span>
+                              </div>
+                              <p class="type-description">
+                                  Seulement les utilisateurs sélectionnés
+                              </p>
+                              <div class="type-badge">Ciblage précis</div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Zone de ciblage (pour notification ciblée) -->
+              <div class="targeted-section" *ngIf="isTargeted">
+                  <div class="targeted-header">
+                      <h4>Utilisateurs ciblés</h4>
+                      <span class="badge-count">{{ userEmails.length }} email(s)</span>
+                  </div>
+
+                  <div class="error-message" *ngIf="form.hasError('emailsRequired') && form.touched">
+                      <i class="pi pi-exclamation-circle"></i>
+                      Au moins un email est obligatoire pour une notification ciblée
+                  </div>
+
+                  <div formArrayName="userEmails" class="emails-container">
+                      <div class="email-card" *ngFor="let ctrl of userEmails.controls; let i = index">
+                          <div class="email-content">
+                              <i class="pi pi-envelope email-icon"></i>
+                              <div class="email-input-wrapper">
+                                  <input 
+                                      [formControlName]="i" 
+                                      class="email-input"
+                                      [class.error]="ctrl.invalid && ctrl.touched"
+                                      placeholder="email@exemple.com"
+                                  >
+                                  <div class="email-validation" *ngIf="ctrl.invalid && ctrl.touched">
+                                      <small>Email invalide</small>
+                                  </div>
+                              </div>
+                              <button type="button" class="remove-email-btn" (click)="removeEmail(i)">
+                                  <i class="pi pi-times"></i>
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+
+                  <button type="button" class="add-email-btn" (click)="addEmail()">
+                      <i class="pi pi-plus"></i>
+                      Ajouter un email
+                  </button>
+              </div>
+          </div>
+      </div>
+
+      <!-- Section: Images -->
+      <div class="form-section">
+          <div class="section-header">
+              <div class="section-icon">
+                  <i class="pi pi-image"></i>
+              </div>
+              <div class="section-title">
+                  <h2>Images (optionnel)</h2>
+                  <p>Ajoutez des visuels à votre notification</p>
+              </div>
+          </div>
+
+          <div class="form-group full-width">
+              <!-- Zone de drop / upload -->
+              <div class="upload-area" (click)="fileInput.click()">
+                  <input 
+                      type="file" 
+                      #fileInput
+                      multiple 
+                      accept="image/*" 
+                      (change)="onImagesSelected($event)"
+                      style="display: none"
+                  >
+                  <i class="pi pi-cloud-upload"></i>
+                  <h4>Cliquez pour ajouter des images</h4>
+                  <p>PNG, JPG, GIF - Max 10MB par image</p>
+              </div>
+
+              <!-- Images existantes -->
+              <div class="images-grid" *ngIf="existingImages.length > 0">
+                  <div class="image-card" *ngFor="let img of existingImages; let i = index" [hidden]="img.toDelete">
+                      <div class="image-wrapper">
+                          <img [src]="img.url" class="preview-img">
+                          <div class="image-overlay">
+                              <button type="button" class="delete-image-btn" (click)="markImageForDeletion(i)">
+                                  <i class="pi pi-trash"></i>
+                              </button>
+                          </div>
+                      </div>
+                      <div class="image-badge">
+                          <i class="pi pi-check"></i>
+                          Existante
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Nouvelles images -->
+              <div class="images-grid" *ngIf="imagePreviews.length > 0">
+                  <div class="image-card new" *ngFor="let img of imagePreviews; let i = index">
+                      <div class="image-wrapper">
+                          <img [src]="img" class="preview-img">
+                          <div class="image-overlay">
+                              <button type="button" class="delete-image-btn" (click)="removeImage(i)">
+                                  <i class="pi pi-times"></i>
+                              </button>
+                          </div>
+                      </div>
+                      <div class="image-badge">
+                          <i class="pi pi-plus-circle"></i>
+                          Nouvelle
+                      </div>
+                  </div>
+              </div>
+
+              <div class="upload-hint" *ngIf="!existingImages.length && !imagePreviews.length">
+                  <i class="pi pi-info-circle"></i>
+                  Aucune image ajoutée pour le moment
+              </div>
+          </div>
+      </div>
+
+      <!-- Actions du formulaire -->
+      <div class="form-actions">
+          <button type="button" class="btn-secondary" (click)="goBack()">
+              <i class="pi pi-times"></i>
+              Annuler
+          </button>
+          
+          <button type="submit" class="btn-primary" [disabled]="form.invalid || loading">
+              <i class="pi pi-spin pi-spinner" *ngIf="loading"></i>
+              <span *ngIf="!loading">
+                  <i class="pi pi-save"></i>
+                  {{ isEdit ? 'Mettre à jour' : 'Créer la notification' }}
+              </span>
+          </button>
+      </div>
+  </form>
+</div>

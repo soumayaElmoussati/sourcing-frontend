@@ -1,0 +1,63 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card language-form">
+
+      <div class="text-center mb-5" style="padding-bottom: 1rem;">
+        <div class="text-900 text-3xl font-medium mb-3">
+          {{ isEditMode ? 'Modifier la langue' : 'Nouvelle langue' }}
+        </div>
+      </div>
+
+      <form [formGroup]="languageForm" (ngSubmit)="onSubmit()">
+        <div class="card flex flex-col gap-4">
+
+          <div class="p-field">
+            <label for="titre">Titre*</label>
+            <input pInputText id="titre" formControlName="titre" />
+            <small *ngIf="submitted && languageForm.controls['titre'].errors?.['required']" class="p-error">Le titre est requis.</small>
+          </div>
+
+          <div class="p-field">
+            <label for="codeLg">Code langue*</label>
+            <input pInputText id="codeLg" formControlName="codeLg" maxlength="2" />
+            <small *ngIf="submitted && languageForm.controls['codeLg'].errors?.['required']" class="p-error">Le code langue est requis.</small>
+          </div>
+
+          <div class="p-field">
+            <label for="flag">Flag (Importer un fichier)</label>
+            <input type="file" id="flag" (change)="onFileSelected($event)" accept="image/*" />
+          </div>
+
+          <div *ngIf="languageForm.value.flag" class="flag-preview">
+            <label>Preview du drapeau :</label>
+            <img [src]="languageForm.value.flag" alt="Flag Preview" width="60" style="border: 1px solid #ccc; padding: 3px; border-radius: 3px;" />
+          </div>
+
+          <div class="form-buttons">
+            <button
+              pButton
+              pRipple
+              label="Annuler"
+              icon="pi pi-times"
+              class="p-button-outlined p-button-secondary"
+              type="button"
+              (click)="onCancel()"
+            ></button>
+
+            <button
+              pButton
+              pRipple
+              label="Enregistrer"
+              icon="pi pi-check"
+              type="submit"
+            ></button>
+          </div>
+
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<p-toast></p-toast>

@@ -1,0 +1,267 @@
+<div class="da-page">
+
+  <!-- ══ HEADER ══ -->
+  <div class="da-header">
+    <div class="da-header-left">
+      <div class="da-header-icon"><i class="pi pi-chart-bar"></i></div>
+      <div>
+        <h1 class="da-title">Tableau de bord</h1>
+        <p class="da-subtitle">Vue d'ensemble de la plateforme X10ECOM</p>
+      </div>
+    </div>
+    <button class="btn-refresh" (click)="load()" [disabled]="isLoading" title="Actualiser">
+      <i class="pi pi-refresh" [class.pi-spin]="isLoading"></i>
+      <span>Actualiser</span>
+    </button>
+  </div>
+
+  <!-- ══ SKELETON ══ -->
+  <ng-container *ngIf="isLoading">
+    <div class="kpi-grid">
+      <div class="sk-kpi" *ngFor="let i of [1,2,3,4]"></div>
+    </div>
+    <div class="sk-charts">
+      <div class="sk-chart" *ngFor="let i of [1,2,3,4,5,6]"></div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!isLoading && data">
+
+    <!-- ══ KPI SECTION LABELS ══ -->
+    <div class="section-label">
+      <span class="sl-dot sl-green"></span>
+      Commandes & Revenus
+    </div>
+
+    <!-- ══ KPI ROW 1 — ORDERS ══ -->
+    <div class="kpi-grid">
+      <div class="kpi-card kc-blue">
+        <div class="kc-ghost"><i class="pi pi-shopping-cart"></i></div>
+        <div class="kc-icon"><i class="pi pi-shopping-cart"></i></div>
+        <div class="kc-body">
+          <span class="kc-val">{{ data.kpis.totalOrders | number }}</span>
+          <span class="kc-label">Commandes totales</span>
+        </div>
+        <div class="kc-sub">
+          <span class="sub-item sub-orange"><i class="pi pi-clock"></i> {{ data.kpis.pendingOrders }} en attente</span>
+        </div>
+      </div>
+
+      <div class="kpi-card kc-green">
+        <div class="kc-ghost"><i class="pi pi-dollar"></i></div>
+        <div class="kc-icon"><i class="pi pi-dollar"></i></div>
+        <div class="kc-body">
+          <span class="kc-val">{{ data.kpis.totalRevenue | currency:'USD':'symbol':'1.0-0' }}</span>
+          <span class="kc-label">Chiffre d'affaires</span>
+        </div>
+        <div class="kc-sub">
+          <span class="sub-item sub-green"><i class="pi pi-check-circle"></i> {{ data.kpis.deliveredOrders }} livrées</span>
+        </div>
+      </div>
+
+      <div class="kpi-card kc-purple">
+        <div class="kc-ghost"><i class="pi pi-chart-line"></i></div>
+        <div class="kc-icon"><i class="pi pi-chart-line"></i></div>
+        <div class="kc-body">
+          <span class="kc-val">{{ data.kpis.avgOrderValue | currency:'USD':'symbol':'1.0-2' }}</span>
+          <span class="kc-label">Panier moyen</span>
+        </div>
+        <div class="kc-sub">
+          <span class="sub-item sub-green">Taux livraison : {{ deliveryRate }}%</span>
+        </div>
+      </div>
+
+      <div class="kpi-card kc-red">
+        <div class="kc-ghost"><i class="pi pi-replay"></i></div>
+        <div class="kc-icon"><i class="pi pi-replay"></i></div>
+        <div class="kc-body">
+          <span class="kc-val">{{ data.kpis.returnedOrders | number }}</span>
+          <span class="kc-label">Retours</span>
+        </div>
+        <div class="kc-sub">
+          <span class="sub-item sub-red"><i class="pi pi-times-circle"></i> {{ data.kpis.cancelledOrders }} annulées</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">
+      <span class="sl-dot sl-blue"></span>
+      Vendeurs & Produits
+    </div>
+
+    <!-- ══ KPI ROW 2 — SELLERS / PRODUCTS / SOURCING ══ -->
+    <div class="kpi-grid">
+      <div class="kpi-card kc-teal">
+        <div class="kc-ghost"><i class="pi pi-users"></i></div>
+        <div class="kc-icon"><i class="pi pi-users"></i></div>
+        <div class="kc-body">
+          <span class="kc-val">{{ data.kpis.totalSellers | number }}</span>
+          <span class="kc-label">Vendeurs</span>
+        </div>
+        <div class="kc-sub">
+          <span class="sub-item sub-green"><i class="pi pi-check"></i> {{ data.kpis.approvedSellers }} approuvés</span>
+          <span class="sub-item sub-orange"><i class="pi pi-clock"></i> {{ data.kpis.pendingSellers }} en attente</span>
+        </div>
+      </div>
+
+      <div class="kpi-card kc-indigo">
+        <div class="kc-ghost"><i class="pi pi-box"></i></div>
+        <div class="kc-icon"><i class="pi pi-box"></i></div>
+        <div class="kc-body">
+          <span class="kc-val">{{ data.kpis.totalProducts | number }}</span>
+          <span class="kc-label">Produits</span>
+        </div>
+        <div class="kc-sub">
+          <span class="sub-item sub-green"><i class="pi pi-check"></i> {{ data.kpis.activeProducts }} actifs</span>
+          <span class="sub-item sub-orange"><i class="pi pi-clock"></i> {{ data.kpis.pendingProducts }} en révision</span>
+        </div>
+      </div>
+
+      <div class="kpi-card kc-orange">
+        <div class="kc-ghost"><i class="pi pi-file-edit"></i></div>
+        <div class="kc-icon"><i class="pi pi-file-edit"></i></div>
+        <div class="kc-body">
+          <span class="kc-val">{{ data.kpis.totalSourcingRequests | number }}</span>
+          <span class="kc-label">Demandes sourcing</span>
+        </div>
+        <div class="kc-sub">
+          <span class="sub-item sub-green"><i class="pi pi-check"></i> {{ data.kpis.completedSourcing }} complétées</span>
+          <span class="sub-item sub-orange"><i class="pi pi-clock"></i> {{ data.kpis.pendingSourcing }} en attente</span>
+        </div>
+      </div>
+
+      <div class="kpi-card kc-slate">
+        <div class="kc-ghost"><i class="pi pi-trophy"></i></div>
+        <div class="kc-icon"><i class="pi pi-trophy"></i></div>
+        <div class="kc-body">
+          <span class="kc-val kc-sm">{{ topProduct }}</span>
+          <span class="kc-label">Top produit</span>
+        </div>
+        <div class="kc-sub" *ngIf="data.topProducts[0]">
+          <span class="sub-item sub-blue">{{ data.topProducts[0].orderCount }} commandes · {{ data.topProducts[0].revenue | currency:'USD':'symbol':'1.0-0' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ CHARTS GRID ══ -->
+    <div class="charts-grid">
+
+      <!-- Bar : CA mensuel (wide) -->
+      <div class="chart-card cc-wide">
+        <div class="chart-header">
+          <div class="ch-icon ch-green"><i class="pi pi-chart-bar"></i></div>
+          <div>
+            <h3>CA mensuel — 6 derniers mois</h3>
+            <p>Revenus des commandes livrées</p>
+          </div>
+        </div>
+        <div class="chart-body" style="height:220px">
+          <p-chart type="bar" [data]="monthlyBarData" [options]="barOpts" height="220"></p-chart>
+        </div>
+      </div>
+
+      <!-- Pie : statut commandes -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="ch-icon ch-blue"><i class="pi pi-shopping-cart"></i></div>
+          <div>
+            <h3>Statut des commandes</h3>
+            <p>Répartition par statut</p>
+          </div>
+        </div>
+        <div class="chart-body" style="height:220px">
+          <p-chart type="pie" [data]="ordersPieData" [options]="pieOpts" height="220"></p-chart>
+        </div>
+      </div>
+
+      <!-- Pie : statut produits -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="ch-icon ch-indigo"><i class="pi pi-box"></i></div>
+          <div>
+            <h3>Statut des produits</h3>
+            <p>Répartition par statut</p>
+          </div>
+        </div>
+        <div class="chart-body" style="height:220px">
+          <p-chart type="pie" [data]="productsPieData" [options]="pieOpts" height="220"></p-chart>
+        </div>
+      </div>
+
+      <!-- Pie : vendeurs par statut -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="ch-icon ch-teal"><i class="pi pi-users"></i></div>
+          <div>
+            <h3>Vendeurs par statut</h3>
+            <p>Comptes approuvés / en attente</p>
+          </div>
+        </div>
+        <div class="chart-body" style="height:220px">
+          <p-chart type="pie" [data]="sellersPieData" [options]="pieOpts" height="220"></p-chart>
+        </div>
+      </div>
+
+      <!-- Pie : sourcing -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="ch-icon ch-orange"><i class="pi pi-file-edit"></i></div>
+          <div>
+            <h3>Demandes sourcing</h3>
+            <p>Statuts des demandes actives</p>
+          </div>
+        </div>
+        <div class="chart-body" style="height:220px">
+          <p-chart type="pie" [data]="sourcingPieData" [options]="pieOpts" height="220"></p-chart>
+        </div>
+      </div>
+
+      <!-- Pie : commandes par pays -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="ch-icon ch-purple"><i class="pi pi-map-marker"></i></div>
+          <div>
+            <h3>Commandes par pays</h3>
+            <p>Top 6 pays de livraison</p>
+          </div>
+        </div>
+        <div class="chart-body" style="height:220px">
+          <p-chart type="pie" [data]="countryPieData" [options]="pieOpts" height="220"></p-chart>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══ TOP PRODUCTS TABLE ══ -->
+    <div class="top-card">
+      <div class="chart-header">
+        <div class="ch-icon ch-green"><i class="pi pi-trophy"></i></div>
+        <div>
+          <h3>Top 5 produits</h3>
+          <p>Classés par nombre de commandes livrées</p>
+        </div>
+        <a routerLink="/admin/products" class="link-more">Voir tous <i class="pi pi-arrow-right"></i></a>
+      </div>
+
+      <div class="top-table">
+        <div class="top-row top-head">
+          <span>#</span>
+          <span>Produit</span>
+          <span class="tr-right">Commandes</span>
+          <span class="tr-right">CA généré</span>
+        </div>
+        <div class="top-row" *ngFor="let p of data.topProducts; let i = index">
+          <span class="rank" [ngClass]="'rank-' + (i+1)">{{ i + 1 }}</span>
+          <span class="prod-name">{{ p.name }}</span>
+          <span class="tr-right prod-count">{{ p.orderCount }}</span>
+          <span class="tr-right prod-rev">{{ p.revenue | currency:'USD':'symbol':'1.0-0' }}</span>
+        </div>
+        <div class="top-empty" *ngIf="data.topProducts.length === 0">
+          Aucune donnée disponible
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+
+</div>

@@ -1,0 +1,226 @@
+<div class="ds-page">
+  <p-toast position="top-right"></p-toast>
+
+  <!-- ══ HEADER ══ -->
+  <div class="ds-header">
+    <div class="ds-header-left">
+      <div class="ds-header-icon">
+        <i class="pi pi-trash"></i>
+      </div>
+      <div>
+        <h1 class="ds-title">Vendeurs supprimés</h1>
+        <p class="ds-subtitle">Les vendeurs supprimés sont conservés ici et peuvent être restaurés à tout moment.</p>
+      </div>
+    </div>
+    <a [routerLink]="['/admin/list-sellers']" class="btn-back">
+      <i class="pi pi-arrow-left"></i>
+      <span>Retour aux vendeurs</span>
+    </a>
+  </div>
+
+  <!-- ══ BANNER INFO ══ -->
+  <div class="info-banner">
+    <div class="ib-icon"><i class="pi pi-info-circle"></i></div>
+    <div class="ib-body">
+      <strong>Corbeille</strong> — Les vendeurs ici peuvent être restaurés sans perte de données.
+      La suppression définitive est irréversible.
+    </div>
+    <span class="ib-count">
+      <strong>{{ filteredSellers.length }}</strong> vendeur(s)
+    </span>
+  </div>
+
+  <!-- ══ SEARCH ══ -->
+  <div class="search-card">
+    <div class="search-wrap" [class.sf]="searchFocused">
+      <i class="pi pi-search si"></i>
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearch()"
+        (focus)="searchFocused=true"
+        (blur)="searchFocused=false"
+        placeholder="Rechercher par nom, email ou boutique…"
+        class="search-input"
+      />
+      <button class="search-clear" *ngIf="searchQuery" (click)="searchQuery=''; onSearch()">
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ TABLE CARD ══ -->
+  <div class="table-card">
+
+    <div class="table-toolbar">
+      <span class="table-count">
+        <strong>{{ filteredSellers.length }}</strong> vendeur(s) dans la corbeille
+        <span *ngIf="searchQuery"> — filtre actif</span>
+      </span>
+      <button class="btn-icon" (click)="refreshData()" title="Actualiser">
+        <i class="pi pi-refresh" [class.pi-spin]="isLoading"></i>
+      </button>
+    </div>
+
+    <!-- Skeleton -->
+    <div class="skeleton-rows" *ngIf="isLoading">
+      <div class="sk-row" *ngFor="let i of [1,2,3]"></div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap" *ngIf="!isLoading">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Vendeur</th>
+            <th>Email</th>
+            <th>Téléphone</th>
+            <th>Boutique</th>
+            <th>Pays</th>
+            <th>Statut</th>
+            <th>Supprimé le</th>
+            <th class="th-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let seller of filteredSellers" class="data-row">
+
+            <!-- Vendeur -->
+            <td class="td-seller">
+              <div class="seller-cell">
+                <div class="seller-av deleted-av">
+                  {{ seller.fullName?.charAt(0)?.toUpperCase() || 'V' }}
+                </div>
+                <span class="seller-name">{{ seller.fullName }}</span>
+              </div>
+            </td>
+
+            <!-- Email -->
+            <td>
+              <span class="email-text" [title]="seller.email">{{ truncateEmail(seller.email, 22) }}</span>
+            </td>
+
+            <!-- Téléphone -->
+            <td>
+              <span class="phone-text">{{ seller.phone || '—' }}</span>
+            </td>
+
+            <!-- Boutique -->
+            <td>
+              <span class="store-text">{{ seller.storeName || '—' }}</span>
+            </td>
+
+            <!-- Pays -->
+            <td>
+              <div class="country-cell" *ngIf="seller.country">
+                <i class="pi pi-map-marker cc-icon"></i>
+                {{ seller.country }}
+              </div>
+              <span *ngIf="!seller.country" class="dash">—</span>
+            </td>
+
+            <!-- Statut -->
+            <td>
+              <span class="badge-status" [ngClass]="'bs-' + seller.status">
+                <span class="bs-dot"></span>
+                {{ getStatusLabel(seller.status) }}
+              </span>
+            </td>
+
+            <!-- Date suppression -->
+            <td>
+              <div class="date-cell" *ngIf="seller.deletedAt">
+                <i class="pi pi-calendar dc-icon"></i>
+                {{ seller.deletedAt | date:'dd/MM/yyyy HH:mm' }}
+              </div>
+              <span *ngIf="!seller.deletedAt" class="dash">—</span>
+            </td>
+
+            <!-- Actions -->
+            <td class="td-center">
+              <div class="action-group">
+                <button class="act-btn act-green" title="Restaurer" (click)="restoreSeller(seller)" [disabled]="isRestoring">
+                  <i class="pi pi-replay"></i>
+                </button>
+                <button class="act-btn act-red" title="Supprimer définitivement" (click)="openPermanentDeleteModal(seller)">
+                  <i class="pi pi-trash"></i>
+                </button>
+              </div>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Empty state -->
+      <div class="empty-state" *ngIf="filteredSellers.length === 0">
+        <div class="empty-illustration">
+          <div class="er r1"></div>
+          <div class="er r2"></div>
+          <div class="er r3"></div>
+          <div class="ei"><i class="pi pi-trash"></i></div>
+        </div>
+        <h3 class="empty-title">La corbeille est vide</h3>
+        <p class="empty-desc">
+          {{ searchQuery ? 'Aucun vendeur ne correspond à votre recherche.' : 'Aucun vendeur supprimé pour le moment.' }}
+        </p>
+        <button class="empty-cta" *ngIf="searchQuery" (click)="searchQuery=''; onSearch()">
+          <i class="pi pi-times"></i>
+          Effacer la recherche
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ MODAL SUPPRESSION DÉFINITIVE ══ -->
+<div class="modal-overlay" *ngIf="showPermanentDeleteModal" (click)="closePermanentDeleteModal()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <div class="mh-icon mh-red"><i class="pi pi-trash"></i></div>
+      <div class="mh-text">
+        <h3>Suppression définitive</h3>
+        <p>Cette action est irréversible</p>
+      </div>
+      <button class="modal-close" (click)="closePermanentDeleteModal()" [disabled]="isPermanentlyDeleting">
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <p class="delete-msg">
+        Vous allez supprimer définitivement <strong>{{ sellerToPermanentlyDelete?.fullName }}</strong>.
+      </p>
+
+      <div class="delete-warning">
+        <i class="pi pi-exclamation-triangle"></i>
+        <div>
+          <strong>Attention — irréversible</strong>
+          <p>Toutes les données associées (documents, produits, commandes) seront définitivement effacées de la base de données.</p>
+        </div>
+      </div>
+
+      <div class="error-msg" *ngIf="permanentDeleteError">
+        <i class="pi pi-times-circle"></i>
+        {{ permanentDeleteError }}
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closePermanentDeleteModal()" [disabled]="isPermanentlyDeleting">
+        Annuler
+      </button>
+      <button class="btn-danger" (click)="confirmPermanentDelete()" [disabled]="isPermanentlyDeleting">
+        <i class="pi pi-spin pi-spinner" *ngIf="isPermanentlyDeleting"></i>
+        <ng-container *ngIf="!isPermanentlyDeleting">
+          <i class="pi pi-trash"></i>
+          Supprimer définitivement
+        </ng-container>
+        <span *ngIf="isPermanentlyDeleting">Suppression…</span>
+      </button>
+    </div>
+
+  </div>
+</div>

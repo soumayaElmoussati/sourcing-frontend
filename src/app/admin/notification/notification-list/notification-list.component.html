@@ -1,0 +1,207 @@
+<div class="notifications-container">
+    <p-toast position="top-right"></p-toast>
+  <!-- Header Section -->
+  <div class="page-header">
+      <div class="header-content">
+          <div class="header-title-section">
+              <h3 class="page-title">
+                  <i class="pi pi-bell title-icon"></i>
+                  Gestion des notifications
+              </h3>
+          </div>
+
+          <div class="header-actions">
+              <button class="add-notification-btn" (click)="goToCreate()">
+                  <i class="pi pi-plus"></i>
+                  Nouvelle notification
+              </button>
+          </div>
+      </div>
+  </div>
+
+  <!-- Filters & Search -->
+  <div class="filters-section">
+      <div class="search-box">
+          <i class="pi pi-search search-icon"></i>
+          <input 
+              type="text" 
+              [(ngModel)]="searchQuery" 
+              (ngModelChange)="applyFilters()"
+              placeholder="Rechercher une notification par titre ou message..."
+              class="search-input"
+          >
+      </div>
+      
+      <div class="filter-controls">
+          <div class="filter-group">
+              <label class="filter-label">Type</label>
+              <select [(ngModel)]="typeFilter" (change)="applyFilters()" class="filter-select">
+                  <option value="">Tous les types</option>
+                  <option value="GLOBAL">🌍 Globales</option>
+                  <option value="TARGETED">🎯 Ciblées</option>
+              </select>
+          </div>
+          
+          <button class="clear-filters" (click)="clearFilters()">
+              <i class="pi pi-filter-slash"></i>
+              Initialiser filtres
+          </button>
+      </div>
+  </div>
+
+  <!-- Table Section -->
+  <div class="table-container">
+      <div class="table-header">
+          <div class="table-info">
+              <span class="table-count">
+                  Affichage <strong>{{ notifications.length }}</strong> de <strong>{{ totalElements }}</strong> notifications
+              </span>
+          </div>
+          <div class="table-actions">
+              <button class="refresh-btn" (click)="load()" title="Rafraîchir">
+                  <i class="pi pi-refresh"></i>
+              </button>
+          </div>
+      </div>
+
+      <!-- Table -->
+      <div class="modern-table">
+          <table>
+              <thead>
+                  <tr>
+                      <th>Titre</th>
+                      <th>Message</th>
+                      <th>Type</th>
+                      <th>Date</th>
+                      <th class="actions-col">Actions</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let notif of notifications">
+                      <td class="title-cell">
+                          <strong>{{ notif.title }}</strong>
+                      </td>
+                      <td class="message-cell">
+                          <span class="message-preview">{{ truncateMessage(notif.message, 50) }}</span>
+                      </td>
+                      <td>
+                          <span class="type-badge" [ngClass]="notif.type.toLowerCase()">
+                              <i class="pi" [ngClass]="notif.type === 'GLOBAL' ? 'pi-globe' : 'pi-users'"></i>
+                              {{ notif.type === 'GLOBAL' ? 'Globale' : 'Ciblée' }}
+                          </span>
+                      </td>
+                      <td class="date-cell">
+                          <div class="date-wrapper">
+                              <i class="pi pi-calendar"></i>
+                              {{ notif.createdAt | date:'dd/MM/yyyy' }}
+                          </div>
+                          <div class="time-wrapper">
+                              <i class="pi pi-clock"></i>
+                              {{ notif.createdAt | date:'HH:mm' }}
+                          </div>
+                      </td>
+                      <td class="actions-cell">
+                          <div class="action-buttons">
+                              <button class="action-btn edit" title="Modifier" (click)="edit(notif.id)">
+                                  <i class="pi pi-pencil"></i>
+                              </button>
+                              <button class="action-btn delete" title="Supprimer" (click)="openDeleteModal(notif)">
+                                  <i class="pi pi-trash"></i>
+                              </button>
+                          </div>
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+          
+          <!-- Empty State -->
+          <div class="empty-state" *ngIf="notifications.length === 0">
+              <div class="empty-icon">
+                  <i class="pi pi-bell"></i>
+              </div>
+              <h3>Aucune notification trouvée</h3>
+              <p>Commencez par créer une nouvelle notification</p>
+              <button class="add-notification-btn" (click)="goToCreate()">
+                  <i class="pi pi-plus"></i>
+                  Nouvelle notification
+              </button>
+          </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination-container" *ngIf="totalElements > 0">
+          <div class="pagination-info">
+              <span>
+                  Affichage {{ getStartIndex() }} à {{ getEndIndex() }} 
+                  sur {{ totalElements }} notifications
+              </span>
+          </div>
+          <div class="pagination-controls">
+              <button class="pagination-btn" [disabled]="firstPage" (click)="previousPage()">
+                  <i class="pi pi-chevron-left"></i>
+              </button>
+              
+              <div class="page-numbers">
+                  <button *ngFor="let page of getPages()" 
+                          [class.active]="page === currentPage"
+                          (click)="goToPage(page)"
+                          class="page-btn">
+                      {{ page + 1 }}
+                  </button>
+              </div>
+              
+              <button class="pagination-btn" [disabled]="lastPage" (click)="nextPage()">
+                  <i class="pi pi-chevron-right"></i>
+              </button>
+              
+              <div class="items-per-page">
+                  <label>Afficher</label>
+                  <select [(ngModel)]="pageSize" (change)="onPageSizeChange()" class="page-select">
+                      <option value="10">10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                  </select>
+                  <label>par page</label>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal-overlay" *ngIf="showDeleteModal" (click)="closeDeleteModal()">
+      <div class="modal-container" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+              <div class="modal-icon danger">
+                  <i class="pi pi-exclamation-triangle"></i>
+              </div>
+              <h3>Confirmer la suppression</h3>
+              <button class="close-btn" (click)="closeDeleteModal()">
+                  <i class="pi pi-times"></i>
+              </button>
+          </div>
+          
+          <div class="modal-body">
+              <p>
+                  Êtes-vous sûr de vouloir supprimer la notification 
+                  <strong>{{ notificationToDelete?.title }}</strong> ?
+              </p>
+              <p class="warning-text">
+                  Cette action est irréversible.
+              </p>
+          </div>
+
+          <div class="modal-footer">
+              <button class="cancel-btn" (click)="closeDeleteModal()" [disabled]="isDeleting">
+                  Annuler
+              </button>
+              <button class="delete-btn" (click)="confirmDelete()" [disabled]="isDeleting">
+                  <i class="pi pi-spin pi-spinner" *ngIf="isDeleting"></i>
+                  <span *ngIf="!isDeleting">
+                      <i class="pi pi-trash"></i>
+                      Supprimer
+                  </span>
+              </button>
+          </div>
+      </div>
+  </div>
+</div>

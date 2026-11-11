@@ -1,0 +1,408 @@
+<div class="orders-page">
+  <p-toast position="top-right"></p-toast>
+
+  <!-- ══ HEADER ══ -->
+  <div class="orders-header">
+    <div class="orders-header-left">
+      <div class="orders-header-icon">
+        <i class="pi pi-shopping-cart"></i>
+      </div>
+      <div>
+        <h1 class="orders-title">Gestion des commandes</h1>
+        <p class="orders-subtitle">Suivi et administration de toutes les commandes</p>
+      </div>
+    </div>
+    <button class="btn-refresh" (click)="refreshData()">
+      <i class="pi pi-refresh"></i>
+      <span>Actualiser</span>
+    </button>
+  </div>
+
+  <!-- ══ KPI ══ -->
+  <div class="kpi-row">
+    <div class="kpi-card kpi-blue">
+      <div class="kpi-icon"><i class="pi pi-shopping-cart"></i></div>
+      <div class="kpi-body">
+        <span class="kpi-label">Total commandes</span>
+        <span class="kpi-value">{{ totalOrders }}</span>
+      </div>
+      <div class="kpi-bg"><i class="pi pi-shopping-cart"></i></div>
+    </div>
+    <div class="kpi-card kpi-orange">
+      <div class="kpi-icon"><i class="pi pi-clock"></i></div>
+      <div class="kpi-body">
+        <span class="kpi-label">En attente</span>
+        <span class="kpi-value">{{ pendingOrders }}</span>
+      </div>
+      <div class="kpi-bg"><i class="pi pi-clock"></i></div>
+    </div>
+    <div class="kpi-card kpi-green">
+      <div class="kpi-icon"><i class="pi pi-check-circle"></i></div>
+      <div class="kpi-body">
+        <span class="kpi-label">Livrées</span>
+        <span class="kpi-value">{{ deliveredOrders }}</span>
+      </div>
+      <div class="kpi-bg"><i class="pi pi-check-circle"></i></div>
+    </div>
+    <div class="kpi-card kpi-red">
+      <div class="kpi-icon"><i class="pi pi-times-circle"></i></div>
+      <div class="kpi-body">
+        <span class="kpi-label">Annulées</span>
+        <span class="kpi-value">{{ cancelledOrders }}</span>
+      </div>
+      <div class="kpi-bg"><i class="pi pi-times-circle"></i></div>
+    </div>
+  </div>
+
+  <!-- ══ FILTRES ══ -->
+  <div class="filters-card">
+    <div class="search-wrap" [class.sf]="searchFocused">
+      <i class="pi pi-search si"></i>
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearch()"
+        (focus)="searchFocused=true"
+        (blur)="searchFocused=false"
+        placeholder="Rechercher par ID, client ou téléphone…"
+        class="search-input"
+      />
+      <button class="search-clear" *ngIf="searchQuery" (click)="searchQuery=''; onSearch()">
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+
+    <div class="filter-row">
+      <div class="filter-group">
+        <label class="fl">Statut</label>
+        <div class="sw">
+          <select [(ngModel)]="statusFilter" (change)="applyFilters()" class="fs">
+            <option value="">Tous les statuts</option>
+            <option value="PENDING">En attente</option>
+            <option value="CONFIRMED">Confirmée</option>
+            <option value="PREPARED">Préparée</option>
+            <option value="SHIPPED">Expédiée</option>
+            <option value="DELIVERED">Livrée</option>
+            <option value="CANCELLED">Annulée</option>
+            <option value="RETURNED">Retournée</option>
+          </select>
+          <i class="pi pi-chevron-down sa"></i>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label class="fl">Paiement</label>
+        <div class="sw">
+          <select [(ngModel)]="paymentFilter" (change)="applyFilters()" class="fs">
+            <option value="">Tous les paiements</option>
+            <option value="CASH_ON_DELIVERY">À la livraison</option>
+            <option value="ONLINE">En ligne</option>
+            <option value="BANK_TRANSFER">Virement</option>
+          </select>
+          <i class="pi pi-chevron-down sa"></i>
+        </div>
+      </div>
+
+      <button class="btn-reset" (click)="clearFilters()">
+        <i class="pi pi-filter-slash"></i>
+        Réinitialiser
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ TABLE ══ -->
+  <div class="table-card">
+
+    <div class="table-toolbar">
+      <span class="table-count">
+        <strong>{{ getStartIndex() }}–{{ getEndIndex() }}</strong> sur <strong>{{ filteredOrders.length }}</strong> commandes
+      </span>
+      <div class="toolbar-right">
+        <div class="sw sw-sm">
+          <select [(ngModel)]="itemsPerPage" (change)="changeItemsPerPage()" class="fs">
+            <option [ngValue]="10">10</option>
+            <option [ngValue]="25">25</option>
+            <option [ngValue]="50">50</option>
+            <option [ngValue]="100">100</option>
+          </select>
+          <i class="pi pi-chevron-down sa"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th (click)="sortTable('id')" class="th-sort">
+              ID <i class="pi" [ngClass]="sortField==='id'?(sortOrder===1?'pi-sort-up':'pi-sort-down'):'pi-sort'"></i>
+            </th>
+            <th>Source</th>
+            <th (click)="sortTable('customerName')" class="th-sort">
+              Client <i class="pi" [ngClass]="sortField==='customerName'?(sortOrder===1?'pi-sort-up':'pi-sort-down'):'pi-sort'"></i>
+            </th>
+            <th>Produit</th>
+            <th>Pays</th>
+            <th>Mode</th>
+            <th (click)="sortTable('totalPrice')" class="th-sort">
+              Total <i class="pi" [ngClass]="sortField==='totalPrice'?(sortOrder===1?'pi-sort-up':'pi-sort-down'):'pi-sort'"></i>
+            </th>
+            <th>Paiement</th>
+            <th (click)="sortTable('status')" class="th-sort">
+              Statut <i class="pi" [ngClass]="sortField==='status'?(sortOrder===1?'pi-sort-up':'pi-sort-down'):'pi-sort'"></i>
+            </th>
+            <th (click)="sortTable('createdAt')" class="th-sort">
+              Date <i class="pi" [ngClass]="sortField==='createdAt'?(sortOrder===1?'pi-sort-up':'pi-sort-down'):'pi-sort-down'"></i>
+            </th>
+            <th class="th-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of paginatedOrders" class="data-row" (click)="openDetails(order)" style="cursor:pointer">
+
+            <!-- ID -->
+            <td>
+              <code class="order-id-badge">#{{ order.id?.slice(-6) }}</code>
+            </td>
+
+            <!-- Source -->
+            <td>
+              <span class="badge-source" [ngClass]="'src-' + (order.source || 'INTERNAL').toLowerCase()">
+                {{ getSourceLabel(order.source) }}
+              </span>
+            </td>
+
+            <!-- Client -->
+            <td class="td-customer">
+              <div class="customer-cell">
+                <div class="customer-avatar">
+                  {{ order.customerName?.charAt(0)?.toUpperCase() || 'C' }}
+                </div>
+                <div class="customer-info">
+                  <span class="customer-name">{{ order.customerName }}</span>
+                  <span class="customer-phone">{{ order.customerPhone }}</span>
+                </div>
+              </div>
+            </td>
+
+            <!-- Produit -->
+            <td>
+              <div class="product-cell">
+                <span class="product-id">{{ order.productId }}</span>
+                <span class="product-qty">×{{ order.quantity }}</span>
+              </div>
+            </td>
+
+            <!-- Pays -->
+            <td>
+              <div class="country-cell">
+                <i class="pi pi-map-marker cc-icon"></i>
+                {{ order.country || '—' }}
+              </div>
+            </td>
+
+            <!-- Mode -->
+            <td>
+              <span class="badge-mode" [ngClass]="order.fulfillmentMode === 'CENTRALIZED' ? 'mode-c' : 'mode-l'">
+                {{ getFulfillmentModeLabel(order.fulfillmentMode) }}
+              </span>
+            </td>
+
+            <!-- Total -->
+            <td>
+              <span class="price-value">{{ formatPrice(order) }}</span>
+            </td>
+
+            <!-- Paiement -->
+            <td>
+              <span class="badge-payment" [ngClass]="'pay-' + order.paymentMode.toLowerCase()">
+                {{ getPaymentLabel(order.paymentMode) }}
+              </span>
+            </td>
+
+            <!-- Statut -->
+            <td>
+              <span class="badge-status" [ngClass]="'bs-' + order.status.toLowerCase()">
+                <span class="bs-dot"></span>
+                {{ getStatusLabel(order.status) }}
+              </span>
+            </td>
+
+            <!-- Date -->
+            <td>
+              <span class="date-val">{{ formatDate(order.createdAt) }}</span>
+            </td>
+
+            <!-- Actions -->
+            <td class="td-center" (click)="$event.stopPropagation()">
+              <div class="action-group">
+                <button *ngIf="canConfirm(order)" class="act-btn act-green" title="Confirmer" (click)="confirm(order.id)">
+                  <i class="pi pi-check"></i>
+                </button>
+                <button *ngIf="canShip(order)" class="act-btn act-blue" title="Expédier" (click)="ship(order.id)">
+                  <i class="pi pi-send"></i>
+                </button>
+                <button *ngIf="canDeliver(order)" class="act-btn act-teal" title="Livrer" (click)="deliver(order.id)">
+                  <i class="pi pi-truck"></i>
+                </button>
+                <button *ngIf="canReturn(order)" class="act-btn act-orange" title="Retourner" (click)="openReturn(order.id)">
+                  <i class="pi pi-undo"></i>
+                </button>
+                <button *ngIf="canRestock(order)" class="act-btn act-purple" title="Restocker" (click)="restockReturned(order.id)">
+                  <i class="pi pi-refresh"></i>
+                </button>
+                <button class="act-btn act-muted" title="Détails" (click)="openDetails(order)">
+                  <i class="pi pi-eye"></i>
+                </button>
+              </div>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Empty state -->
+      <div class="empty-state" *ngIf="filteredOrders.length === 0">
+        <div class="empty-illustration">
+          <div class="er r1"></div>
+          <div class="er r2"></div>
+          <div class="er r3"></div>
+          <div class="ei"><i class="pi pi-shopping-cart"></i></div>
+        </div>
+        <h3 class="empty-title">Aucune commande trouvée</h3>
+        <p class="empty-desc">Essayez d'ajuster vos filtres ou de réinitialiser la recherche.</p>
+        <button class="empty-cta" (click)="clearFilters()">
+          <i class="pi pi-filter-slash"></i>
+          Réinitialiser les filtres
+        </button>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" *ngIf="filteredOrders.length > 0">
+      <span class="pg-info">{{ getStartIndex() }} – {{ getEndIndex() }} sur {{ filteredOrders.length }}</span>
+      <div class="pg-controls">
+        <button class="pg-btn" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
+          <i class="pi pi-chevron-left"></i>
+        </button>
+        <button *ngFor="let p of getPages()"
+                class="pg-btn pg-num"
+                [class.pg-active]="p === currentPage"
+                (click)="changePage(p)">
+          {{ p }}
+        </button>
+        <button class="pg-btn" [disabled]="currentPage === getTotalPages()" (click)="changePage(currentPage + 1)">
+          <i class="pi pi-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ MODAL DETAILS ══ -->
+<div class="modal-overlay" *ngIf="selectedOrder" (click)="closeDetails()">
+  <div class="modal-box modal-lg" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <div class="mh-icon mh-blue"><i class="pi pi-shopping-cart"></i></div>
+      <div class="mh-text">
+        <h3>Détails de la commande</h3>
+        <p>#{{ selectedOrder.id }}</p>
+      </div>
+      <div class="mh-badges">
+        <span class="badge-status" [ngClass]="'bs-' + selectedOrder.status.toLowerCase()">
+          <span class="bs-dot"></span>{{ getStatusLabel(selectedOrder.status) }}
+        </span>
+      </div>
+      <button class="modal-close" (click)="closeDetails()"><i class="pi pi-times"></i></button>
+    </div>
+
+    <div class="modal-body">
+      <div class="details-grid">
+
+        <!-- Client -->
+        <div class="detail-section">
+          <div class="ds-title"><i class="pi pi-user"></i> Client</div>
+          <div class="ds-row"><span class="ds-label">Nom</span><span class="ds-val">{{ selectedOrder.customerName }}</span></div>
+          <div class="ds-row"><span class="ds-label">Téléphone</span><span class="ds-val">{{ selectedOrder.customerPhone }}</span></div>
+        </div>
+
+        <!-- Livraison -->
+        <div class="detail-section">
+          <div class="ds-title"><i class="pi pi-map-marker"></i> Livraison</div>
+          <div class="ds-row"><span class="ds-label">Pays</span><span class="ds-val">{{ selectedOrder.country }}</span></div>
+          <div class="ds-row"><span class="ds-label">Ville</span><span class="ds-val">{{ selectedOrder.city || '—' }}</span></div>
+          <div class="ds-row"><span class="ds-label">Adresse</span><span class="ds-val">{{ selectedOrder.fullAddress || '—' }}</span></div>
+          <div class="ds-row">
+            <span class="ds-label">Mode</span>
+            <span class="badge-mode" [ngClass]="selectedOrder.fulfillmentMode === 'CENTRALIZED' ? 'mode-c' : 'mode-l'">
+              {{ getFulfillmentModeLabel(selectedOrder.fulfillmentMode) }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Commande -->
+        <div class="detail-section">
+          <div class="ds-title"><i class="pi pi-box"></i> Commande</div>
+          <div class="ds-row"><span class="ds-label">Produit</span><span class="ds-val">{{ selectedOrder.productId }}</span></div>
+          <div class="ds-row"><span class="ds-label">Quantité</span><span class="ds-val">{{ selectedOrder.quantity }}</span></div>
+          <div class="ds-row"><span class="ds-label">Prix unitaire</span><span class="ds-val">{{ formatUnitPrice(selectedOrder) }}</span></div>
+          <div class="ds-row">
+            <span class="ds-label">Total</span>
+            <span class="ds-val ds-price">{{ formatPrice(selectedOrder) }}</span>
+          </div>
+          <div class="ds-row">
+            <span class="ds-label">Paiement</span>
+            <span class="badge-payment" [ngClass]="'pay-' + selectedOrder.paymentMode.toLowerCase()">
+              {{ getPaymentLabel(selectedOrder.paymentMode) }}
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeDetails()">Fermer</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ MODAL RETOUR ══ -->
+<div class="modal-overlay" *ngIf="showReturnModal" (click)="closeModal()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <div class="mh-icon mh-orange"><i class="pi pi-undo"></i></div>
+      <div class="mh-text">
+        <h3>Retourner la commande</h3>
+        <p>Précisez la raison du retour</p>
+      </div>
+      <button class="modal-close" (click)="closeModal()"><i class="pi pi-times"></i></button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-field">
+        <label class="form-label">Motif du retour <span class="req">*</span></label>
+        <textarea
+          [(ngModel)]="returnReason"
+          rows="4"
+          placeholder="Décrivez la raison du retour…"
+          class="form-textarea"
+        ></textarea>
+        <small class="form-hint">Ce message sera enregistré avec la commande.</small>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="closeModal()">Annuler</button>
+      <button class="btn-danger" [disabled]="!returnReason.trim()" (click)="submitReturn()">
+        <i class="pi pi-undo"></i>
+        Confirmer le retour
+      </button>
+    </div>
+
+  </div>
+</div>

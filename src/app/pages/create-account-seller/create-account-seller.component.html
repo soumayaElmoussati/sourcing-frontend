@@ -1,0 +1,643 @@
+<div class="registration-wrapper">
+    <!-- Header avec progression -->
+    <div class="registration-header">
+        <div class="header-content">
+            <div class="header-title">
+                <h1>
+                    <i class="pi pi-user-plus"></i>
+                    Nouveau Vendeur
+                </h1>
+                <p>Création de compte vendeur en 4 étapes simples</p>
+            </div>
+            <div class="header-progress">
+                <div class="progress-info">
+                    <span class="progress-text">Étape {{ currentStep }} sur 4</span>
+                    <span class="progress-percent">{{ getProgressPercent() }}% complété</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" [style.width.%]="getProgressPercent()"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Messages d'erreur/succès -->
+    <div *ngIf="errorMessage" class="alert alert-error">
+        <i class="pi pi-exclamation-triangle"></i>
+        {{ errorMessage }}
+    </div>
+    
+    <div *ngIf="successMessage" class="alert alert-success">
+        <i class="pi pi-check-circle"></i>
+        {{ successMessage }}
+    </div>
+
+    <!-- Stepper horizontal -->
+    <div class="stepper-container">
+        <div class="stepper">
+            <div class="step" [class.active]="currentStep === 1" [class.completed]="currentStep > 1">
+                <div class="step-circle">
+                    <span class="step-number">1</span>
+                    <i class="pi pi-check step-icon"></i>
+                </div>
+                <div class="step-label">
+                    <span class="step-title">Informations personnelles</span>
+                    <span class="step-subtitle">Identité & Contact</span>
+                </div>
+                <div class="step-connector" [class.active]="currentStep >= 2"></div>
+            </div>
+
+            <div class="step" [class.active]="currentStep === 2" [class.completed]="currentStep > 2">
+                <div class="step-circle">
+                    <span class="step-number">2</span>
+                    <i class="pi pi-check step-icon"></i>
+                </div>
+                <div class="step-label">
+                    <span class="step-title">Expérience professionnelle</span>
+                    <span class="step-subtitle">Budget & Compétences</span>
+                </div>
+                <div class="step-connector" [class.active]="currentStep >= 3"></div>
+            </div>
+            
+            <div class="step" [class.active]="currentStep === 3" [class.completed]="currentStep > 3">
+                <div class="step-circle">
+                    <span class="step-number">3</span>
+                    <i class="pi pi-check step-icon"></i>
+                </div>
+                <div class="step-label">
+                    <span class="step-title">Vérification d'identité</span>
+                    <span class="step-subtitle">Documents officiels</span>
+                </div>
+                <div class="step-connector" [class.active]="currentStep >= 4"></div>
+            </div>
+
+            <div class="step" [class.active]="currentStep === 4" [class.completed]="currentStep > 4">
+                <div class="step-circle">
+                    <span class="step-number">4</span>
+                    <i class="pi pi-check step-icon"></i>
+                </div>
+                <div class="step-label">
+                    <span class="step-title">Contrat & Signature</span>
+                    <span class="step-subtitle">Signature électronique</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenu du formulaire -->
+    <div class="registration-content">
+        <form class="registration-form" [formGroup]="sellerForm" (ngSubmit)="onSubmit()">
+            
+            <!-- Étape 1: Informations personnelles (avec email et mot de passe) -->
+            <div class="form-step" *ngIf="currentStep === 1">
+                <div class="step-header">
+                    <h2>
+                        <i class="pi pi-user"></i>
+                        Informations personnelles
+                    </h2>
+                    <p>Renseignez vos coordonnées et informations de contact</p>
+                </div>
+                
+                <div class="form-grid two-columns">
+                    <!-- Prénom -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="pi pi-user"></i>
+                            Prénom *
+                        </label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="text" 
+                                formControlName="firstName"
+                                placeholder="Prénom"
+                                class="form-input"
+                                [class.invalid]="sellerForm.get('firstName')?.invalid && sellerForm.get('firstName')?.touched"
+                            >
+                            <div class="input-line"></div>
+                        </div>
+                        <div class="error-message" *ngIf="sellerForm.get('firstName')?.invalid && sellerForm.get('firstName')?.touched">
+                            {{ getErrorMessage('firstName') }}
+                        </div>
+                    </div>
+            
+                    <!-- Nom -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="pi pi-user"></i>
+                            Nom *
+                        </label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="text" 
+                                formControlName="lastName"
+                                placeholder="Nom"
+                                class="form-input"
+                                [class.invalid]="sellerForm.get('lastName')?.invalid && sellerForm.get('lastName')?.touched"
+                            >
+                            <div class="input-line"></div>
+                        </div>
+                        <div class="error-message" *ngIf="sellerForm.get('lastName')?.invalid && sellerForm.get('lastName')?.touched">
+                            {{ getErrorMessage('lastName') }}
+                        </div>
+                    </div>
+            
+                    <!-- Téléphone -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="pi pi-phone"></i>
+                            Téléphone *
+                        </label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="tel" 
+                                formControlName="phone"
+                                placeholder="Téléphone"
+                                class="form-input"
+                                [class.invalid]="sellerForm.get('phone')?.invalid && sellerForm.get('phone')?.touched"
+                            >
+                            <div class="input-line"></div>
+                        </div>
+                        <div class="error-message" *ngIf="sellerForm.get('phone')?.invalid && sellerForm.get('phone')?.touched">
+                            {{ getErrorMessage('phone') }}
+                        </div>
+                    </div>
+            
+                    <!-- Nom de la boutique -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="pi pi-store"></i>
+                            Nom de la boutique *
+                        </label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="text" 
+                                formControlName="storeName"
+                                placeholder="Nom boutique"
+                                class="form-input"
+                                [class.invalid]="sellerForm.get('storeName')?.invalid && sellerForm.get('storeName')?.touched"
+                            >
+                            <div class="input-line"></div>
+                        </div>
+                        <div class="error-message" *ngIf="sellerForm.get('storeName')?.invalid && sellerForm.get('storeName')?.touched">
+                            {{ getErrorMessage('storeName') }}
+                        </div>
+                    </div>
+            
+                    <!-- Pays -->
+                    <div class="form-group country-group">
+                        <label class="form-label">
+                            <i class="pi pi-globe"></i>
+                            Pays *
+                        </label>
+                        <div class="input-wrapper">
+                            <select 
+                                formControlName="country"
+                                class="form-select country-select"
+                                [class.invalid]="sellerForm.get('country')?.invalid && sellerForm.get('country')?.touched"
+                            >
+                                <option value="" disabled selected>Sélectionnez un pays</option>
+                                <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+                            </select>
+                            <div class="select-icon">
+                                <i class="pi pi-chevron-down"></i>
+                            </div>
+                            <div class="input-line"></div>
+                        </div>
+                        <div class="error-message" *ngIf="sellerForm.get('country')?.invalid && sellerForm.get('country')?.touched">
+                            {{ getErrorMessage('country') }}
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="pi pi-envelope"></i>
+                            Adresse email *
+                        </label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="email" 
+                                formControlName="email"
+                                placeholder="exemple@vendeur.com"
+                                class="form-input"
+                                [class.invalid]="sellerForm.get('email')?.invalid && sellerForm.get('email')?.touched"
+                            >
+                            <div class="input-line"></div>
+                        </div>
+                        <div class="error-message" *ngIf="sellerForm.get('email')?.invalid && sellerForm.get('email')?.touched">
+                            {{ getErrorMessage('email') }}
+                        </div>
+                    </div>
+
+                    <!-- Mot de passe -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="pi pi-key"></i>
+                            Mot de passe *
+                        </label>
+                        <div class="input-wrapper">
+                            <input 
+                                [type]="showPassword ? 'text' : 'password'"
+                                formControlName="password"
+                                placeholder="Minimum 6 caractères"
+                                class="form-input"
+                                [class.invalid]="sellerForm.get('password')?.invalid && sellerForm.get('password')?.touched"
+                            >
+                            <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
+                                <i class="pi" [ngClass]="showPassword ? 'pi-eye-slash' : 'pi-eye'"></i>
+                            </button>
+                            <div class="input-line"></div>
+                        </div>
+                    </div>
+
+                    <!-- Confirmation mot de passe -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="pi pi-key"></i>
+                            Confirmer le mot de passe *
+                        </label>
+                        <div class="input-wrapper">
+                            <input 
+                                [type]="showConfirmPassword ? 'text' : 'password'"
+                                formControlName="confirmPassword"
+                                placeholder="Confirmez le mot de passe"
+                                class="form-input"
+                                [class.invalid]="sellerForm.hasError('passwordMismatch') && sellerForm.get('confirmPassword')?.touched"
+                            >
+                            <button type="button" class="toggle-password" (click)="toggleConfirmPasswordVisibility()">
+                                <i class="pi" [ngClass]="showConfirmPassword ? 'pi-eye-slash' : 'pi-eye'"></i>
+                            </button>
+                            <div class="input-line"></div>
+                        </div>
+                        <div class="error-message" *ngIf="sellerForm.hasError('passwordMismatch') && sellerForm.get('confirmPassword')?.touched">
+                            Les mots de passe ne correspondent pas
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Étape 2: Expérience professionnelle -->
+            <div class="form-step" *ngIf="currentStep === 2">
+                <div class="step-header">
+                    <h2>
+                        <i class="pi pi-briefcase"></i>
+                        Expérience professionnelle
+                    </h2>
+                    <p>Parlez-nous de votre expérience et de vos objectifs</p>
+                </div>
+                
+                <div class="form-grid">
+                    <!-- Budget mensuel -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="pi pi-money-bill"></i>
+                            Budget mensuel (optionnel)
+                        </label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="text" 
+                                formControlName="budget"
+                                class="form-input" />
+                            <div class="input-line"></div>
+                        </div>
+                        <small class="field-hint">Budget que vous prévoyez pour la publicité</small>
+                    </div>
+
+                    <!-- Expérience e-commerce -->
+                    <div class="form-group full-width">
+                        <label class="checkbox-container">
+                            <input type="checkbox" formControlName="commerceExperience">
+                            <span class="checkmark"></span>
+                            <span class="checkbox-label">
+                                J'ai déjà une expérience dans le commerce en ligne
+                            </span>
+                        </label>
+                    </div>
+
+                    <!-- Expérience publicité -->
+                    <div class="form-group full-width">
+                        <label class="checkbox-container">
+                            <input type="checkbox" formControlName="adsExperience">
+                            <span class="checkmark"></span>
+                            <span class="checkbox-label">
+                                J'ai déjà une expérience avec la publicité en ligne (Google Ads, Facebook Ads, etc.)
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Étape 3: Vérification d'identité -->
+            <div class="form-step" *ngIf="currentStep === 3">
+                <div class="step-header">
+                    <h2>
+                        <i class="pi pi-id-card"></i>
+                        Vérification d'identité
+                    </h2>
+                    <p>Téléchargez vos documents officiels pour vérification</p>
+                </div>
+
+                <div class="form-grid">
+                    <!-- Type de document -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="pi pi-file"></i>
+                            Type de document *
+                        </label>
+                        <div class="input-wrapper">
+                            <select
+                                formControlName="documentType"
+                                class="form-select"
+                                [class.invalid]="sellerForm.get('documentType')?.invalid && sellerForm.get('documentType')?.touched">
+                                <option value="" disabled selected>Sélectionnez un type</option>
+                                <option *ngFor="let doc of documentTypes" [value]="doc.value">{{ doc.label }}</option>
+                            </select>
+                            <div class="select-icon"><i class="pi pi-chevron-down"></i></div>
+                            <div class="input-line"></div>
+                        </div>
+                        <div class="error-message" *ngIf="sellerForm.get('documentType')?.invalid && sellerForm.get('documentType')?.touched">
+                            {{ getErrorMessage('documentType') }}
+                        </div>
+                    </div>
+
+                    <!-- Numéro du document -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="pi pi-credit-card"></i>
+                            Numéro du document *
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="text" formControlName="documentNumber" placeholder="AB1234567"
+                                class="form-input"
+                                [class.invalid]="sellerForm.get('documentNumber')?.invalid && sellerForm.get('documentNumber')?.touched">
+                            <div class="input-line"></div>
+                        </div>
+                        <div class="error-message" *ngIf="sellerForm.get('documentNumber')?.invalid && sellerForm.get('documentNumber')?.touched">
+                            {{ getErrorMessage('documentNumber') }}
+                        </div>
+                    </div>
+
+                    <!-- Recto -->
+                    <div class="form-group">
+                        <label class="form-label"><i class="pi pi-upload"></i> Recto du document *</label>
+                        <div class="file-upload-container">
+                            <div class="file-upload-area"
+                                 (click)="fileFrontInput.click()"
+                                 [class.has-file]="idCardRectoFile"
+                                 [class.invalid]="!idCardRectoFile && showDocumentErrors">
+                                <div class="upload-icon">
+                                    <i class="pi" [ngClass]="idCardRectoFile ? 'pi-check-circle text-success' : 'pi-cloud-upload'"></i>
+                                </div>
+                                <div class="upload-text">
+                                    <span *ngIf="!idCardRectoFile">Cliquez pour télécharger<br><small>JPG, PNG, PDF — max 5 MB</small></span>
+                                    <span *ngIf="idCardRectoFile" class="file-info">
+                                        <strong>{{ idCardRectoFile.name }}</strong><br>
+                                        <small>{{ (idCardRectoFile.size / 1024).toFixed(0) }} KB</small>
+                                    </span>
+                                </div>
+                                <input type="file" #fileFrontInput (change)="onFileFrontSelected($event)"
+                                       accept="image/jpeg,image/png,image/jpg,application/pdf" hidden>
+                            </div>
+                        </div>
+                        <div class="error-message" *ngIf="!idCardRectoFile && showDocumentErrors">Le recto est obligatoire</div>
+                    </div>
+
+                    <!-- Verso -->
+                    <div class="form-group">
+                        <label class="form-label"><i class="pi pi-upload"></i> Verso du document *</label>
+                        <div class="file-upload-container">
+                            <div class="file-upload-area"
+                                 (click)="fileBackInput.click()"
+                                 [class.has-file]="idCardVersoFile"
+                                 [class.invalid]="!idCardVersoFile && showDocumentErrors">
+                                <div class="upload-icon">
+                                    <i class="pi" [ngClass]="idCardVersoFile ? 'pi-check-circle text-success' : 'pi-cloud-upload'"></i>
+                                </div>
+                                <div class="upload-text">
+                                    <span *ngIf="!idCardVersoFile">Cliquez pour télécharger<br><small>JPG, PNG, PDF — max 5 MB</small></span>
+                                    <span *ngIf="idCardVersoFile" class="file-info">
+                                        <strong>{{ idCardVersoFile.name }}</strong><br>
+                                        <small>{{ (idCardVersoFile.size / 1024).toFixed(0) }} KB</small>
+                                    </span>
+                                </div>
+                                <input type="file" #fileBackInput (change)="onFileBackSelected($event)"
+                                       accept="image/jpeg,image/png,image/jpg,application/pdf" hidden>
+                            </div>
+                        </div>
+                        <div class="error-message" *ngIf="!idCardVersoFile && showDocumentErrors">Le verso est obligatoire</div>
+                    </div>
+
+                    <!-- Conditions -->
+                    <div class="terms-section full-width">
+                        <label class="checkbox-container">
+                            <input type="checkbox" formControlName="termsAccepted">
+                            <span class="checkmark" [class.invalid]="sellerForm.get('termsAccepted')?.invalid && sellerForm.get('termsAccepted')?.touched"></span>
+                            <span class="checkbox-label">
+                                Je certifie que les informations fournies sont exactes et j'accepte les
+                                <a href="#" class="terms-link">conditions d'utilisation</a> et la
+                                <a href="#" class="terms-link">politique de confidentialité</a>.
+                            </span>
+                        </label>
+                        <div class="error-message" *ngIf="sellerForm.get('termsAccepted')?.invalid && sellerForm.get('termsAccepted')?.touched">
+                            Vous devez accepter les conditions
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══ Étape 4 : Contrat & Signature ══ -->
+            <div class="form-step" *ngIf="currentStep === 4">
+                <div class="step-header">
+                    <div class="step-icon-badge contract-badge">
+                        <i class="pi pi-file-edit"></i>
+                    </div>
+                    <div>
+                        <h2>Contrat de service</h2>
+                        <p>Lisez le contrat et apposez votre signature électronique</p>
+                    </div>
+                </div>
+
+                <!-- Contrat scrollable -->
+                <div class="contract-scroll-wrap">
+                    <div class="contract-header-badge">
+                        <i class="pi pi-shield"></i>
+                        <span>X10ECOM — Fulfillment & Logistics Services Agreement</span>
+                    </div>
+
+                    <div class="contract-body" #contractScroll (scroll)="onContractScroll($event)">
+                        <div class="contract-section">
+                            <h4>1. Scope of Services / نطاق الخدمات</h4>
+                            <p>The Company provides: Product sourcing, Customs clearance, Warehousing, Call center and order confirmation, Order Fulfillment, Shipping & Delivery, COD Management, Returns Handling, Reporting & Analytics, sending profits to the seller worldwide.</p>
+                        </div>
+                        <div class="contract-section">
+                            <h4>2. Call Center / مركز الاتصال</h4>
+                            <p>Customers are contacted up to 3 times per day for 3 days (9 attempts). If unreachable, the order is cancelled. Upsell and Cross-sell services are available.</p>
+                        </div>
+                        <div class="contract-section">
+                            <h4>3. Warehousing / التخزين</h4>
+                            <p>Storage is free as long as there are ongoing orders. Products stored in UAE warehouses can ship to all GCC countries. Inactive goods for more than 60 days may be disposed of.</p>
+                        </div>
+                        <div class="contract-section">
+                            <h4>4. Fulfillment & Shipping / التنفيذ والشحن</h4>
+                            <p>Orders are processed professionally. Shipping is calculated based on actual or volumetric weight (whichever is higher). Formula: (L × W × H) ÷ 5000. Deliveries during business days only.</p>
+                        </div>
+                        <div class="contract-section">
+                            <h4>5. Delivery & Returns / التوصيل والمرتجعات</h4>
+                            <p>Rejected deliveries count as delivery attempts. Orders are returned to the warehouse. Valid returned items may be restocked after inspection.</p>
+                        </div>
+                        <div class="contract-section">
+                            <h4>6. Payments & Remittance / الدفع والتحويلات</h4>
+                            <p>Payments are transferred weekly. Shipping, fees, and commissions are deducted before transfer. Bank transfer fees are borne by the client. A 2% fee is deducted from each withdrawal or payout.</p>
+                        </div>
+                        <div class="contract-section">
+                            <h4>7. International Shipping / الشحن الدولي</h4>
+                            <p>Prices exclude VAT, customs duties, and government fees. All such costs are borne by the client.</p>
+                        </div>
+                        <div class="contract-section">
+                            <h4>8. Liability / المسؤولية</h4>
+                            <p>The client is responsible for product legality and quality. Damage is compensated based on the declared value.</p>
+                        </div>
+                        <div class="contract-section">
+                            <h4>9. Fraud Protection / الحماية من الاحتيال</h4>
+                            <p>The company may suspend suspicious accounts or orders. Payments may be held in case of suspected fraud.</p>
+                        </div>
+                        <div class="contract-section">
+                            <h4>10. Confidentiality / السرية</h4>
+                            <p>All data and information are confidential and will not be shared with any third party.</p>
+                        </div>
+                        <div class="contract-section">
+                            <h4>11. Contract Duration / مدة العقد</h4>
+                            <p>The contract is valid for one year. It is automatically renewed unless terminated with prior notice.</p>
+                        </div>
+                        <div class="contract-section">
+                            <h4>12. Governing Law / القانون</h4>
+                            <p>This Agreement is governed by applicable laws in the operating jurisdiction.</p>
+                        </div>
+                        <div class="contract-section">
+                            <h4>13. Acceptance / القبول</h4>
+                            <p>By signing this contract and using X10ECOM services, the client agrees to all terms and conditions stated above.</p>
+                        </div>
+                    </div>
+
+                    <div class="scroll-indicator" *ngIf="!contractRead">
+                        <i class="pi pi-arrow-down"></i>
+                        <span>Faites défiler pour lire le contrat en entier</span>
+                    </div>
+                    <div class="contract-read-badge" *ngIf="contractRead">
+                        <i class="pi pi-check-circle"></i>
+                        <span>Contrat lu — vous pouvez signer</span>
+                    </div>
+                </div>
+
+                <!-- Zone de signature -->
+                <div class="signature-block" [class.locked]="!contractRead">
+                    <div class="sig-header">
+                        <div class="sig-icon"><i class="pi pi-pencil"></i></div>
+                        <div>
+                            <h3>Votre signature électronique</h3>
+                            <p>Dessinez votre signature à la souris ou au doigt</p>
+                        </div>
+                    </div>
+
+                    <div class="canvas-wrapper">
+                        <canvas #signatureCanvas
+                                width="600" height="160"
+                                class="signature-canvas"
+                                [class.disabled]="!contractRead"
+                                (mousedown)="startDrawing($event)"
+                                (mousemove)="draw($event)"
+                                (mouseup)="stopDrawing()"
+                                (mouseleave)="stopDrawing()"
+                                (touchstart)="startDrawingTouch($event)"
+                                (touchmove)="drawTouch($event)"
+                                (touchend)="stopDrawing()">
+                        </canvas>
+                        <div class="canvas-placeholder" *ngIf="!signatureStarted">
+                            <i class="pi pi-pencil"></i>
+                            <span *ngIf="!contractRead">Lisez d'abord le contrat complet</span>
+                            <span *ngIf="contractRead">Signez ici</span>
+                        </div>
+                    </div>
+
+                    <div class="sig-actions">
+                        <button type="button" class="btn-clear-sig" (click)="clearSignature()" [disabled]="!signatureStarted">
+                            <i class="pi pi-trash"></i> Effacer
+                        </button>
+                        <div class="sig-info" *ngIf="signatureStarted">
+                            <i class="pi pi-check-circle"></i> Signature enregistrée
+                        </div>
+                    </div>
+
+                    <div class="contract-fields">
+                        <div class="cf-item">
+                            <span class="cf-label">Client Name</span>
+                            <span class="cf-value">{{ sellerForm.get("firstName")?.value }} {{ sellerForm.get("lastName")?.value }}</span>
+                        </div>
+                        <div class="cf-item">
+                            <span class="cf-label">Email</span>
+                            <span class="cf-value">{{ sellerForm.get("email")?.value }}</span>
+                        </div>
+                        <div class="cf-item">
+                            <span class="cf-label">Date</span>
+                            <span class="cf-value">{{ today | date:"dd/MM/yyyy" }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="error-message" *ngIf="showDocumentErrors && !signatureStarted">
+                    <i class="pi pi-exclamation-triangle"></i>
+                    Veuillez signer le contrat avant de créer votre compte
+                </div>
+            </div>
+
+            <!-- Navigation buttons -->
+            <div class="form-navigation">
+                <button type="button"
+                        class="nav-btn prev"
+                        (click)="previousStep()"
+                        *ngIf="currentStep > 1"
+                        [disabled]="isLoading">
+                    <i class="pi pi-chevron-left"></i>
+                    Précédent
+                </button>
+
+                <button type="button"
+                        class="nav-btn next"
+                        (click)="nextStep()"
+                        *ngIf="currentStep < 4"
+                        [disabled]="!isCurrentStepValid() || isLoading">
+                    Suivant
+                    <i class="pi pi-chevron-right"></i>
+                </button>
+
+                <button type="submit"
+                        class="nav-btn submit"
+                        *ngIf="currentStep === 4"
+                        [disabled]="!isCurrentStepValid() || isLoading">
+                    <i class="pi pi-check"></i>
+                    <span *ngIf="!isLoading">Créer le compte</span>
+                    <span *ngIf="isLoading">Création en cours...</span>
+                    <i *ngIf="isLoading" class="pi pi-spin pi-spinner loading-spinner"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Aide et informations -->
+    <div class="registration-help">
+        <div class="help-card">
+            <div class="help-icon">
+                <i class="pi pi-question-circle"></i>
+            </div>
+            <div class="help-content">
+                <h4>Besoin d'aide ?</h4>
+                <p>Contactez notre support au <strong>+1 (555) 123-4567</strong> ou par email à <strong>support&#64;vendeurs.com</strong></p>
+            </div>
+        </div>
+        
+        <div class="security-notice">
+            <i class="pi pi-shield"></i>
+            <span>Toutes vos données sont sécurisées et cryptées</span>
+        </div>
+    </div>
+</div>

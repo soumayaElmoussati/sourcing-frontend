@@ -1,0 +1,632 @@
+<div class="service-wrapper">
+    <!-- Header Navigation -->
+    <header class="service-header">
+        <nav class="nav-container">
+            <div class="nav-content">
+                <div class="logo-section">
+                    <a routerLink="/" class="logo-link">
+                        <img src="/images/logo-x10ecom.jpeg" alt="Logo X10ECOM" class="logo-img">
+                        <div class="logo-text">
+                            <span class="logo-primary">X10</span>
+                            <span class="logo-secondary">ECOM</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="nav-menu">
+                    <a routerLink="/home" class="nav-">Accueil</a>
+                 
+                    <!-- Menu déroulant Services -->
+                    <div class="dropdown active">
+                        <a href="#services" class="nav-link dropdown-toggle">
+                            Services
+                            <svg class="dropdown-icon" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M7 10l5 5 5-5z"/>
+                            </svg>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a [routerLink]="['/services']" [queryParams]="{section: 'sourcing'}" class="dropdown-item">Sourcing</a>
+                            <a [routerLink]="['/services']" [queryParams]="{section: 'customs-clearance'}" class="dropdown-item">Custom Clearance</a>
+                            <a [routerLink]="['/services']" [queryParams]="{section: 'warehousing'}" class="dropdown-item">Warehousing & Fulfillment</a>
+                            <a [routerLink]="['/services']" [queryParams]="{section: 'call-center'}" class="dropdown-item">Call Center</a>
+                            <a [routerLink]="['/services']" [queryParams]="{section: 'shipping'}" class="dropdown-item">Shipping</a>
+                            <a [routerLink]="['/services']" [queryParams]="{section: 'remittance'}" class="dropdown-item">COD Remittance</a>
+                        </div>
+                    </div>
+                    <a routerLink="/about-us" class="nav-link">À Propos</a>
+                    <a href="/contact-us" class="nav-link">Contact</a>
+                </div>
+
+                <div class="nav-actions">
+                    <a routerLink="/auth/login-seller" class="btn-admin">
+                        <svg class="admin-icon" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v1c0 .55.45 1 1 1h14c.55 0 1-.45 1-1v-1c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                        Démarrer
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="service-hero animate-on-scroll">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Notre Services</h1>
+            <p class="subtitle">Accélérez vos activités intelligemment en offrant des solutions complètes 
+                pour faciliter l’importation de vos produits et alléger la charge des 
+                commerçants.</p>
+        </div>
+    </section>
+
+
+    <!-- SOURCING Section -->
+<section id="sourcing" class="service-section">
+    <div class="section-header">
+        <div class="section-badge">Service Premium</div>
+        <h2 class="section-title">SOURCING</h2>
+        <p class="section-subtitle">Trouvez, approvisionnez et développez – Approvisionnement de produits sans effort</p>
+    </div>
+
+    <div class="sourcing-content">
+        <div class="sourcing-text">
+            <p class="sourcing-description">
+                Accédez à un large réseau de fournisseurs fiables offrant les derniers produits en provenance de Chine 
+                ou des Émirats à des prix compétitifs. Grâce à un approvisionnement simplifié, des contrôles qualité 
+                rigoureux et un emballage et stockage pratiques, vous gagnez du temps et de l'énergie, vous permettant 
+                de vous concentrer sur la croissance efficace de votre entreprise.
+            </p>
+            <p class="sourcing-description">
+                Évitez le stress de chercher des fournisseurs fiables ou de vous inquiéter de la sécurité des paiements. 
+                Notre vaste réseau de fournisseurs s'occupe de tout, de la fabrication à l'arrivée des stocks à la 
+                destination choisie. Chaque étape du processus est entièrement personnalisable pour répondre aux 
+                besoins de votre entreprise.
+            </p>
+
+            <div class="sourcing-features">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path fill="#10b981" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                    </div>
+                    <div class="feature-content">
+                        <h4>Contrôle Qualité Rigoureux</h4>
+                        <p>Assurance qualité à chaque étape du processus d'approvisionnement</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path fill="#0ea5e9" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                        </svg>
+                    </div>
+                    <div class="feature-content">
+                        <h4>Réseau de Fournisseurs Vaste</h4>
+                        <p>Accès exclusif aux meilleurs fournisseurs en Chine et Émirats</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path fill="#8b5cf6" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                        </svg>
+                    </div>
+                    <div class="feature-content">
+                        <h4>Solutions Personnalisées</h4>
+                        <p>Processus adapté aux besoins spécifiques de votre entreprise</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="sourcing-visual">
+            <div class="sourcing-image-wrapper">
+                <img src="/images/sourcing.jpeg" alt="Sourcing et approvisionnement e-commerce" class="sourcing-image">
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- CUSTOMS CLEARANCE Section -->
+<section id="customs-clearance" class="service-section">
+    <div class="section-header">
+        <div class="section-badge">Service Logistique</div>
+        <h2 class="section-title">Customs Clearance</h2>
+        <p class="section-subtitle">Dédouanement – Simple et Sans Tracas</p>
+    </div>
+
+    <div class="sourcing-content">
+        <div class="sourcing-visual">
+            <div class="sourcing-image-wrapper">
+                <img src="/images/expedition-image.jfif" alt="Dédouanement douanier et services logistiques" class="sourcing-image">
+            </div>
+        </div>
+
+        <div class="sourcing-text">
+            <p class="sourcing-description">
+                Nous prenons en charge toutes les étapes nécessaires pour que vos 
+                marchandises passent la douane en toute fluidité. De la préparation des 
+                documents à la mise à disposition de votre expédition, nous rendons le 
+                processus simple et sans stress.
+            </p>
+
+            <div class="customs-services">
+                <h3 class="services-title">Nos services incluent :</h3>
+                <div class="services-list">
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#10b981" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                            </svg>
+                        </div>
+                        <div class="service-content">
+                            <h4>Vérification des documents</h4>
+                            <p>Contrôle complet de tous les documents requis pour le dédouanement</p>
+                        </div>
+                    </div>
+
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#0ea5e9" d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                            </svg>
+                        </div>
+                        <div class="service-content">
+                            <h4>Coordination avec les agents</h4>
+                            <p>Liaison directe avec les agents des douanes pour un traitement rapide</p>
+                        </div>
+                    </div>
+
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#8b5cf6" d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+                            </svg>
+                        </div>
+                        <div class="service-content">
+                            <h4>Paiement des taxes</h4>
+                            <p>Gestion et paiement des taxes et droits de douane</p>
+                        </div>
+                    </div>
+
+                    <div class="service-item">
+                        <div class="service-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#f59e0b" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/>
+                            </svg>
+                        </div>
+                        <div class="service-content">
+                            <h4>Mise à disposition & Livraison</h4>
+                            <p>Récupération et livraison finale de votre expédition</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- WAREHOUSING & FULFILLMENT Section -->
+<section id="warehousing" class="service-section">
+    <div class="section-header">
+        <div class="section-badge">Service Logistique</div>
+        <h2 class="section-title">Warehousing & Fulfillment</h2>
+        <p class="section-subtitle">Stockage et Exécution des Commandes</p>
+    </div>
+
+    <div class="sourcing-content">
+        <div class="sourcing-text">
+            <p class="sourcing-description">
+                Notre réseau d'entrepôts complet couvre l'ensemble de la région MENA. Nous 
+                stockons vos produits en toute sécurité et de manière organisée, vous permettant de 
+                suivre facilement l'emplacement des articles, leur date d'arrivée, la durée de stockage 
+                et les quantités disponibles.
+            </p>
+
+            <div class="warehousing-features">
+                <div class="feature-grid">
+                    <div class="warehouse-feature">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#10b981" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 12h2v5H7zm8-5h2v10h-2zm-4 7h2v3h-2zm0-4h2v2h-2z"/>
+                            </svg>
+                        </div>
+                        <div class="feature-content">
+                            <h4>Suivi en Temps Réel</h4>
+                            <p>Localisation précise de chaque article dans l'entrepôt</p>
+                        </div>
+                    </div>
+
+                    <div class="warehouse-feature">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#0ea5e9" d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                            </svg>
+                        </div>
+                        <div class="feature-content">
+                            <h4>Gestion des Stocks</h4>
+                            <p>Suivi des dates d'arrivée et durée de stockage</p>
+                        </div>
+                    </div>
+
+                    <div class="warehouse-feature">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#8b5cf6" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                            </svg>
+                        </div>
+                        <div class="feature-content">
+                            <h4>Sécurité Maximale</h4>
+                            <p>Stockage sécurisé avec surveillance 24h/24</p>
+                        </div>
+                    </div>
+
+                    <div class="warehouse-feature">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#f59e0b" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            </svg>
+                        </div>
+                        <div class="feature-content">
+                            <h4>Couverture Régionale</h4>
+                            <p>Réseau d'entrepôts dans toute la région MENA</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sourcing-visual">
+            <div class="sourcing-image-wrapper">
+                <img src="/images/warehousing-fulfillment.jfif" alt="Warehousing et fulfillment logistique e-commerce" class="sourcing-image">
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- CALL CENTER Section -->
+<section id="call-center" class="service-section">
+    <div class="section-header">
+        <div class="section-badge">Service Client</div>
+        <h2 class="section-title">Call Center</h2>
+        <p class="section-subtitle">Service Centre d'Appels Professionnel</p>
+    </div>
+
+    <div class="sourcing-content">
+        <div class="sourcing-visual">
+            <div class="sourcing-image-wrapper">
+                <img src="/images/call-center.jfif" alt="Service centre d'appels et support client e-commerce" class="sourcing-image">
+            </div>
+        </div>
+
+        <div class="sourcing-text">
+            <p class="sourcing-description">
+                Nos agents du centre d'appels, hautement qualifiés, possèdent des années 
+                d'expérience dans la confirmation des commandes auprès des clients locaux. Nous 
+                offrons aux détaillants un service d'appel professionnel pour vérifier les détails des 
+                commandes : quantité, nom du client, adresse, et informations supplémentaires sur le 
+                produit.
+            </p>
+            <p class="sourcing-description">
+                Nos agents sont également formés pour proposer des ventes additionnelles à chaque 
+                opportunité, garantissant une expérience fluide et efficace pour les détaillants et leurs 
+                clients.
+            </p>
+
+            <div class="call-center-services">
+                <h3 class="services-title">Services Inclus :</h3>
+                
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#10b981" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H5v-2h10v2zm4-4H9v-2h10v2zm0-4H5V8h14v2z"/>
+                            </svg>
+                        </div>
+                        <div class="service-content">
+                            <h4>Confirmation de Commandes</h4>
+                            <p>Vérification détaillée de chaque commande par téléphone</p>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#0ea5e9" d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 16H4V8h16v12z"/>
+                            </svg>
+                        </div>
+                        <div class="service-content">
+                            <h4>Vérification des Informations</h4>
+                            <p>Contrôle des adresses, produits et coordonnées clients</p>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#8b5cf6" d="M15.5 1h-8C6.12 1 5 2.12 5 3.5v17C5 21.88 6.12 23 7.5 23h8c1.38 0 2.5-1.12 2.5-2.5v-17C18 2.12 16.88 1 15.5 1zm-4 21c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4.5-4H7V4h9v14z"/>
+                            </svg>
+                        </div>
+                        <div class="service-content">
+                            <h4>Support Multilingue</h4>
+                            <p>Agents parlant arabe, français, anglais et plus</p>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#f59e0b" d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                            </svg>
+                        </div>
+                        <div class="service-content">
+                            <h4>Upselling & Cross-selling</h4>
+                            <p>Proposition de produits complémentaires</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- SHIPPING Section -->
+<section id="shipping" class="service-section">
+    <div class="section-header">
+        <div class="section-badge">Service Logistique</div>
+        <h2 class="section-title">Shipping</h2>
+        <p class="section-subtitle">Livraison Fiable de Porte-à-Porte</p>
+    </div>
+
+    <div class="sourcing-content">
+        <div class="sourcing-text">
+            <p class="sourcing-description">
+                X10ECOM propose des services de livraison fiables de porte-à-porte pour les 
+                entreprises de toutes tailles. Nous mettons en place des mesures de sécurité solides 
+                pour l'expédition et l'entreposage afin d'assurer la protection de vos produits. Tous les 
+                services sont offerts à des tarifs justes et compétitifs.
+            </p>
+
+            <div class="shipping-features">
+                <div class="feature-grid">
+                    <div class="shipping-feature">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#10b981" d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5H15V3H9v2H6.5c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/>
+                            </svg>
+                        </div>
+                        <div class="feature-content">
+                            <h4>Livraison Porte-à-Porte</h4>
+                            <p>Service complet de transport jusqu'au client final</p>
+                        </div>
+                    </div>
+
+                    <div class="shipping-feature">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#0ea5e9" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                            </svg>
+                        </div>
+                        <div class="feature-content">
+                            <h4>Sécurité Maximale</h4>
+                            <p>Protection des produits pendant le transport et stockage</p>
+                        </div>
+                    </div>
+
+                    <div class="shipping-feature">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#8b5cf6" d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                            </svg>
+                        </div>
+                        <div class="feature-content">
+                            <h4>Suivi en Temps Réel</h4>
+                            <p>Localisation précise de vos colis à chaque étape</p>
+                        </div>
+                    </div>
+
+                    <div class="shipping-feature">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#f59e0b" d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+                            </svg>
+                        </div>
+                        <div class="feature-content">
+                            <h4>Tarifs Compétitifs</h4>
+                            <p>Prix justes adaptés aux entreprises de toutes tailles</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="sourcing-visual">
+            <div class="sourcing-image-wrapper">
+                <img src="/images/shipping.jfif" alt="Services de livraison et shipping e-commerce" class="sourcing-image">
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- CASH/CARD REMITTANCE Section -->
+<section id="remittance" class="service-section">
+    <div class="section-header">
+        <div class="section-badge">Service Financier</div>
+        <h2 class="section-title">Cash / Card Remittance</h2>
+        <p class="section-subtitle">Encaissement à la Livraison (COD) et Transferts Sécurisés</p>
+    </div>
+
+    <div class="sourcing-content">
+        <div class="sourcing-visual">
+            <div class="sourcing-image-wrapper">
+                <img src="/images/cod-service.jfif" alt="Encaissement COD et transferts financiers e-commerce" class="sourcing-image">
+            </div>
+        </div>
+
+        <div class="sourcing-text">
+            <p class="sourcing-description">
+                Nous collectons les paiements auprès de vos clients et vous transférons vos fonds en 
+                toute sécurité. Nous pouvons vous envoyer votre argent partout dans le monde, 
+                rapidement et de manière fiable.
+            </p>
+
+            <div class="payment-methods">
+                <h3 class="methods-title">Modes de Paiement Acceptés</h3>
+                <div class="methods-grid">
+                    <div class="method-card">
+                        <div class="method-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#10b981" d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+                            </svg>
+                        </div>
+                        <h4>Espèces (COD)</h4>
+                        <p>Encaissement sécurisé à la livraison</p>
+                    </div>
+
+                    <div class="method-card">
+                        <div class="method-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#0ea5e9" d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm-1 14H5c-.55 0-1-.45-1-1v-5h16v5c0 .55-.45 1-1 1zm1-10H4V6h16v2z"/>
+                            </svg>
+                        </div>
+                        <h4>Carte Bancaire</h4>
+                        <p>Terminaux mobiles sécurisés</p>
+                    </div>
+
+                    <div class="method-card">
+                        <div class="method-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#8b5cf6" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                        </div>
+                        <h4>Transfert Bancaire</h4>
+                        <p>Virements directs vers votre compte</p>
+                    </div>
+
+                    <div class="method-card">
+                        <div class="method-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="#f59e0b" d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+                            </svg>
+                        </div>
+                        <h4>Wallet Digital</h4>
+                        <p>Solutions de paiement électronique</p>
+                    </div>
+                </div>
+            </div>
+
+
+    
+        </div>
+    </div>
+</section>
+
+
+    <!-- Footer -->
+    <footer class="service-footer">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <img src="/images/logo-x10ecom.jpeg" alt="Logo X10ECOM" class="logo-img">
+                        <div class="logo-text">
+                            <span class="logo-primary">X10</span>
+                            <span class="logo-secondary">ECOM</span>
+                        </div>
+                    </div>
+                    <p class="footer-description">
+                        Plateforme e-commerce tout-en-un pour la région MENA. 
+                        Solutions intelligentes pour votre croissance digitale.
+                    </p>
+                    <div class="footer-social">
+                        <a href="https://web.facebook.com/profile.php?id=61582321528493&rdid=SOr6wVlKdyNHw4CU&share_url=https%3A%2F%2Fweb.facebook.com%2Fshare%2F1AkT7kT8sp%2F%3F_rdc%3D1%26_rdr#" class="social-link" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                  fill="currentColor"
+                                  d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.019 4.388 11.01 10.125 11.927v-8.437H7.078v-3.49h3.047V9.413c0-3.007 1.792-4.669 4.533-4.669 1.313 0 2.686.235 2.686.235v2.953h-1.514c-1.491 0-1.956.926-1.956 1.874v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.083 24 18.092 24 12.073z"
+                                />
+                              </svg>
+                        </a>
+                        <a href="https://www.linkedin.com/company/x10ecom/about/" class="social-link" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+                            </svg>
+                        </a>
+                        <a href="https://www.instagram.com/x10ecom?igsh=MWs5NGRxY2g3ZHI2Mg%3D%3D" class="social-link" target="_blank" rel="noopener noreferrer">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h3 class="footer-title">Navigation</h3>
+                    <ul class="footer-links">
+                        <li><a routerLink="/">Accueil</a></li>
+                        <li><a routerLink="/about">À Propos</a></li>
+                        <li><a href="/services">Services</a></li>
+                        <li><a routerLink="/contact">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3 class="footer-title">Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="#solutions">Gestion des Commandes</a></li>
+                        <li><a href="#solutions">Fulfillment</a></li>
+                        <li><a href="#solutions">Sourcing</a></li>
+                        <li><a href="#solutions">Livraison Last-Mile</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3 class="footer-title">Contact</h3>
+                    <ul class="footer-service">
+                        <li>
+                            <svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            </svg>
+                            <span>Région MENA</span>
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                            </svg>
+                            <span>contactx10ecom.com</span>
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M6.54 5c.06.89.21 1.76.45 2.59l-1.2 1.2c-.41-1.2-.67-2.47-.76-3.79h1.51m9.86 12.02c.85.24 1.72.39 2.6.45v1.49c-1.32-.09-2.59-.35-3.8-.75l1.2-1.19M7.5 3H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.49c0-.55-.45-1-1-1-1.24 0-2.45-.2-3.57-.57-.35-.11-.74-.03-1.02.24l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.59l2.2-2.21c.28-.26.36-.65.25-1C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1z"/>
+                            </svg>
+                            <span>+212 5 XX XX XX XX</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-copyright">
+                    © 2026 X10ECOM. Tous droits réservés.
+                </div>
+                <div class="footer-legal">
+                    <a href="#">Confidentialité</a>
+                    <a href="#">Conditions d'utilisation</a>
+                    <a href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>

@@ -1,0 +1,526 @@
+<div class="wallet-page">
+  <p-toast position="top-right"></p-toast>
+
+  <!-- ══ PAGE HEADER ══ -->
+  <div class="page-header">
+    <div class="page-header-left">
+      <div class="page-header-icon">
+        <i class="pi pi-wallet"></i>
+      </div>
+      <div>
+        <h1 class="page-title">Mon Wallet</h1>
+        <p class="page-subtitle">Gérez votre solde, vos dépôts et vos retraits</p>
+      </div>
+    </div>
+    <div class="page-header-actions">
+      <button class="btn-ghost" (click)="openWithdrawModal()">
+        <i class="pi pi-arrow-circle-up"></i>
+        Retrait
+      </button>
+      <button class="btn-primary" (click)="showDepositModal = true">
+        <i class="pi pi-plus"></i>
+        Déposer
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ STATS ROW ══ -->
+  <div class="stats-row">
+
+    <!-- Carte Balance principale -->
+    <div class="balance-card">
+      <!-- Pattern décoratif -->
+      <div class="bc-pattern">
+        <div class="bc-circle bc-circle-1"></div>
+        <div class="bc-circle bc-circle-2"></div>
+        <div class="bc-circle bc-circle-3"></div>
+      </div>
+
+      <div class="bc-top">
+        <div class="bc-chip">
+          <i class="pi pi-shield"></i>
+          <span>Solde sécurisé</span>
+        </div>
+        <button class="bc-eye" (click)="toggleBalanceVisibility()" [title]="hideBalance ? 'Afficher' : 'Masquer'">
+          <i class="pi" [ngClass]="hideBalance ? 'pi-eye' : 'pi-eye-slash'"></i>
+        </button>
+      </div>
+
+      <div class="bc-label">Solde disponible</div>
+
+      <div class="bc-amount">
+        <ng-container *ngIf="!hideBalance">
+          <span class="bc-currency">$</span>
+          <span class="bc-value">{{ formattedBalance }}</span>
+        </ng-container>
+        <span class="bc-value" *ngIf="hideBalance">•••• ••</span>
+      </div>
+
+      <div class="bc-footer">
+        <div class="bc-stat">
+          <i class="pi pi-arrow-circle-down"></i>
+          <span>Dépôts</span>
+          <strong>{{ transactions.length }}</strong>
+        </div>
+        <div class="bc-stat-divider"></div>
+        <div class="bc-stat">
+          <i class="pi pi-arrow-circle-up"></i>
+          <span>Retraits</span>
+          <strong>{{ withdrawals.length }}</strong>
+        </div>
+        <div class="bc-stat-divider"></div>
+        <div class="bc-stat">
+          <i class="pi pi-check-circle"></i>
+          <span>Complétés</span>
+          <strong>{{ completedWithdrawalsCount }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stat : Total retraits -->
+    <div class="mini-stat-card">
+      <div class="msc-icon msc-orange">
+        <i class="pi pi-arrow-up-right"></i>
+      </div>
+      <div class="msc-body">
+        <span class="msc-label">Total retraits</span>
+        <span class="msc-value">{{ totalWithdrawn | currency:'USD' }}</span>
+      </div>
+      <button class="msc-action" (click)="openWithdrawModal()">
+        Demander <i class="pi pi-arrow-right"></i>
+      </button>
+    </div>
+
+    <!-- Stat : Statut retrait -->
+    <div class="mini-stat-card">
+      <div class="msc-icon" [ngClass]="latestPendingWithdrawal ? 'msc-yellow' : 'msc-green'">
+        <i class="pi" [ngClass]="latestPendingWithdrawal ? 'pi-clock' : 'pi-check'"></i>
+      </div>
+      <div class="msc-body">
+        <span class="msc-label">Retrait en cours</span>
+        <span class="msc-value" *ngIf="latestPendingWithdrawal">
+          {{ latestPendingWithdrawal.amount | currency:'USD' }}
+        </span>
+        <span class="msc-value msc-empty" *ngIf="!latestPendingWithdrawal">Aucun</span>
+      </div>
+      <span class="msc-badge" [ngClass]="latestPendingWithdrawal ? 'badge-pending' : 'badge-ok'">
+        {{ latestPendingWithdrawal ? 'En attente' : 'Libre' }}
+      </span>
+    </div>
+
+  </div>
+
+  <!-- ══ CONTENU PRINCIPAL ══ -->
+  <div class="main-content">
+
+    <!-- Transactions -->
+    <div class="content-card transactions-card">
+      <div class="card-header">
+        <div class="card-header-left">
+          <i class="pi pi-list-check card-header-icon"></i>
+          <h2>Historique des transactions</h2>
+        </div>
+        <div class="card-header-right">
+          <div class="filter-tabs">
+            <button class="filter-tab" [class.active]="transactionTypeFilter === 'all'"    (click)="transactionTypeFilter = 'all'">Toutes</button>
+            <button class="filter-tab" [class.active]="transactionTypeFilter === 'BALANCE'" (click)="transactionTypeFilter = 'BALANCE'">Dépôts</button>
+            <button class="filter-tab" [class.active]="transactionTypeFilter === 'WITHDRAW'" (click)="transactionTypeFilter = 'WITHDRAW'">Retraits</button>
+            <button class="filter-tab" [class.active]="transactionTypeFilter === 'PAYMENT_ORDER'" (click)="transactionTypeFilter = 'PAYMENT_ORDER'">Revenus</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Liste transactions -->
+      <div class="tx-list" *ngIf="filteredTransactions.length > 0">
+        <div class="tx-row" *ngFor="let t of filteredTransactions">
+          <div class="tx-icon" [ngClass]="'tx-' + t.type.toLowerCase()">
+            <i class="pi" [ngClass]="getTransactionIcon(t)"></i>
+          </div>
+          <div class="tx-info">
+            <span class="tx-title">{{ getTransactionTypeLabel(t) }}</span>
+            <span class="tx-desc">{{ t.description }}</span>
+          </div>
+          <div class="tx-right">
+            <span class="tx-amount" [ngClass]="t.amount >= 0 ? 'tx-pos' : 'tx-neg'">
+              {{ t.amount >= 0 ? '+' : '' }}{{ t.amount | currency:'USD' }}
+            </span>
+            <span class="tx-date">{{ formatDate(t.createdAt) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty state transactions -->
+      <div class="empty-state" *ngIf="!isLoadingTransactions && filteredTransactions.length === 0">
+        <div class="empty-illustration">
+          <div class="empty-circle empty-circle-outer"></div>
+          <div class="empty-circle empty-circle-mid"></div>
+          <div class="empty-icon-wrap">
+            <i class="pi pi-receipt"></i>
+          </div>
+        </div>
+        <h3 class="empty-title">Aucune transaction</h3>
+        <p class="empty-desc">
+          Vos transactions apparaîtront ici dès votre premier dépôt ou retrait.
+        </p>
+        <button class="empty-cta" (click)="showDepositModal = true">
+          <i class="pi pi-plus"></i>
+          Faire un dépôt
+        </button>
+      </div>
+
+      <!-- Loading state -->
+      <div class="loading-state" *ngIf="isLoadingTransactions">
+        <div class="skeleton-row" *ngFor="let i of [1,2,3,4]"></div>
+      </div>
+    </div>
+
+    <!-- Sidebar droite -->
+    <div class="sidebar-col">
+
+      <!-- Statut retrait -->
+      <div class="content-card">
+        <div class="card-header">
+          <div class="card-header-left">
+            <i class="pi pi-clock card-header-icon"></i>
+            <h2>Statut retrait</h2>
+          </div>
+          <span class="status-pill" [ngClass]="latestPendingWithdrawal ? 'pill-pending' : 'pill-none'">
+            {{ latestPendingWithdrawal ? 'En attente' : 'Aucune demande' }}
+          </span>
+        </div>
+
+        <div class="withdrawal-details" *ngIf="latestPendingWithdrawal as w">
+          <div class="wd-row">
+            <span class="wd-label">Montant</span>
+            <span class="wd-value">{{ w.amount | currency:'USD' }}</span>
+          </div>
+          <div class="wd-row">
+            <span class="wd-label">Méthode</span>
+            <span class="wd-value">{{ w.paymentMethod === 'BINANCE' ? 'Binance' : 'Virement bancaire' }}</span>
+          </div>
+          <div class="wd-row">
+            <span class="wd-label">Demandé le</span>
+            <span class="wd-value">{{ formatDate(w.createdAt) }}</span>
+          </div>
+        </div>
+
+        <!-- Empty statut -->
+        <div class="empty-state-sm" *ngIf="!latestPendingWithdrawal">
+          <div class="esm-icon">
+            <i class="pi pi-check-circle"></i>
+          </div>
+          <p class="esm-text">Aucune demande de retrait en cours.</p>
+          <button class="esm-cta" (click)="openWithdrawModal()">
+            Faire une demande
+          </button>
+        </div>
+      </div>
+
+      <!-- Historique retraits -->
+      <div class="content-card" *ngIf="withdrawals.length > 0">
+        <div class="card-header">
+          <div class="card-header-left">
+            <i class="pi pi-history card-header-icon"></i>
+            <h2>Mes retraits</h2>
+          </div>
+        </div>
+        <div class="withdrawals-list">
+          <div class="wl-row" *ngFor="let w of withdrawals">
+            <div class="wl-icon">
+              <i class="pi" [ngClass]="w.paymentMethod === 'BINANCE' ? 'pi-bitcoin' : 'pi-building-columns'"></i>
+            </div>
+            <div class="wl-info">
+              <span class="wl-amount">{{ w.amount | currency:'USD' }}</span>
+              <span class="wl-method">{{ w.paymentMethod === 'BINANCE' ? 'Binance' : 'Banque' }}</span>
+            </div>
+            <span class="wl-badge" [ngClass]="'wl-' + w.status.toLowerCase()">{{ w.status }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty retraits -->
+      <div class="content-card" *ngIf="withdrawals.length === 0 && !isLoadingWithdrawals">
+        <div class="card-header">
+          <div class="card-header-left">
+            <i class="pi pi-history card-header-icon"></i>
+            <h2>Mes retraits</h2>
+          </div>
+        </div>
+        <div class="empty-state-sm">
+          <div class="esm-icon esm-neutral">
+            <i class="pi pi-arrow-circle-up"></i>
+          </div>
+          <p class="esm-text">Vous n'avez pas encore effectué de retrait.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ MODAL DÉPÔT ══ -->
+<div class="modal-overlay" *ngIf="showDepositModal" (click)="closeModal($event)">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <div class="modal-header-icon deposit-icon">
+        <i class="pi pi-wallet"></i>
+      </div>
+      <div class="modal-header-text">
+        <h3>Ajouter un dépôt</h3>
+        <p>Choisissez votre méthode et envoyez la preuve</p>
+      </div>
+      <button class="modal-close" (click)="showDepositModal = false">
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+
+      <!-- Montant -->
+      <div class="form-group">
+        <label>Montant ($) <span class="req">*</span></label>
+        <div class="input-wrap">
+          <i class="pi pi-dollar input-icon"></i>
+          <input type="number" min="1" step="0.01" [(ngModel)]="depositAmount"
+                 placeholder="Ex: 100" class="form-input" />
+        </div>
+        <small>Saisissez le montant exact que vous avez envoyé.</small>
+      </div>
+
+      <!-- Méthode -->
+      <div class="form-group">
+        <label>Méthode de paiement <span class="req">*</span></label>
+        <div class="method-grid">
+          <div class="method-card" *ngFor="let m of paymentMethods"
+               [class.active]="selectedMethod?.value === m.value"
+               (click)="selectPaymentMethod(m)">
+            <div class="mc-check"><i class="pi pi-check"></i></div>
+            <div class="mc-icon"><i class="pi pi-credit-card"></i></div>
+            <span class="mc-name">{{ m.name }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Détails méthode -->
+      <div class="method-details" *ngIf="selectedMethod">
+        <div class="md-title">
+          <i class="pi pi-info-circle"></i>
+          Coordonnées {{ selectedMethod.name }}
+        </div>
+
+        <!-- Binance -->
+        <div class="md-field" *ngIf="selectedMethod.value === 'binance'">
+          <div class="mdf-icon"><i class="pi pi-id-card"></i></div>
+          <div class="mdf-body">
+            <span class="mdf-label">PayID</span>
+            <span class="mdf-value">{{ selectedMethod.payId }}</span>
+          </div>
+          <button type="button" class="mdf-copy" (click)="copyToClipboard(selectedMethod.payId, 'payId')">
+            <i [ngClass]="copied && copiedField === 'payId' ? 'pi pi-check' : 'pi pi-copy'"></i>
+          </button>
+        </div>
+
+        <!-- Redotpay -->
+        <ng-container *ngIf="selectedMethod.value === 'redotpay'">
+          <div class="md-field">
+            <div class="mdf-icon"><i class="pi pi-credit-card"></i></div>
+            <div class="mdf-body">
+              <span class="mdf-label">Numéro de carte</span>
+              <span class="mdf-value">{{ selectedMethod.cardNumber }}</span>
+            </div>
+            <button type="button" class="mdf-copy" (click)="copyToClipboard(selectedMethod.cardNumber, 'card')">
+              <i [ngClass]="copied && copiedField === 'card' ? 'pi pi-check' : 'pi pi-copy'"></i>
+            </button>
+          </div>
+          <div class="md-field">
+            <div class="mdf-icon"><i class="pi pi-calendar"></i></div>
+            <div class="mdf-body">
+              <span class="mdf-label">Expiration</span>
+              <span class="mdf-value">{{ selectedMethod.expiryDate }}</span>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Kast -->
+        <ng-container *ngIf="selectedMethod.value === 'kast'">
+          <div class="md-field">
+            <div class="mdf-icon"><i class="pi pi-wallet"></i></div>
+            <div class="mdf-body">
+              <span class="mdf-label">Wallet ID</span>
+              <span class="mdf-value">{{ selectedMethod.walletId }}</span>
+            </div>
+            <button type="button" class="mdf-copy" (click)="copyToClipboard(selectedMethod.walletId, 'wallet')">
+              <i [ngClass]="copied && copiedField === 'wallet' ? 'pi pi-check' : 'pi pi-copy'"></i>
+            </button>
+          </div>
+          <div class="md-field">
+            <div class="mdf-icon"><i class="pi pi-phone"></i></div>
+            <div class="mdf-body">
+              <span class="mdf-label">Téléphone</span>
+              <span class="mdf-value">{{ selectedMethod.phoneNumber }}</span>
+            </div>
+            <button type="button" class="mdf-copy" (click)="copyToClipboard(selectedMethod.phoneNumber, 'phone')">
+              <i [ngClass]="copied && copiedField === 'phone' ? 'pi pi-check' : 'pi pi-copy'"></i>
+            </button>
+          </div>
+        </ng-container>
+
+        <!-- Moroccan Bank -->
+        <ng-container *ngIf="selectedMethod.value === 'moroccan_bank'">
+          <div class="md-field">
+            <div class="mdf-icon"><i class="pi pi-building"></i></div>
+            <div class="mdf-body"><span class="mdf-label">Banque</span><span class="mdf-value">{{ selectedMethod.bankName }}</span></div>
+          </div>
+          <div class="md-field">
+            <div class="mdf-icon"><i class="pi pi-hashtag"></i></div>
+            <div class="mdf-body"><span class="mdf-label">N° compte</span><span class="mdf-value">{{ selectedMethod.accountNumber }}</span></div>
+            <button type="button" class="mdf-copy" (click)="copyToClipboard(selectedMethod.accountNumber, 'account')">
+              <i [ngClass]="copied && copiedField === 'account' ? 'pi pi-check' : 'pi pi-copy'"></i>
+            </button>
+          </div>
+          <div class="md-field">
+            <div class="mdf-icon"><i class="pi pi-file"></i></div>
+            <div class="mdf-body"><span class="mdf-label">IBAN</span><span class="mdf-value">{{ selectedMethod.iban }}</span></div>
+            <button type="button" class="mdf-copy" (click)="copyToClipboard(selectedMethod.iban, 'iban')">
+              <i [ngClass]="copied && copiedField === 'iban' ? 'pi pi-check' : 'pi pi-copy'"></i>
+            </button>
+          </div>
+          <div class="md-field">
+            <div class="mdf-icon"><i class="pi pi-globe"></i></div>
+            <div class="mdf-body"><span class="mdf-label">SWIFT</span><span class="mdf-value">{{ selectedMethod.swift }}</span></div>
+            <button type="button" class="mdf-copy" (click)="copyToClipboard(selectedMethod.swift, 'swift')">
+              <i [ngClass]="copied && copiedField === 'swift' ? 'pi pi-check' : 'pi pi-copy'"></i>
+            </button>
+          </div>
+        </ng-container>
+
+        <!-- Upload -->
+        <div class="upload-group">
+          <label class="upload-label">
+            Justificatif de paiement <span class="req">*</span>
+          </label>
+          <input type="file" id="paymentProof" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"
+                 (change)="onFileSelected($event)" class="file-hidden" />
+          <label for="paymentProof" class="upload-zone">
+            <ng-container *ngIf="!selectedFile">
+              <div class="upload-zone-icon"><i class="pi pi-cloud-upload"></i></div>
+              <p class="upload-zone-title">Glissez ou cliquez pour sélectionner</p>
+              <small class="upload-zone-hint">JPG, PNG, PDF, DOC — max 5MB</small>
+            </ng-container>
+            <ng-container *ngIf="selectedFile">
+              <div class="file-preview">
+                <div class="fp-icon"><i class="pi pi-file"></i></div>
+                <div class="fp-info">
+                  <strong>{{ selectedFile.name }}</strong>
+                  <small>{{ selectedFile.size | fileSize }}</small>
+                </div>
+                <button type="button" class="fp-remove" (click)="removeFile(); $event.stopPropagation()">
+                  <i class="pi pi-times"></i>
+                </button>
+              </div>
+            </ng-container>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-ghost" (click)="showDepositModal = false">Annuler</button>
+      <button class="btn-primary"
+              [disabled]="!depositAmount || !selectedMethod || !selectedFile || isLoading"
+              (click)="submitDeposit()">
+        <i class="pi pi-spin pi-spinner" *ngIf="isLoading"></i>
+        <ng-container *ngIf="!isLoading">
+          <i class="pi pi-check"></i> Confirmer le dépôt
+        </ng-container>
+        <ng-container *ngIf="isLoading">Traitement…</ng-container>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ MODAL RETRAIT ══ -->
+<div class="modal-overlay" *ngIf="showWithdrawModal" (click)="closeWithdrawModal()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <div class="modal-header-icon withdraw-icon">
+        <i class="pi pi-arrow-circle-up"></i>
+      </div>
+      <div class="modal-header-text">
+        <h3>Demander un retrait</h3>
+        <p>Solde disponible : <strong>{{ formattedBalance }} $</strong></p>
+      </div>
+      <button class="modal-close" (click)="closeWithdrawModal()">
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+
+      <div class="form-group">
+        <label>Montant à retirer ($) <span class="req">*</span></label>
+        <div class="input-wrap">
+          <i class="pi pi-dollar input-icon"></i>
+          <input type="number" min="10" step="0.01" [(ngModel)]="withdrawAmount"
+                 placeholder="Minimum 10 $" class="form-input" />
+        </div>
+        <small>Montant minimum de retrait : 10 $</small>
+      </div>
+
+      <div class="form-group">
+        <label>Méthode de réception <span class="req">*</span></label>
+        <div class="method-grid method-grid-2">
+          <div class="method-card" [class.active]="withdrawMethod === 'BINANCE'" (click)="withdrawMethod = 'BINANCE'">
+            <div class="mc-check"><i class="pi pi-check"></i></div>
+            <div class="mc-icon"><i class="pi pi-wallet"></i></div>
+            <span class="mc-name">Binance</span>
+          </div>
+          <div class="method-card" [class.active]="withdrawMethod === 'BANK_TRANSFER'" (click)="withdrawMethod = 'BANK_TRANSFER'">
+            <div class="mc-check"><i class="pi pi-check"></i></div>
+            <div class="mc-icon"><i class="pi pi-building-columns"></i></div>
+            <span class="mc-name">Virement</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="withdrawMethod === 'BINANCE'">
+        <label>Identifiant / PayID Binance <span class="req">*</span></label>
+        <div class="input-wrap">
+          <i class="pi pi-id-card input-icon"></i>
+          <input type="text" [(ngModel)]="withdrawBinanceId" placeholder="Ex: 94871715" class="form-input" />
+        </div>
+      </div>
+
+      <ng-container *ngIf="withdrawMethod === 'BANK_TRANSFER'">
+        <div class="form-group">
+          <label>Nom de la banque <span class="req">*</span></label>
+          <div class="input-wrap">
+            <i class="pi pi-building input-icon"></i>
+            <input type="text" [(ngModel)]="withdrawBankName" placeholder="Ex: Banque Populaire" class="form-input" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>IBAN / RIB <span class="req">*</span></label>
+          <div class="input-wrap">
+            <i class="pi pi-file input-icon"></i>
+            <input type="text" [(ngModel)]="withdrawIban" placeholder="Ex: MA64 1234 5678…" class="form-input" />
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-ghost" (click)="closeWithdrawModal()">Annuler</button>
+      <button class="btn-primary" [disabled]="isWithdrawing" (click)="submitWithdrawal()">
+        <i class="pi pi-spin pi-spinner" *ngIf="isWithdrawing"></i>
+        <ng-container *ngIf="!isWithdrawing">
+          <i class="pi pi-check"></i> Envoyer la demande
+        </ng-container>
+      </button>
+    </div>
+  </div>
+</div>
