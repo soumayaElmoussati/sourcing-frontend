@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 export interface AdminKpiDto {
   totalSellers: number; approvedSellers: number; pendingSellers: number;
@@ -39,7 +40,7 @@ const EMPTY_KPIS: AdminKpiDto = {
 
 @Injectable({ providedIn: 'root' })
 export class AdminDashboardService {
-  private base = 'http://localhost:8080/api/admin/dashboard';
+  private base = `${environment.apiUrl}/api/admin/dashboard`;
 
   constructor(private http: HttpClient) {}
 

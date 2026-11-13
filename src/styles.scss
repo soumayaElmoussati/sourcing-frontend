@@ -34,3 +34,41 @@ body.rtl {
   .form-field label { text-align: right; }
   .fi { text-align: right; }
 }
+
+/* ══════════════════════════════════════════
+   SCROLLBAR ÉLÉGANTE SOMBRE (Charte)
+   ══════════════════════════════════════════ */
+
+/* Scroll fluide */
+html, body {
+  scroll-behavior: smooth;
+}
+
+/* 1. Largeur fine */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+/* 2. La piste (fond derrière) : Transparente pour voir votre dégradé */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* 3. Le pouce (la barre) : Bleu foncé de votre charte ($dark-blue: #0d2b6e) */
+::-webkit-scrollbar-thumb {
+  background: #0d2b6e; /* Votre variable $dark-blue */
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Légère bordure pour la distinction */
+}
+
+/* 4. Au survol : Un bleu légèrement plus clair */
+::-webkit-scrollbar-thumb:hover {
+  background: #1a56e8; /* Votre $blue pour le contraste au survol */
+}
+
+/* 5. Compatibilité Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #0d2b6e transparent;
+}

@@ -88,7 +88,7 @@
       "CTA": "Get Started"
     },
     "BADGE": {
-      "NEW": "NEW OFFER",
+      "NEW": "New Offer",
       "TAG": "Covered",
       "SUB": "FOR EVERY SELLER"
     },
@@ -98,12 +98,12 @@
       "STATS": "Live Statistics"
     },
     "ABOUT": {
-      "EYEBROW": "OUR COMPANY",
-      "TITLE": "OPTIMIZE\nYOUR BUSINESS",
+      "EYEBROW": "Our company",
+      "TITLE": "Optimize\nyour business",
       "DESC": "X10ECOM is a company specialized in e-commerce solutions for MENA markets, from sourcing to cash-on-delivery (COD). We support every step of your commercial development across the region."
     },
     "SERVICES": {
-      "EYEBROW": "OUR SERVICES",
+      "EYEBROW": "Our Services",
       "TITLE": "Everything you need to succeed"
     },
     "SVC": {
@@ -121,7 +121,7 @@
       "S6_DESC": "We provide COD services tailored to MENA markets, with secure and fast remittance to our seller partners."
     },
     "BENEFITS": {
-      "EYEBROW": "ADVANTAGES",
+      "EYEBROW": "Advantages",
       "TITLE": "Efficiency at every\nstep of your business",
       "B1": "Professional Account Manager",
       "B2": "Automatic Price Simulators",

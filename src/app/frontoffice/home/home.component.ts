@@ -112,13 +112,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     { icon: 'M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-9 14H7v-2h4v2zm6-4H7v-2h10v2zm0-4H7V7h10v3z', labelKey: 'HOME.BENEFITS.B4' },
   ];
 
+  // Codes pays (les emojis drapeaux ne s'affichent pas sous Windows)
   countries = [
-    { flag: '🇸🇦', nameKey: 'HOME.COUNTRIES.C1' },
-    { flag: '🇦🇪', nameKey: 'HOME.COUNTRIES.C2' },
-    { flag: '🇰🇼', nameKey: 'HOME.COUNTRIES.C3' },
-    { flag: '🇶🇦', nameKey: 'HOME.COUNTRIES.C4' },
-    { flag: '🇧🇭', nameKey: 'HOME.COUNTRIES.C5' },
-    { flag: '🇴🇲', nameKey: 'HOME.COUNTRIES.C6' },
+    { code: 'SA', nameKey: 'HOME.COUNTRIES.C1' },
+    { code: 'AE', nameKey: 'HOME.COUNTRIES.C2' },
+    { code: 'KW', nameKey: 'HOME.COUNTRIES.C3' },
+    { code: 'QA', nameKey: 'HOME.COUNTRIES.C4' },
+    { code: 'BH', nameKey: 'HOME.COUNTRIES.C5' },
+    { code: 'OM', nameKey: 'HOME.COUNTRIES.C6' },
   ];
 
   stats = [
