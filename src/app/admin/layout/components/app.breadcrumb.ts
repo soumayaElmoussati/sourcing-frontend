@@ -20,23 +20,7 @@ interface Breadcrumb {
     standalone: true,
     imports: [CommonModule, RouterModule, IconField, InputIcon, InputText, ButtonModule, RippleModule],
     template: ` 
-        <ul class="breadcrumb-menu flex items-center justify-end lg:hidden absolute right-0 top-0 z-40 h-12 w-screen">
-            <li class="w-full m-0 ml-4">
-                <div class="breadcrumb-search flex justify-end" [ngClass]="{ 'breadcrumb-search-active': searchActive() }">
-                    <button pButton pRipple icon="pi pi-search" class="breadcrumb-searchbutton text-surface-500 dark:text-surface-400 flex-shrink-0" type="button" severity="secondary" text rounded (click)="activateSearch()"></button>
-                    <div class="search-input-wrapper">
-                        <p-icon-field>
-                            <p-inputicon class="pi pi-search" />
-                            <input pInputText #searchinput autofocus type="text" placeholder="Search" (blur)="deactivateSearch()" (keydown.escape)="deactivateSearch()" />
-                        </p-icon-field>
-                    </div>
-                </div>
-            </li>
-            <li class="right-panel-button relative">
-                <button pButton pRipple type="button" label="Today" style="width: 6.7rem" icon="pi pi-bookmark" class="layout-rightmenu-button !hidden md:!inline-flex font-normal" (click)="onProfileMenuButtonClick()"></button>
-                <Button pButton pRipple style="width: 3.286rem" icon="pi pi-bookmark" class="layout-rightmenu-button !block md:!hidden font-normal" (click)="onProfileMenuButtonClick()"></Button>
-            </li>
-        </ul>`,
+`,
     host: {
         class: 'layout-breadcrumb flex items-center relative h-12'
     }

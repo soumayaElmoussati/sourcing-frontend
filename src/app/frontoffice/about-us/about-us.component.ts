@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, HostListener, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnDestroy, Inject, PLATFORM_ID, ElementRef, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslatePipe, TranslateDirective } from '@ngx-translate/core';
 import { LangSwitcherComponent } from '@/shared/components/lang-switcher/lang-switcher/lang-switcher.component';
@@ -16,16 +16,17 @@ import { isPlatformBrowser } from '@angular/common';
 export class AboutUsComponent implements AfterViewInit, OnDestroy {
 
   isScrolled = false;
-  menuOpen = false;
+  menuOpen  = false;
+
   private observer!: IntersectionObserver;
+  private animFrame!: number;
 
   get isRtl(): boolean { return this.langService.isRtl; }
 
-  // Image fulfillment selon la langue
   get fulfillmentImg(): string {
     const lang = this.langService.currentLang();
     if (lang === 'ar') return '/images/fulfillment-ar.jpeg';
-    return '/images/fulfillment-fr.jpeg'; // fr + en
+    return '/images/fulfillment-fr.jpeg';
   }
 
   constructor(
@@ -39,15 +40,134 @@ export class AboutUsComponent implements AfterViewInit, OnDestroy {
   toggleMenu() { this.menuOpen = !this.menuOpen; }
   closeMenu()  { this.menuOpen = false; }
 
+  /* ── CTA floating particles ── */
+  ctaParticles = Array.from({ length: 12 }, () => ({
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    delay: Math.random() * 4,
+    size: Math.random() * 6 + 3,
+  }));
+
+  /* ── GCC countries ── */
+  countries = [
+    { flag: '🇸🇦', name: 'Saudi Arabia' },
+    { flag: '🇦🇪', name: 'UAE' },
+    { flag: '🇰🇼', name: 'Kuwait' },
+    { flag: '🇶🇦', name: 'Qatar' },
+    { flag: '🇧🇭', name: 'Bahrain' },
+    { flag: '🇴🇲', name: 'Oman' },
+  ];
+
   ngAfterViewInit(): void {
     if (!isPlatformBrowser(this.platformId)) return;
-    this.observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); this.observer.unobserve(e.target); } });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    /* Intersection Observer – fade-in anims */
+    this.observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in-view');
+          this.observer.unobserve(e.target);
+          /* Trigger counter if needed */
+          const strong = e.target.querySelector
+            ? e.target.querySelector('.counter[data-target]')
+            : (e.target.matches('.counter[data-target]') ? e.target : null);
+          if (strong) this.animateCounter(strong as HTMLElement);
+          /* Animate all counters inside */
+          const counters = e.target.querySelectorAll?.('.counter[data-target]');
+          counters?.forEach(c => this.animateCounter(c as HTMLElement));
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+
     document.querySelectorAll('.anim').forEach(el => this.observer.observe(el));
+
+    /* Animate hero stats counters immediately on load */
+    setTimeout(() => {
+      document.querySelectorAll('.hero-stats .counter[data-target]').forEach(el => {
+        this.animateCounter(el as HTMLElement);
+      });
+    }, 600);
+
+    /* Canvas dots */
+    this.initHeroCanvas();
   }
 
-  ngOnDestroy(): void { this.observer?.disconnect(); }
+  private animateCounter(el: HTMLElement): void {
+    const target = parseInt(el.dataset['target'] || '0', 10);
+    if (!target) return;
+    const duration = 1600;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(eased * target).toString();
+      if (progress < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+
+  private initHeroCanvas(): void {
+    const canvas = document.querySelector('.hero-canvas') as HTMLCanvasElement | null;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const resize = () => {
+      canvas.width  = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
+    resize();
+    window.addEventListener('resize', resize);
+
+    const count = 60;
+    const particles: { x: number; y: number; vx: number; vy: number; r: number }[] = [];
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - .5) * .4,
+        vy: (Math.random() - .5) * .4,
+        r: Math.random() * 1.5 + .5,
+      });
+    }
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(16,185,129,.7)';
+        ctx.fill();
+      });
+      /* Connections */
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(16,185,129,${.15 * (1 - dist / 100)})`;
+            ctx.lineWidth = .6;
+            ctx.stroke();
+          }
+        }
+      }
+      this.animFrame = requestAnimationFrame(draw);
+    };
+    draw();
+  }
+
+  ngOnDestroy(): void {
+    this.observer?.disconnect();
+    cancelAnimationFrame(this.animFrame);
+  }
 
   solutions = [
     { icon: 'M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z', titleKey: 'ABOUT.SOL.S1_T', descKey: 'ABOUT.SOL.S1_D', color: '#10b981' },

@@ -50,16 +50,78 @@
     </div>
   </header>
 
-  <!-- ══ HERO ══ -->
+  <!-- ══ HERO CINÉMATIQUE ══ -->
   <section class="about-hero">
+    <canvas class="hero-canvas" #heroCanvas></canvas>
     <div class="hero-bg">
       <div class="hero-orb orb-1"></div>
       <div class="hero-orb orb-2"></div>
+      <div class="hero-orb orb-3"></div>
+      <div class="hero-grid-lines"></div>
     </div>
     <div class="hero-content">
-      <span class="eyebrow anim fade-up">{{ 'ABOUT.EYEBROW' | translate }}</span>
-      <h1 class="anim fade-up delay-1">{{ 'ABOUT.HERO_TITLE' | translate }}</h1>
-      <p class="anim fade-up delay-2">{{ 'ABOUT.HERO_SUB' | translate }}</p>
+      <div class="hero-badge anim fade-up">
+        <span class="badge-dot"></span>
+        <span>{{ 'ABOUT.EYEBROW' | translate }}</span>
+      </div>
+      <h1 class="anim fade-up delay-1">
+        <span class="line-1">{{ 'ABOUT.HERO_TITLE_L1' | translate }}</span>
+        <span class="line-2 gradient-text">{{ 'ABOUT.HERO_TITLE_L2' | translate }}</span>
+      </h1>
+      <p class="hero-sub anim fade-up delay-2">{{ 'ABOUT.HERO_SUB' | translate }}</p>
+      <div class="hero-stats anim fade-up delay-3">
+        <div class="hstat">
+          <strong class="counter" data-target="6">0</strong>
+          <span>{{ 'ABOUT.MAP.S1' | translate }}</span>
+        </div>
+        <div class="hstat-divider"></div>
+        <div class="hstat">
+          <strong class="counter" data-target="50">0</strong>
+          <span>{{ 'ABOUT.MAP.S2' | translate }}</span>
+        </div>
+        <div class="hstat-divider"></div>
+        <div class="hstat">
+          <strong>24/7</strong>
+          <span>{{ 'ABOUT.MAP.S3' | translate }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ══ FONDATEUR / CEO ══ -->
+  <section class="founder-section">
+    <div class="section-wrap founder-layout">
+
+      <!-- Photo -->
+      <div class="founder-visual anim fade-left">
+        <div class="founder-img-wrap">
+          <div class="founder-img-accent"></div>
+          <img src="/images/ceo-founder.jpeg" alt="Founder & CEO" class="founder-img" loading="lazy" />
+        </div>
+      </div>
+
+      <!-- Texte -->
+      <div class="founder-text anim fade-right">
+        <span class="eyebrow">{{ 'ABOUT.FOUNDER.EYEBROW' | translate }}</span>
+        <h2 class="founder-name">{{ 'ABOUT.FOUNDER.NAME' | translate }}</h2>
+        <div class="founder-divider"></div>
+        <blockquote class="founder-quote">
+          <svg class="qmark" viewBox="0 0 32 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 24V14.4C0 10.56 .96 7.36 2.88 4.8 4.86 2.24 7.68.64 11.36 0L12.8 2.56C10.56 3.2 8.8 4.32 7.52 5.92 6.3 7.52 5.7 9.44 5.76 11.68H11.52V24H0ZM18.88 24V14.4C18.88 10.56 19.84 7.36 21.76 4.8 23.74 2.24 26.56.64 30.24 0L31.68 2.56C29.44 3.2 27.68 4.32 26.4 5.92 25.18 7.52 24.58 9.44 24.64 11.68H30.4V24H18.88Z" fill="#10b981" fill-opacity=".25"/>
+          </svg>
+          {{ 'ABOUT.FOUNDER.QUOTE' | translate }}
+        </blockquote>
+        <p class="founder-bio">{{ 'ABOUT.FOUNDER.BIO' | translate }}</p>
+        <div class="founder-tags">
+          <span class="ftag">E-commerce GCC</span>
+          <span class="ftag">Supply Chain</span>
+          <span class="ftag">MENA Markets</span>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -73,6 +135,10 @@
         <p class="gcc-quote anim fade-up delay-1">
           <strong>{{ 'HOME.HERO.GCC_PHRASE' | translate }}</strong>
         </p>
+        <a routerLink="/services" class="mission-cta">
+          {{ 'HOME.NAV.SERVICES' | translate }}
+          <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+        </a>
       </div>
       <div class="mission-visual anim fade-right">
         <div class="about-img-frame">
@@ -82,12 +148,16 @@
             <svg viewBox="0 0 24 24"><path fill="#10b981" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
             <span>GCC Ready</span>
           </div>
+          <div class="img-floating-stat">
+            <strong>+50</strong>
+            <span>Partenaires</span>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ══ VALUES ══ -->
+  <!-- ══ VALUES REDESIGN ══ -->
   <section class="values-section">
     <div class="section-wrap column">
       <div class="section-head anim fade-up">
@@ -95,12 +165,16 @@
         <h2 class="section-h2 center">{{ 'ABOUT.VALUES.TITLE' | translate }}</h2>
       </div>
       <div class="values-grid">
-        <div class="value-card anim fade-up" *ngFor="let v of values; let i = index" [style.animation-delay]="(i * 0.1) + 's'">
-          <div class="value-icon" [style.background]="v.color + '15'">
-            <svg viewBox="0 0 24 24"><path [attr.fill]="v.color" [attr.d]="v.icon"/></svg>
+        <div class="value-card anim fade-up" *ngFor="let v of values; let i = index" [style.animation-delay]="(i * 0.12) + 's'">
+          <div class="value-card-inner">
+            <div class="value-icon-wrap" [style.--vcolor]="v.color">
+              <div class="value-icon-bg"></div>
+              <svg viewBox="0 0 24 24" width="28" height="28"><path [attr.fill]="v.color" [attr.d]="v.icon"/></svg>
+            </div>
+            <h3>{{ v.titleKey | translate }}</h3>
+            <p>{{ v.descKey | translate }}</p>
+            <div class="value-hover-line" [style.background]="v.color"></div>
           </div>
-          <h3>{{ v.titleKey | translate }}</h3>
-          <p>{{ v.descKey | translate }}</p>
         </div>
       </div>
     </div>
@@ -108,6 +182,7 @@
 
   <!-- ══ SOLUTIONS ══ -->
   <section class="solutions-section">
+    <div class="solutions-bg-gradient"></div>
     <div class="section-wrap column">
       <div class="section-head anim fade-up">
         <span class="eyebrow center">{{ 'ABOUT.SOLUTIONS.EYEBROW' | translate }}</span>
@@ -115,17 +190,21 @@
       </div>
       <div class="solutions-grid">
         <div class="sol-card anim fade-up" *ngFor="let s of solutions; let i = index" [style.animation-delay]="(i * 0.1) + 's'">
+          <div class="sol-number" [style.color]="s.color + '40'">0{{i+1}}</div>
           <div class="sol-icon" [style.background]="s.color + '18'">
             <svg viewBox="0 0 24 24"><path [attr.fill]="s.color" [attr.d]="s.icon"/></svg>
           </div>
           <h3>{{ s.titleKey | translate }}</h3>
           <p>{{ s.descKey | translate }}</p>
+          <div class="sol-arrow" [style.color]="s.color">
+            <svg viewBox="0 0 24 24" width="18"><path fill="currentColor" d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ══ FULFILLMENT IMAGE (selon la langue) ══ -->
+  <!-- ══ FULFILLMENT ══ -->
   <section class="fulfillment-section">
     <div class="section-wrap column">
       <div class="section-head anim fade-up">
@@ -135,6 +214,7 @@
       </div>
       <div class="fulfillment-img-wrap anim fade-up delay-1">
         <img [src]="fulfillmentImg" alt="X10ECOM Fulfillment" loading="lazy" />
+        <div class="fulfill-overlay"></div>
       </div>
     </div>
   </section>
@@ -147,31 +227,31 @@
         <h2 class="section-h2">{{ 'ABOUT.MAP.TITLE' | translate }}</h2>
         <p class="section-p">{{ 'ABOUT.MAP.DESC' | translate }}</p>
         <div class="map-stats">
-          <div class="mstat">
-            <strong>6</strong>
+          <div class="mstat anim fade-up">
+            <strong class="counter" data-target="6">0</strong>
             <span>{{ 'ABOUT.MAP.S1' | translate }}</span>
           </div>
-          <div class="mstat">
-            <strong>50+</strong>
+          <div class="mstat anim fade-up delay-1">
+            <strong class="counter" data-target="50">0</strong>
             <span>{{ 'ABOUT.MAP.S2' | translate }}</span>
           </div>
-          <div class="mstat">
+          <div class="mstat anim fade-up delay-2">
             <strong>24/7</strong>
             <span>{{ 'ABOUT.MAP.S3' | translate }}</span>
           </div>
         </div>
         <div class="countries-grid">
-          <div class="ctag"><span>🇸🇦</span><span>{{ 'HOME.COUNTRIES.C1' | translate }}</span></div>
-          <div class="ctag"><span>🇦🇪</span><span>{{ 'HOME.COUNTRIES.C2' | translate }}</span></div>
-          <div class="ctag"><span>🇰🇼</span><span>{{ 'HOME.COUNTRIES.C3' | translate }}</span></div>
-          <div class="ctag"><span>🇶🇦</span><span>{{ 'HOME.COUNTRIES.C4' | translate }}</span></div>
-          <div class="ctag"><span>🇧🇭</span><span>{{ 'HOME.COUNTRIES.C5' | translate }}</span></div>
-          <div class="ctag"><span>🇴🇲</span><span>{{ 'HOME.COUNTRIES.C6' | translate }}</span></div>
+          <div class="ctag anim fade-up" [style.animation-delay]="(i * 0.07) + 's'" *ngFor="let c of countries; let i = index">
+            <span>{{c.flag}}</span><span>{{c.name}}</span>
+          </div>
         </div>
       </div>
       <div class="map-visual anim fade-left">
         <div class="map-img-frame">
           <img src="/images/gcc-network-map.jpeg" alt="GCC Network Map" loading="lazy" />
+          <div class="map-pulse-dot" style="top: 32%; left: 55%"><div class="pulse-ring"></div></div>
+          <div class="map-pulse-dot" style="top: 45%; left: 62%"><div class="pulse-ring"></div></div>
+          <div class="map-pulse-dot" style="top: 55%; left: 58%"><div class="pulse-ring"></div></div>
         </div>
       </div>
     </div>
@@ -179,7 +259,13 @@
 
   <!-- ══ CTA BAND ══ -->
   <section class="cta-band anim fade-up">
+    <div class="cta-particles">
+      <span *ngFor="let p of ctaParticles" class="cta-particle" [style.left]="p.x + '%'" [style.top]="p.y + '%'" [style.animation-delay]="p.delay + 's'" [style.width]="p.size + 'px'" [style.height]="p.size + 'px'"></span>
+    </div>
     <div class="cta-inner">
+      <div class="cta-icon">
+        <svg viewBox="0 0 24 24" width="32" height="32"><path fill="#10b981" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+      </div>
       <h2>{{ 'ABOUT.CTA.TITLE' | translate }}</h2>
       <p>{{ 'ABOUT.CTA.SUB' | translate }}</p>
       <div class="cta-btns">

@@ -168,7 +168,15 @@
   "ABOUT": {
     "EYEBROW": "WHO WE ARE",
     "HERO_TITLE": "Your e-commerce partner for the GCC market",
+    "HERO_TITLE_L1": "Your e-commerce partner",
+    "HERO_TITLE_L2": "for the GCC market",
     "HERO_SUB": "From sourcing to the end customer, we manage every step of your supply chain in the GCC & MENA region.",
+    "FOUNDER": {
+      "EYEBROW": "FOUNDER & CEO",
+      "NAME": "Soufiane Rafique",
+      "QUOTE": "We built X10ECOM because we saw how much potential the GCC market holds — and how few tools were built specifically for it. Our mission is to remove every barrier between ambitious brands and the region's fastest-growing consumers.",
+      "BIO": "With over 10 years of experience in e-commerce and international logistics, Soufiane created X10ECOM to give brands a true end-to-end partner in the GCC & MENA region — from product sourcing to last-mile delivery."
+    },
     "MISSION": {
       "EYEBROW": "OUR MISSION",
       "TITLE": "Simplifying e-commerce in the GCC",
@@ -176,7 +184,9 @@
     },
     "VALUES": {
       "EYEBROW": "OUR VALUES",
-      "TITLE": "What drives us",
+      "TITLE": "What drives us"
+    },
+    "VAL": {
       "V1_T": "Excellence",
       "V1_D": "We aim for perfection at every step of the logistics process.",
       "V2_T": "Trust",
@@ -188,7 +198,9 @@
     },
     "SOLUTIONS": {
       "EYEBROW": "OUR SOLUTIONS",
-      "TITLE": "One platform, all GCC markets",
+      "TITLE": "One platform, all GCC markets"
+    },
+    "SOL": {
       "S1_T": "Order Management",
       "S1_D": "Real-time confirmation, processing and tracking of orders.",
       "S2_T": "Fulfillment",
@@ -214,26 +226,127 @@
     "CTA": {
       "TITLE": "Ready to conquer the GCC market?",
       "SUB": "Join hundreds of sellers who trust X10ECOM for their expansion."
-    },
-    "SOL": {
-      "S1_T": "Order Management",
-      "S1_D": "Real-time confirmation, processing and tracking of orders.",
-      "S2_T": "Fulfillment",
-      "S2_D": "Storage, preparation and shipment from our strategic hubs.",
-      "S3_T": "Sourcing & Manufacturing",
-      "S3_D": "Access to a network of reliable suppliers and factories.",
-      "S4_T": "Last-Mile Delivery",
-      "S4_D": "Logistics partner network for optimal delivery."
-    },
-    "VAL": {
-      "V1_T": "Excellence",
-      "V1_D": "We aim for perfection at every step of the logistics process.",
-      "V2_T": "Trust",
-      "V2_D": "Solid partnerships built on transparency and integrity.",
-      "V3_T": "Innovation",
-      "V3_D": "Advanced technology solutions for your growth.",
-      "V4_T": "Reach",
-      "V4_D": "A network covering the entire GCC & MENA region."
     }
+  },
+
+  "SERVICES_PAGE": {
+  "HERO": {
+    "BADGE": "MENA Logistics Platform",
+    "H1_LINE1": "End-to-End",
+    "H1_LINE2": "E-Commerce Solutions",
+    "SUB": "Sourcing · Customs Clearance · Fulfillment · Shipping · COD — all in one, for the entire MENA region."
+  },
+  "RAIL": {
+    "SOURCING": "Sourcing",
+    "CUSTOMS": "Customs",
+    "WAREHOUSING": "Warehousing",
+    "CALL_CENTER": "Call Center",
+    "SHIPPING": "Shipping",
+    "COD": "COD"
+  },
+  "SOURCING": {
+    "EYEBROW": "Premium Service",
+    "TITLE": "Sourcing",
+    "LEAD": "Access a large network of reliable suppliers offering the latest products from China or the UAE at competitive prices.",
+    "BODY": "Avoid the stress of finding suppliers or worrying about payments. Our network handles everything from manufacturing to delivery. Every step is fully customizable to meet your business needs.",
+    "F1_T": "Rigorous Quality Control",
+    "F1_D": "Quality assurance at every step of the process",
+    "F2_T": "Supplier Network",
+    "F2_D": "Exclusive access to the best suppliers in China & UAE",
+    "F3_T": "Custom Solutions",
+    "F3_D": "Process tailored to your business"
+  },
+  "CUSTOMS": {
+    "EYEBROW": "Logistics Service",
+    "TITLE": "Customs Clearance",
+    "LEAD": "Simple and hassle-free customs clearance — from document preparation to the release of your shipment.",
+    "C1_T": "Document Verification",
+    "C1_D": "Complete check for customs clearance",
+    "C2_T": "Customs Agent Coordination",
+    "C2_D": "Direct liaison for fast processing",
+    "C3_T": "Tax Payment",
+    "C3_D": "Management and payment of duties",
+    "C4_T": "Release & Delivery",
+    "C4_D": "Pickup and final delivery"
+  },
+  "WAREHOUSING": {
+    "EYEBROW": "Logistics Service",
+    "TITLE": "Warehousing & Fulfillment",
+    "SUB": "Smart storage across the MENA region",
+    "LEAD": "Our warehouse network covers the entire MENA region. Secure and organized storage with full real-time tracking.",
+    "W1_T": "Real-Time Tracking",
+    "W1_D": "Precise location of every item",
+    "W2_T": "Inventory Management",
+    "W2_D": "Arrival dates and storage durations",
+    "W3_T": "Maximum Security",
+    "W3_D": "24/7 surveillance",
+    "W4_T": "Regional Coverage",
+    "W4_D": "Network across the entire MENA region"
+  },
+  "CALL_CENTER": {
+    "EYEBROW": "Customer Service",
+    "TITLE": "Call Center",
+    "LEAD": "Highly qualified agents for order confirmation, verification, and upselling — in Arabic, French, and English.",
+    "C1_T": "Order Confirmation",
+    "C1_D": "Detailed verification of each order by phone",
+    "C2_T": "Info Verification",
+    "C2_D": "Check addresses, products, and contact details",
+    "C3_T": "Multilingual Support",
+    "C3_D": "Arabic · French · English",
+    "C4_T": "Upselling & Cross-selling",
+    "C4_D": "Complementary product suggestions"
+  },
+  "SHIPPING": {
+    "EYEBROW": "Logistics Service",
+    "TITLE": "Shipping",
+    "LEAD": "Reliable door-to-door delivery for businesses of all sizes, at fair and competitive rates.",
+    "BODY": "Strong security measures for shipping and storage to ensure the protection of your products throughout transport.",
+    "S1_T": "Collection",
+    "S1_D": "Pickup at your place or at the warehouse",
+    "S2_T": "Transit & Sorting",
+    "S2_D": "Optimized sorting and routing",
+    "S3_T": "Last-Mile Delivery",
+    "S3_D": "Delivery to the end customer",
+    "S4_T": "Confirmation",
+    "S4_D": "POD + automatic notification"
+  },
+  "REMITTANCE": {
+    "EYEBROW": "Financial Service",
+    "TITLE": "Cash / Card Remittance",
+    "LEAD": "Payment collection and secure transfer to your account — anywhere in the world, quickly and reliably.",
+    "P1": "Cash (COD)",
+    "P2": "Credit Card",
+    "P3": "Bank Transfer",
+    "P4": "Digital Wallet"
+  },
+  "STATS": {
+    "SUPPLIERS": "Suppliers",
+    "CLEARANCE": "Clearance",
+    "WAREHOUSES": "MENA Warehouses",
+    "SATISFACTION": "Customer satisfaction",
+    "DELIVERY": "Average delivery",
+    "TRANSFERS": "Secure transfers"
+  },
+  "CTA": {
+    "TITLE": "Ready to accelerate your growth?",
+    "SUB": "Join hundreds of MENA merchants who trust X10ECOM.",
+    "BTN_PRIMARY": "Get Started",
+    "BTN_GHOST": "Contact Us"
+  },
+  "FOOTER": {
+    "DESC": "All-in-one e-commerce platform for the MENA region. Smart solutions for your digital growth.",
+    "NAV_TITLE": "Navigation",
+    "HOME": "Home",
+    "ABOUT": "About",
+    "SERVICES": "Services",
+    "CONTACT": "Contact",
+    "SERVICES_TITLE": "Services",
+    "CONTACT_TITLE": "Contact",
+    "REGION": "MENA Region",
+    "COPY": "© 2026 X10ECOM. All rights reserved.",
+    "PRIVACY": "Privacy",
+    "TERMS": "Terms",
+    "COOKIES": "Cookies"
   }
+}
 }

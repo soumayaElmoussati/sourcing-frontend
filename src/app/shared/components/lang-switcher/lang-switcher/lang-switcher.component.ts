@@ -80,8 +80,8 @@ import { Lang, LanguageService } from '@/core/services/language.service';
     }
     .ls-active { background: rgba(16,185,129,.07); }
     .ls-opt-flag   { font-size: 1.1rem; flex-shrink: 0; }
-    .ls-opt-native { font-size: .88rem; font-weight: 700; color: #0f172a; flex: 1; }
-    .ls-opt-latin  { font-size: .72rem; color: #94a3b8; }
+    .ls-opt-native { font-size: .88rem; font-weight: 700; color: #fff; flex: 1; }
+    .ls-opt-latin  { font-size: .72rem; color: #fff; }
     .ls-check      { font-size: .7rem; color: #10b981; margin-left: auto; }
   `]
 })

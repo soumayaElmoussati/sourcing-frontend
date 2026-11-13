@@ -158,5 +158,189 @@
       "COOKIES": "Cookies"
     },
     "WHATSAPP": "Contactez-nous sur WhatsApp"
+  },
+  "ABOUT": {
+    "EYEBROW": "QUI SOMMES-NOUS",
+    "HERO_TITLE": "Votre partenaire e-commerce pour le marché GCC",
+    "HERO_TITLE_L1": "Votre partenaire e-commerce",
+    "HERO_TITLE_L2": "pour le marché GCC",
+    "HERO_SUB": "Du sourcing jusqu'au client final, nous gérons chaque étape de votre chaîne d'approvisionnement dans la région GCC & MENA.",
+    "FOUNDER": {
+      "EYEBROW": "FONDATEUR & CEO",
+      "NAME": "Soufiane Rafique",
+      "QUOTE": "Nous avons créé X10ECOM parce que nous avons vu le potentiel énorme du marché GCC — et le manque d'outils conçus spécifiquement pour lui. Notre mission est de supprimer chaque barrière entre les marques ambitieuses et les consommateurs de la région.",
+      "BIO": "Avec plus de 10 ans d'expérience en e-commerce et logistique internationale, Soufiane a créé X10ECOM pour offrir aux marques un véritable partenaire de bout en bout dans la région GCC & MENA — du sourcing jusqu'à la livraison finale."
+    },
+    "MISSION": {
+      "EYEBROW": "NOTRE MISSION",
+      "TITLE": "Simplifier l'e-commerce dans le GCC",
+      "DESC": "X10ECOM est une plateforme spécialisée dans les solutions e-commerce pour les marchés GCC & MENA. Du sourcing jusqu'au paiement à la livraison (COD), nous accompagnons chaque étape de votre développement commercial dans la région."
+    },
+    "VALUES": {
+      "EYEBROW": "NOS VALEURS",
+      "TITLE": "Ce qui nous anime"
+    },
+    "VAL": {
+      "V1_T": "Excellence",
+      "V1_D": "Nous visons la perfection à chaque étape du processus logistique.",
+      "V2_T": "Confiance",
+      "V2_D": "Des partenariats solides fondés sur la transparence et l'intégrité.",
+      "V3_T": "Innovation",
+      "V3_D": "Des solutions technologiques avancées pour votre croissance.",
+      "V4_T": "Portée",
+      "V4_D": "Un réseau couvrant l'ensemble de la région GCC & MENA."
+    },
+    "SOLUTIONS": {
+      "EYEBROW": "NOS SOLUTIONS",
+      "TITLE": "Une plateforme, tous les marchés GCC"
+    },
+    "SOL": {
+      "S1_T": "Gestion des commandes",
+      "S1_D": "Confirmation, traitement et suivi des commandes en temps réel.",
+      "S2_T": "Fulfillment",
+      "S2_D": "Stockage, préparation et expédition depuis nos hubs stratégiques.",
+      "S3_T": "Sourcing & Fabrication",
+      "S3_D": "Accès à un réseau de fournisseurs et d'usines fiables.",
+      "S4_T": "Livraison Last-Mile",
+      "S4_D": "Réseau de partenaires logistiques pour une livraison optimale."
+    },
+    "FULFILL": {
+      "EYEBROW": "MODÈLES LOGISTIQUES",
+      "TITLE": "Fulfillment GCC centralisé ou local par pays",
+      "DESC": "Choisissez le modèle adapté à votre stratégie : un entrepôt aux Émirats pour couvrir tout le GCC, ou des entrepôts locaux dans chaque pays pour une livraison encore plus rapide."
+    },
+    "MAP": {
+      "EYEBROW": "COUVERTURE RÉGIONALE",
+      "TITLE": "Réseau GCC interconnecté",
+      "DESC": "Notre réseau d'entrepôts et de bureaux couvre les 6 pays du GCC, vous permettant de livrer vos clients partout dans la région avec rapidité et fiabilité.",
+      "S1": "Pays du GCC",
+      "S2": "Entrepôts",
+      "S3": "Support"
+    },
+    "CTA": {
+      "TITLE": "Prêt à conquérir le marché GCC ?",
+      "SUB": "Rejoignez des centaines de vendeurs qui font confiance à X10ECOM pour leur expansion."
+    }
+  },
+
+  "SERVICES_PAGE": {
+  "HERO": {
+    "BADGE": "Plateforme Logistique MENA",
+    "H1_LINE1": "Solutions E-Commerce",
+    "H1_LINE2": "de bout en bout",
+    "SUB": "Sourcing · Dédouanement · Fulfillment · Livraison · COD — tout en un, pour toute la région MENA."
+  },
+  "RAIL": {
+    "SOURCING": "Sourcing",
+    "CUSTOMS": "Customs",
+    "WAREHOUSING": "Warehousing",
+    "CALL_CENTER": "Call Center",
+    "SHIPPING": "Shipping",
+    "COD": "COD"
+  },
+  "SOURCING": {
+    "EYEBROW": "Service Premium",
+    "TITLE": "Sourcing",
+    "LEAD": "Accédez à un large réseau de fournisseurs fiables offrant les derniers produits en provenance de Chine ou des Émirats à des prix compétitifs.",
+    "BODY": "Évitez le stress de chercher des fournisseurs ou de vous inquiéter des paiements. Notre réseau s'occupe de tout, de la fabrication à la livraison. Chaque étape est entièrement personnalisable pour répondre aux besoins de votre entreprise.",
+    "F1_T": "Contrôle Qualité Rigoureux",
+    "F1_D": "Assurance qualité à chaque étape du processus",
+    "F2_T": "Réseau de Fournisseurs",
+    "F2_D": "Accès exclusif aux meilleurs fournisseurs Chine & UAE",
+    "F3_T": "Solutions Personnalisées",
+    "F3_D": "Processus adapté à votre entreprise"
+  },
+  "CUSTOMS": {
+    "EYEBROW": "Service Logistique",
+    "TITLE": "Customs Clearance",
+    "LEAD": "Dédouanement simple et sans tracas — de la préparation des documents à la mise à disposition de votre expédition.",
+    "C1_T": "Vérification des documents",
+    "C1_D": "Contrôle complet pour le dédouanement",
+    "C2_T": "Coordination agents douaniers",
+    "C2_D": "Liaison directe pour traitement rapide",
+    "C3_T": "Paiement des taxes",
+    "C3_D": "Gestion et paiement des droits",
+    "C4_T": "Mise à disposition & Livraison",
+    "C4_D": "Récupération et livraison finale"
+  },
+  "WAREHOUSING": {
+    "EYEBROW": "Service Logistique",
+    "TITLE": "Warehousing & Fulfillment",
+    "SUB": "Stockage intelligent dans toute la région MENA",
+    "LEAD": "Notre réseau d'entrepôts couvre l'ensemble de la région MENA. Stockage sécurisé et organisé avec suivi complet en temps réel.",
+    "W1_T": "Suivi Temps Réel",
+    "W1_D": "Localisation précise de chaque article",
+    "W2_T": "Gestion des Stocks",
+    "W2_D": "Dates d'arrivée et durées de stockage",
+    "W3_T": "Sécurité Maximale",
+    "W3_D": "Surveillance 24h/24, 7j/7",
+    "W4_T": "Couverture Régionale",
+    "W4_D": "Réseau dans toute la région MENA"
+  },
+  "CALL_CENTER": {
+    "EYEBROW": "Service Client",
+    "TITLE": "Call Center",
+    "LEAD": "Agents hautement qualifiés pour la confirmation des commandes, la vérification et l'upselling — en arabe, français et anglais.",
+    "C1_T": "Confirmation de Commandes",
+    "C1_D": "Vérification détaillée de chaque commande par téléphone",
+    "C2_T": "Vérification des Infos",
+    "C2_D": "Contrôle adresses, produits et coordonnées",
+    "C3_T": "Support Multilingue",
+    "C3_D": "Arabe · Français · Anglais",
+    "C4_T": "Upselling & Cross-selling",
+    "C4_D": "Propositions de produits complémentaires"
+  },
+  "SHIPPING": {
+    "EYEBROW": "Service Logistique",
+    "TITLE": "Shipping",
+    "LEAD": "Livraison fiable de porte-à-porte pour les entreprises de toutes tailles, à des tarifs justes et compétitifs.",
+    "BODY": "Mesures de sécurité solides pour l'expédition et l'entreposage afin d'assurer la protection de vos produits tout au long du transport.",
+    "S1_T": "Collecte",
+    "S1_D": "Ramassage chez vous ou à l'entrepôt",
+    "S2_T": "Transit & Tri",
+    "S2_D": "Tri et routage optimisé",
+    "S3_T": "Livraison Last-Mile",
+    "S3_D": "Livraison jusqu'au client final",
+    "S4_T": "Confirmation",
+    "S4_D": "POD + notification automatique"
+  },
+  "REMITTANCE": {
+    "EYEBROW": "Service Financier",
+    "TITLE": "Cash / Card Remittance",
+    "LEAD": "Collecte des paiements et transfert sécurisé vers votre compte — partout dans le monde, rapidement et fiablement.",
+    "P1": "Espèces (COD)",
+    "P2": "Carte Bancaire",
+    "P3": "Virement Bancaire",
+    "P4": "Wallet Digital"
+  },
+  "STATS": {
+    "SUPPLIERS": "Fournisseurs",
+    "CLEARANCE": "Dédouanement",
+    "WAREHOUSES": "Entrepôts MENA",
+    "SATISFACTION": "Satisfaction client",
+    "DELIVERY": "Livraison moyenne",
+    "TRANSFERS": "Transferts sécurisés"
+  },
+  "CTA": {
+    "TITLE": "Prêt à accélérer votre croissance ?",
+    "SUB": "Rejoignez des centaines de marchands MENA qui font confiance à X10ECOM.",
+    "BTN_PRIMARY": "Commencer maintenant",
+    "BTN_GHOST": "Nous contacter"
+  },
+  "FOOTER": {
+    "DESC": "Plateforme e-commerce tout-en-un pour la région MENA. Solutions intelligentes pour votre croissance digitale.",
+    "NAV_TITLE": "Navigation",
+    "HOME": "Accueil",
+    "ABOUT": "À Propos",
+    "SERVICES": "Services",
+    "CONTACT": "Contact",
+    "SERVICES_TITLE": "Services",
+    "CONTACT_TITLE": "Contact",
+    "REGION": "Région MENA",
+    "COPY": "© 2026 X10ECOM. Tous droits réservés.",
+    "PRIVACY": "Confidentialité",
+    "TERMS": "Conditions",
+    "COOKIES": "Cookies"
   }
+}
 }
