@@ -133,21 +133,21 @@
     <div class="hero-body">
       <div class="hero-badge">
         <span class="badge-pulse"></span>
-        Plateforme Logistique MENA
+        {{ 'SERVICES_PAGE.HERO.BADGE' | translate }}
       </div>
       <h1 class="hero-h1">
-        <span class="hero-line1">Solutions E-Commerce</span>
-        <span class="hero-line2">de <em>bout en bout</em></span>
+        <span class="hero-line1">{{ 'SERVICES_PAGE.HERO.H1_LINE1' | translate }}</span>
+        <span class="hero-line2">{{ 'SERVICES_PAGE.HERO.H1_LINE2' | translate }}</span>
       </h1>
-      <p class="hero-sub">Sourcing · Dédouanement · Fulfillment · Livraison · COD — tout en un, pour toute la région MENA.</p>
+      <p class="hero-sub">{{ 'SERVICES_PAGE.HERO.SUB' | translate }}</p>
 
       <div class="hero-anchors">
-        <a (click)="scrollToSection('sourcing')" class="anchor-pill">Sourcing</a>
-        <a (click)="scrollToSection('customs-clearance')" class="anchor-pill">Customs</a>
-        <a (click)="scrollToSection('warehousing')" class="anchor-pill">Warehousing</a>
-        <a (click)="scrollToSection('call-center')" class="anchor-pill">Call Center</a>
-        <a (click)="scrollToSection('shipping')" class="anchor-pill">Shipping</a>
-        <a (click)="scrollToSection('remittance')" class="anchor-pill">COD</a>
+        <a (click)="scrollToSection('sourcing')" class="anchor-pill">{{ 'SERVICES_PAGE.RAIL.SOURCING' | translate }}</a>
+        <a (click)="scrollToSection('customs-clearance')" class="anchor-pill">{{ 'SERVICES_PAGE.RAIL.CUSTOMS' | translate }}</a>
+        <a (click)="scrollToSection('warehousing')" class="anchor-pill">{{ 'SERVICES_PAGE.RAIL.WAREHOUSING' | translate }}</a>
+        <a (click)="scrollToSection('call-center')" class="anchor-pill">{{ 'SERVICES_PAGE.RAIL.CALL_CENTER' | translate }}</a>
+        <a (click)="scrollToSection('shipping')" class="anchor-pill">{{ 'SERVICES_PAGE.RAIL.SHIPPING' | translate }}</a>
+        <a (click)="scrollToSection('remittance')" class="anchor-pill">{{ 'SERVICES_PAGE.RAIL.COD' | translate }}</a>
       </div>
     </div>
 
@@ -159,12 +159,12 @@
   <!-- ═══════════════════ SERVICES RAIL (sticky nav) ═══════════════════ -->
   <div class="svc-rail" [class.rail-stuck]="railStuck">
     <div class="rail-inner">
-      <a (click)="scrollToSection('sourcing')" [class.rail-active]="activeSection==='sourcing'" class="rail-link">Sourcing</a>
-      <a (click)="scrollToSection('customs-clearance')" [class.rail-active]="activeSection==='customs-clearance'" class="rail-link">Customs</a>
-      <a (click)="scrollToSection('warehousing')" [class.rail-active]="activeSection==='warehousing'" class="rail-link">Warehousing</a>
-      <a (click)="scrollToSection('call-center')" [class.rail-active]="activeSection==='call-center'" class="rail-link">Call Center</a>
-      <a (click)="scrollToSection('shipping')" [class.rail-active]="activeSection==='shipping'" class="rail-link">Shipping</a>
-      <a (click)="scrollToSection('remittance')" [class.rail-active]="activeSection==='remittance'" class="rail-link">COD</a>
+      <a (click)="scrollToSection('sourcing')" [class.rail-active]="activeSection==='sourcing'" class="rail-link">{{ 'SERVICES_PAGE.RAIL.SOURCING' | translate }}</a>
+      <a (click)="scrollToSection('customs-clearance')" [class.rail-active]="activeSection==='customs-clearance'" class="rail-link">{{ 'SERVICES_PAGE.RAIL.CUSTOMS' | translate }}</a>
+      <a (click)="scrollToSection('warehousing')" [class.rail-active]="activeSection==='warehousing'" class="rail-link">{{ 'SERVICES_PAGE.RAIL.WAREHOUSING' | translate }}</a>
+      <a (click)="scrollToSection('call-center')" [class.rail-active]="activeSection==='call-center'" class="rail-link">{{ 'SERVICES_PAGE.RAIL.CALL_CENTER' | translate }}</a>
+      <a (click)="scrollToSection('shipping')" [class.rail-active]="activeSection==='shipping'" class="rail-link">{{ 'SERVICES_PAGE.RAIL.SHIPPING' | translate }}</a>
+      <a (click)="scrollToSection('remittance')" [class.rail-active]="activeSection==='remittance'" class="rail-link">{{ 'SERVICES_PAGE.RAIL.COD' | translate }}</a>
     </div>
   </div>
 
@@ -172,10 +172,10 @@
   <section id="sourcing" class="svc-section ss-light anim-section">
     <div class="ss-layout">
       <div class="ss-text fade-left">
-        <div class="ss-eyebrow green">Service Premium</div>
-        <h2 class="ss-h2">Sourcing</h2>
-        <p class="ss-lead">Accédez à un large réseau de fournisseurs fiables offrant les derniers produits en provenance de Chine ou des Émirats à des prix compétitifs.</p>
-        <p class="ss-body">Évitez le stress de chercher des fournisseurs ou de vous inquiéter des paiements. Notre réseau s'occupe de tout, de la fabrication à la livraison. Chaque étape est entièrement personnalisable pour répondre aux besoins de votre entreprise.</p>
+        <div class="ss-eyebrow green">{{ 'SERVICES_PAGE.SOURCING.EYEBROW' | translate }}</div>
+        <h2 class="ss-h2">{{ 'SERVICES_PAGE.SOURCING.TITLE' | translate }}</h2>
+        <p class="ss-lead">{{ 'SERVICES_PAGE.SOURCING.LEAD' | translate }}</p>
+        <p class="ss-body">{{ 'SERVICES_PAGE.SOURCING.BODY' | translate }}</p>
 
         <div class="feat-list">
           <div class="feat-item">
@@ -183,8 +183,8 @@
               <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
             </div>
             <div>
-              <h4>Contrôle Qualité Rigoureux</h4>
-              <p>Assurance qualité à chaque étape du processus</p>
+              <h4>{{ 'SERVICES_PAGE.SOURCING.F1_T' | translate }}</h4>
+              <p>{{ 'SERVICES_PAGE.SOURCING.F1_D' | translate }}</p>
             </div>
           </div>
           <div class="feat-item">
@@ -192,8 +192,8 @@
               <svg viewBox="0 0 24 24"><path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
             </div>
             <div>
-              <h4>Réseau de Fournisseurs</h4>
-              <p>Accès exclusif aux meilleurs fournisseurs Chine & UAE</p>
+              <h4>{{ 'SERVICES_PAGE.SOURCING.F2_T' | translate }}</h4>
+              <p>{{ 'SERVICES_PAGE.SOURCING.F2_D' | translate }}</p>
             </div>
           </div>
           <div class="feat-item">
@@ -201,8 +201,8 @@
               <svg viewBox="0 0 24 24"><path fill="currentColor" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
             </div>
             <div>
-              <h4>Solutions Personnalisées</h4>
-              <p>Processus adapté à votre entreprise</p>
+              <h4>{{ 'SERVICES_PAGE.SOURCING.F3_T' | translate }}</h4>
+              <p>{{ 'SERVICES_PAGE.SOURCING.F3_D' | translate }}</p>
             </div>
           </div>
         </div>
@@ -215,7 +215,7 @@
           <img src="/images/sourcing.jpeg" alt="Sourcing" class="ss-img">
           <div class="img-stat">
             <span class="stat-n">500+</span>
-            <span class="stat-l">Fournisseurs</span>
+            <span class="stat-l">{{ 'SERVICES_PAGE.STATS.SUPPLIERS' | translate }}</span>
           </div>
         </div>
       </div>
@@ -232,43 +232,43 @@
           <img src="/images/expedition-image.jpeg" alt="Customs" class="ss-img">
           <div class="img-stat">
             <span class="stat-n">48h</span>
-            <span class="stat-l">Dédouanement</span>
+            <span class="stat-l">{{ 'SERVICES_PAGE.STATS.CLEARANCE' | translate }}</span>
           </div>
         </div>
       </div>
 
       <div class="ss-text fade-right">
-        <div class="ss-eyebrow blue">Service Logistique</div>
-        <h2 class="ss-h2">Customs Clearance</h2>
-        <p class="ss-lead">Dédouanement simple et sans tracas — de la préparation des documents à la mise à disposition de votre expédition.</p>
+        <div class="ss-eyebrow blue">{{ 'SERVICES_PAGE.CUSTOMS.EYEBROW' | translate }}</div>
+        <h2 class="ss-h2">{{ 'SERVICES_PAGE.CUSTOMS.TITLE' | translate }}</h2>
+        <p class="ss-lead">{{ 'SERVICES_PAGE.CUSTOMS.LEAD' | translate }}</p>
 
         <div class="check-grid">
           <div class="check-item">
             <svg class="chk-icon" viewBox="0 0 24 24"><path fill="#10b981" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
             <div>
-              <h4>Vérification des documents</h4>
-              <p>Contrôle complet pour le dédouanement</p>
+              <h4>{{ 'SERVICES_PAGE.CUSTOMS.C1_T' | translate }}</h4>
+              <p>{{ 'SERVICES_PAGE.CUSTOMS.C1_D' | translate }}</p>
             </div>
           </div>
           <div class="check-item">
             <svg class="chk-icon" viewBox="0 0 24 24"><path fill="#10b981" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
             <div>
-              <h4>Coordination agents douaniers</h4>
-              <p>Liaison directe pour traitement rapide</p>
+              <h4>{{ 'SERVICES_PAGE.CUSTOMS.C2_T' | translate }}</h4>
+              <p>{{ 'SERVICES_PAGE.CUSTOMS.C2_D' | translate }}</p>
             </div>
           </div>
           <div class="check-item">
             <svg class="chk-icon" viewBox="0 0 24 24"><path fill="#10b981" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
             <div>
-              <h4>Paiement des taxes</h4>
-              <p>Gestion et paiement des droits</p>
+              <h4>{{ 'SERVICES_PAGE.CUSTOMS.C3_T' | translate }}</h4>
+              <p>{{ 'SERVICES_PAGE.CUSTOMS.C3_D' | translate }}</p>
             </div>
           </div>
           <div class="check-item">
             <svg class="chk-icon" viewBox="0 0 24 24"><path fill="#10b981" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
             <div>
-              <h4>Mise à disposition & Livraison</h4>
-              <p>Récupération et livraison finale</p>
+              <h4>{{ 'SERVICES_PAGE.CUSTOMS.C4_T' | translate }}</h4>
+              <p>{{ 'SERVICES_PAGE.CUSTOMS.C4_D' | translate }}</p>
             </div>
           </div>
         </div>
@@ -279,43 +279,43 @@
   <!-- ═══════════════════════ WAREHOUSING ═══════════════════════ -->
   <section id="warehousing" class="svc-section ss-light anim-section">
     <div class="ss-header">
-      <div class="ss-eyebrow purple">Service Logistique</div>
-      <h2 class="ss-h2 centered">Warehousing & Fulfillment</h2>
-      <p class="ss-sub">Stockage intelligent dans toute la région MENA</p>
+      <div class="ss-eyebrow purple">{{ 'SERVICES_PAGE.WAREHOUSING.EYEBROW' | translate }}</div>
+      <h2 class="ss-h2 centered">{{ 'SERVICES_PAGE.WAREHOUSING.TITLE' | translate }}</h2>
+      <p class="ss-sub">{{ 'SERVICES_PAGE.WAREHOUSING.SUB' | translate }}</p>
     </div>
 
     <div class="ss-layout">
       <div class="ss-text fade-left">
-        <p class="ss-lead">Notre réseau d'entrepôts couvre l'ensemble de la région MENA. Stockage sécurisé et organisé avec suivi complet en temps réel.</p>
+        <p class="ss-lead">{{ 'SERVICES_PAGE.WAREHOUSING.LEAD' | translate }}</p>
 
         <div class="wh-grid">
           <div class="wh-card" style="--accent:#10b981">
             <div class="wh-icon">
               <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 12h2v5H7zm8-5h2v10h-2zm-4 7h2v3h-2zm0-4h2v2h-2z"/></svg>
             </div>
-            <h4>Suivi Temps Réel</h4>
-            <p>Localisation précise de chaque article</p>
+            <h4>{{ 'SERVICES_PAGE.WAREHOUSING.W1_T' | translate }}</h4>
+            <p>{{ 'SERVICES_PAGE.WAREHOUSING.W1_D' | translate }}</p>
           </div>
           <div class="wh-card" style="--accent:#1a56e8">
             <div class="wh-icon">
               <svg viewBox="0 0 24 24"><path fill="currentColor" d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
             </div>
-            <h4>Gestion des Stocks</h4>
-            <p>Dates d'arrivée et durées de stockage</p>
+            <h4>{{ 'SERVICES_PAGE.WAREHOUSING.W2_T' | translate }}</h4>
+            <p>{{ 'SERVICES_PAGE.WAREHOUSING.W2_D' | translate }}</p>
           </div>
           <div class="wh-card" style="--accent:#8b5cf6">
             <div class="wh-icon">
               <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
             </div>
-            <h4>Sécurité Maximale</h4>
-            <p>Surveillance 24h/24, 7j/7</p>
+            <h4>{{ 'SERVICES_PAGE.WAREHOUSING.W3_T' | translate }}</h4>
+            <p>{{ 'SERVICES_PAGE.WAREHOUSING.W3_D' | translate }}</p>
           </div>
           <div class="wh-card" style="--accent:#f59e0b">
             <div class="wh-icon">
               <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
             </div>
-            <h4>Couverture Régionale</h4>
-            <p>Réseau dans toute la région MENA</p>
+            <h4>{{ 'SERVICES_PAGE.WAREHOUSING.W4_T' | translate }}</h4>
+            <p>{{ 'SERVICES_PAGE.WAREHOUSING.W4_D' | translate }}</p>
           </div>
         </div>
       </div>
@@ -327,7 +327,7 @@
           <img src="/images/warehousing-fulfillment.jpeg" alt="Warehousing" class="ss-img">
           <div class="img-stat">
             <span class="stat-n">10+</span>
-            <span class="stat-l">Entrepôts MENA</span>
+            <span class="stat-l">{{ 'SERVICES_PAGE.STATS.WAREHOUSES' | translate }}</span>
           </div>
         </div>
       </div>
@@ -344,36 +344,36 @@
           <img src="/images/call-center.jpeg" alt="Call Center" class="ss-img">
           <div class="img-stat">
             <span class="stat-n">98%</span>
-            <span class="stat-l">Satisfaction client</span>
+            <span class="stat-l">{{ 'SERVICES_PAGE.STATS.SATISFACTION' | translate }}</span>
           </div>
         </div>
       </div>
 
       <div class="ss-text fade-right">
-        <div class="ss-eyebrow amber">Service Client</div>
-        <h2 class="ss-h2">Call Center</h2>
-        <p class="ss-lead">Agents hautement qualifiés pour la confirmation des commandes, la vérification et l'upselling — en arabe, français et anglais.</p>
+        <div class="ss-eyebrow amber">{{ 'SERVICES_PAGE.CALL_CENTER.EYEBROW' | translate }}</div>
+        <h2 class="ss-h2">{{ 'SERVICES_PAGE.CALL_CENTER.TITLE' | translate }}</h2>
+        <p class="ss-lead">{{ 'SERVICES_PAGE.CALL_CENTER.LEAD' | translate }}</p>
 
         <div class="cc-grid">
           <div class="cc-card">
             <div class="cc-num">01</div>
-            <h4>Confirmation de Commandes</h4>
-            <p>Vérification détaillée de chaque commande par téléphone</p>
+            <h4>{{ 'SERVICES_PAGE.CALL_CENTER.C1_T' | translate }}</h4>
+            <p>{{ 'SERVICES_PAGE.CALL_CENTER.C1_D' | translate }}</p>
           </div>
           <div class="cc-card">
             <div class="cc-num">02</div>
-            <h4>Vérification des Infos</h4>
-            <p>Contrôle adresses, produits et coordonnées</p>
+            <h4>{{ 'SERVICES_PAGE.CALL_CENTER.C2_T' | translate }}</h4>
+            <p>{{ 'SERVICES_PAGE.CALL_CENTER.C2_D' | translate }}</p>
           </div>
           <div class="cc-card">
             <div class="cc-num">03</div>
-            <h4>Support Multilingue</h4>
-            <p>Arabe · Français · Anglais</p>
+            <h4>{{ 'SERVICES_PAGE.CALL_CENTER.C3_T' | translate }}</h4>
+            <p>{{ 'SERVICES_PAGE.CALL_CENTER.C3_D' | translate }}</p>
           </div>
           <div class="cc-card">
             <div class="cc-num">04</div>
-            <h4>Upselling & Cross-selling</h4>
-            <p>Propositions de produits complémentaires</p>
+            <h4>{{ 'SERVICES_PAGE.CALL_CENTER.C4_T' | translate }}</h4>
+            <p>{{ 'SERVICES_PAGE.CALL_CENTER.C4_D' | translate }}</p>
           </div>
         </div>
       </div>
@@ -384,41 +384,41 @@
   <section id="shipping" class="svc-section ss-light anim-section">
     <div class="ss-layout">
       <div class="ss-text fade-left">
-        <div class="ss-eyebrow blue">Service Logistique</div>
-        <h2 class="ss-h2">Shipping</h2>
-        <p class="ss-lead">Livraison fiable de porte-à-porte pour les entreprises de toutes tailles, à des tarifs justes et compétitifs.</p>
-        <p class="ss-body">Mesures de sécurité solides pour l'expédition et l'entreposage afin d'assurer la protection de vos produits tout au long du transport.</p>
+        <div class="ss-eyebrow blue">{{ 'SERVICES_PAGE.SHIPPING.EYEBROW' | translate }}</div>
+        <h2 class="ss-h2">{{ 'SERVICES_PAGE.SHIPPING.TITLE' | translate }}</h2>
+        <p class="ss-lead">{{ 'SERVICES_PAGE.SHIPPING.LEAD' | translate }}</p>
+        <p class="ss-body">{{ 'SERVICES_PAGE.SHIPPING.BODY' | translate }}</p>
 
         <div class="ship-timeline">
           <div class="ship-step">
             <div class="ship-dot" style="--c:#10b981"></div>
             <div class="ship-line"></div>
             <div>
-              <h4>Collecte</h4>
-              <p>Ramassage chez vous ou à l'entrepôt</p>
+              <h4>{{ 'SERVICES_PAGE.SHIPPING.S1_T' | translate }}</h4>
+              <p>{{ 'SERVICES_PAGE.SHIPPING.S1_D' | translate }}</p>
             </div>
           </div>
           <div class="ship-step">
             <div class="ship-dot" style="--c:#1a56e8"></div>
             <div class="ship-line"></div>
             <div>
-              <h4>Transit & Tri</h4>
-              <p>Tri et routage optimisé</p>
+              <h4>{{ 'SERVICES_PAGE.SHIPPING.S2_T' | translate }}</h4>
+              <p>{{ 'SERVICES_PAGE.SHIPPING.S2_D' | translate }}</p>
             </div>
           </div>
           <div class="ship-step">
             <div class="ship-dot" style="--c:#8b5cf6"></div>
             <div class="ship-line"></div>
             <div>
-              <h4>Livraison Last-Mile</h4>
-              <p>Livraison jusqu'au client final</p>
+              <h4>{{ 'SERVICES_PAGE.SHIPPING.S3_T' | translate }}</h4>
+              <p>{{ 'SERVICES_PAGE.SHIPPING.S3_D' | translate }}</p>
             </div>
           </div>
           <div class="ship-step ship-step--last">
             <div class="ship-dot" style="--c:#f59e0b"></div>
             <div>
-              <h4>Confirmation</h4>
-              <p>POD + notification automatique</p>
+              <h4>{{ 'SERVICES_PAGE.SHIPPING.S4_T' | translate }}</h4>
+              <p>{{ 'SERVICES_PAGE.SHIPPING.S4_D' | translate }}</p>
             </div>
           </div>
         </div>
@@ -431,7 +431,7 @@
           <img src="/images/shipping.jpeg" alt="Shipping" class="ss-img">
           <div class="img-stat">
             <span class="stat-n">72h</span>
-            <span class="stat-l">Livraison moyenne</span>
+            <span class="stat-l">{{ 'SERVICES_PAGE.STATS.DELIVERY' | translate }}</span>
           </div>
         </div>
       </div>
@@ -448,32 +448,32 @@
           <img src="/images/cod-service.jpeg" alt="COD" class="ss-img">
           <div class="img-stat">
             <span class="stat-n">100%</span>
-            <span class="stat-l">Transferts sécurisés</span>
+            <span class="stat-l">{{ 'SERVICES_PAGE.STATS.TRANSFERS' | translate }}</span>
           </div>
         </div>
       </div>
 
       <div class="ss-text fade-right">
-        <div class="ss-eyebrow green">Service Financier</div>
-        <h2 class="ss-h2">Cash / Card Remittance</h2>
-        <p class="ss-lead">Collecte des paiements et transfert sécurisé vers votre compte — partout dans le monde, rapidement et fiablement.</p>
+        <div class="ss-eyebrow green">{{ 'SERVICES_PAGE.REMITTANCE.EYEBROW' | translate }}</div>
+        <h2 class="ss-h2">{{ 'SERVICES_PAGE.REMITTANCE.TITLE' | translate }}</h2>
+        <p class="ss-lead">{{ 'SERVICES_PAGE.REMITTANCE.LEAD' | translate }}</p>
 
         <div class="pay-methods">
           <div class="pay-card" style="--c:#10b981">
             <svg viewBox="0 0 24 24"><path fill="currentColor" d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
-            <span>Espèces (COD)</span>
+            <span>{{ 'SERVICES_PAGE.REMITTANCE.P1' | translate }}</span>
           </div>
           <div class="pay-card" style="--c:#1a56e8">
             <svg viewBox="0 0 24 24"><path fill="currentColor" d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm-1 14H5c-.55 0-1-.45-1-1v-5h16v5c0 .55-.45 1-1 1zm1-10H4V6h16v2z"/></svg>
-            <span>Carte Bancaire</span>
+            <span>{{ 'SERVICES_PAGE.REMITTANCE.P2' | translate }}</span>
           </div>
           <div class="pay-card" style="--c:#8b5cf6">
             <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-            <span>Virement Bancaire</span>
+            <span>{{ 'SERVICES_PAGE.REMITTANCE.P3' | translate }}</span>
           </div>
           <div class="pay-card" style="--c:#f59e0b">
             <svg viewBox="0 0 24 24"><path fill="currentColor" d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
-            <span>Wallet Digital</span>
+            <span>{{ 'SERVICES_PAGE.REMITTANCE.P4' | translate }}</span>
           </div>
         </div>
       </div>
@@ -487,21 +487,21 @@
       <div class="cta-orb cta-orb--2"></div>
     </div>
     <div class="cta-body">
-      <h2 class="cta-h2">Prêt à accélérer votre croissance ?</h2>
-      <p class="cta-p">Rejoignez des centaines de marchands MENA qui font confiance à X10ECOM.</p>
+      <h2 class="cta-h2">{{ 'SERVICES_PAGE.CTA.TITLE' | translate }}</h2>
+      <p class="cta-p">{{ 'SERVICES_PAGE.CTA.SUB' | translate }}</p>
       <div class="cta-btns">
         <a routerLink="/auth/login-seller" class="btn-prim">
-          Commencer maintenant
+          {{ 'SERVICES_PAGE.CTA.BTN_PRIMARY' | translate }}
           <svg viewBox="0 0 24 24"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
         </a>
-        <a href="/contact-us" class="btn-ghost">Nous contacter</a>
+        <a href="/contact-us" class="btn-ghost">{{ 'SERVICES_PAGE.CTA.BTN_GHOST' | translate }}</a>
       </div>
 
       <div class="cta-stats">
-        <div class="cta-stat"><span>500+</span>Fournisseurs</div>
-        <div class="cta-stat"><span>10+</span>Pays MENA</div>
-        <div class="cta-stat"><span>98%</span>Satisfaction</div>
-        <div class="cta-stat"><span>72h</span>Livraison</div>
+        <div class="cta-stat"><span>500+</span>{{ 'SERVICES_PAGE.STATS.SUPPLIERS' | translate }}</div>
+        <div class="cta-stat"><span>10+</span>{{ 'HOME.COUNTRIES.EYEBROW' | translate }}</div>
+        <div class="cta-stat"><span>98%</span>{{ 'SERVICES_PAGE.STATS.SATISFACTION' | translate }}</div>
+        <div class="cta-stat"><span>72h</span>{{ 'SERVICES_PAGE.STATS.DELIVERY' | translate }}</div>
       </div>
     </div>
   </section>
@@ -515,7 +515,7 @@
             <img src="/images/logo-x10ecom.jpeg" alt="X10ECOM" class="logo-img">
             <span class="logo-word"><b>X10</b>ECOM</span>
           </div>
-          <p class="f-desc">Plateforme e-commerce tout-en-un pour la région MENA. Solutions intelligentes pour votre croissance digitale.</p>
+          <p class="f-desc">{{ 'SERVICES_PAGE.FOOTER.DESC' | translate }}</p>
           <div class="f-social">
             <a href="https://web.facebook.com/profile.php?id=61582321528493" target="_blank" rel="noopener" class="f-soc">
               <svg viewBox="0 0 24 24"><path fill="currentColor" d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.019 4.388 11.01 10.125 11.927v-8.437H7.078v-3.49h3.047V9.413c0-3.007 1.792-4.669 4.533-4.669 1.313 0 2.686.235 2.686.235v2.953h-1.514c-1.491 0-1.956.926-1.956 1.874v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.083 24 18.092 24 12.073z"/></svg>
@@ -530,33 +530,33 @@
         </div>
 
         <div class="fc">
-          <h3 class="f-title">Navigation</h3>
+          <h3 class="f-title">{{ 'SERVICES_PAGE.FOOTER.NAV_TITLE' | translate }}</h3>
           <ul class="f-links">
-            <li><a routerLink="/">Accueil</a></li>
-            <li><a routerLink="/about-us">À Propos</a></li>
-            <li><a href="/services">Services</a></li>
-            <li><a routerLink="/contact-us">Contact</a></li>
+            <li><a routerLink="/">{{ 'SERVICES_PAGE.FOOTER.HOME' | translate }}</a></li>
+            <li><a routerLink="/about-us">{{ 'SERVICES_PAGE.FOOTER.ABOUT' | translate }}</a></li>
+            <li><a href="/services">{{ 'SERVICES_PAGE.FOOTER.SERVICES' | translate }}</a></li>
+            <li><a routerLink="/contact-us">{{ 'SERVICES_PAGE.FOOTER.CONTACT' | translate }}</a></li>
           </ul>
         </div>
 
         <div class="fc">
-          <h3 class="f-title">Services</h3>
+          <h3 class="f-title">{{ 'SERVICES_PAGE.FOOTER.SERVICES_TITLE' | translate }}</h3>
           <ul class="f-links">
-            <li><a (click)="scrollToSection('sourcing')">Sourcing</a></li>
-            <li><a (click)="scrollToSection('customs-clearance')">Customs Clearance</a></li>
-            <li><a (click)="scrollToSection('warehousing')">Warehousing</a></li>
-            <li><a (click)="scrollToSection('call-center')">Call Center</a></li>
-            <li><a (click)="scrollToSection('shipping')">Shipping</a></li>
-            <li><a (click)="scrollToSection('remittance')">COD Remittance</a></li>
+            <li><a (click)="scrollToSection('sourcing')">{{ 'SERVICES_PAGE.RAIL.SOURCING' | translate }}</a></li>
+            <li><a (click)="scrollToSection('customs-clearance')">{{ 'SERVICES_PAGE.CUSTOMS.TITLE' | translate }}</a></li>
+            <li><a (click)="scrollToSection('warehousing')">{{ 'SERVICES_PAGE.RAIL.WAREHOUSING' | translate }}</a></li>
+            <li><a (click)="scrollToSection('call-center')">{{ 'SERVICES_PAGE.RAIL.CALL_CENTER' | translate }}</a></li>
+            <li><a (click)="scrollToSection('shipping')">{{ 'SERVICES_PAGE.RAIL.SHIPPING' | translate }}</a></li>
+            <li><a (click)="scrollToSection('remittance')">{{ 'SERVICES_PAGE.REMITTANCE.TITLE' | translate }}</a></li>
           </ul>
         </div>
 
         <div class="fc">
-          <h3 class="f-title">Contact</h3>
+          <h3 class="f-title">{{ 'SERVICES_PAGE.FOOTER.CONTACT_TITLE' | translate }}</h3>
           <ul class="f-contact">
             <li>
               <svg viewBox="0 0 24 24"><path fill="#10b981" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-              Région MENA
+              {{ 'SERVICES_PAGE.FOOTER.REGION' | translate }}
             </li>
             <li>
               <svg viewBox="0 0 24 24"><path fill="#10b981" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
@@ -567,11 +567,11 @@
       </div>
 
       <div class="footer-bottom">
-        <span class="f-copy">© 2026 X10ECOM. Tous droits réservés.</span>
+        <span class="f-copy">{{ 'SERVICES_PAGE.FOOTER.COPY' | translate }}</span>
         <div class="f-legal">
-          <a href="#">Confidentialité</a>
-          <a href="#">Conditions</a>
-          <a href="#">Cookies</a>
+          <a href="#">{{ 'SERVICES_PAGE.FOOTER.PRIVACY' | translate }}</a>
+          <a href="#">{{ 'SERVICES_PAGE.FOOTER.TERMS' | translate }}</a>
+          <a href="#">{{ 'SERVICES_PAGE.FOOTER.COOKIES' | translate }}</a>
         </div>
       </div>
     </div>
